@@ -1,1 +1,5 @@
 rootProject.name = 'royal-tetris'
+include 'Common'
+include 'Client'
+include 'Server'
+
