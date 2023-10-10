@@ -1,7 +1,7 @@
 package game.tetris;
 
 import com.almasb.fxgl.entity.Entity;
-import game.tetris.datastructure.Cell;
+import game.tetris.datastructure.ClientCell;
 
 import java.util.function.Consumer;
 
@@ -11,21 +11,21 @@ public class TetrisGrid {
 
 	private final int rows;
 	private final int columns;
-	private final Cell[][] gridEntities;
+	private final ClientCell[][] gridEntities;
 
 	public TetrisGrid(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
-		gridEntities = new Cell[rows][columns];
+		gridEntities = new ClientCell[rows][columns];
 		initializeGrid();
 	}
 
 	private void initializeGrid() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				Cell cell = new Cell();
-				cell.setPosition(j * (CELL_SIZE +1d), i* ( CELL_SIZE +1d)); // Adjust the position based on cell size
-				gridEntities[i][j] = cell;
+				ClientCell clientCell = new ClientCell();
+				clientCell.setPosition(j * (CELL_SIZE +1d), i* ( CELL_SIZE +1d)); // Adjust the position based on cell size
+				gridEntities[i][j] = clientCell;
 			}
 		}
 	}
@@ -36,10 +36,10 @@ public class TetrisGrid {
 		}
 	}
 
-	public Cell readGrid(int x, int y){
+	public ClientCell readGrid(int x, int y){
 		//The copy is here to make sure we do not make an unsafe write to the cell
 		//Todo add syncronisation to prevent reading while a write is in progress
-		return (Cell) gridEntities[x][y].copy();
+		return (ClientCell) gridEntities[x][y].copy();
 	}
 
 	public Entity[][] getGridEntities() {

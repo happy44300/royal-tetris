@@ -1,4 +1,4 @@
-package game.tetris.datastructure;
+package game.tetris.datasrtucture;
 
 public enum Direction {
 	UP,

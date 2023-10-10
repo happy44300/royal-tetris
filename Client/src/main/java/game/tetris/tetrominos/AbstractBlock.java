@@ -1,7 +1,7 @@
 package game.tetris.tetrominos;
 
 import game.tetris.TetrisGrid;
-import game.tetris.datastructure.Direction;
+import game.tetris.datasrtucture.Direction;
 
 import java.util.function.Consumer;
 
