@@ -24,6 +24,11 @@ out
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+#module
+Client/build
+Server/build
+Common/build
+
 # Package Files #
 *.jar
 *.war
