@@ -2,14 +2,14 @@ package game.tetris.tetrominos;
 
 import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
-import game.tetris.TetrisGrid;
+import game.tetris.TetrisGridClient;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
 public enum TetrominosTexture {
 
 
-	IMAGE_BACKGROUND(new ColoredTexture(TetrisGrid.CELL_SIZE, TetrisGrid.CELL_SIZE, Color.BLACK));
+	IMAGE_BACKGROUND(new ColoredTexture(TetrisGridClient.CELL_SIZE, TetrisGridClient.CELL_SIZE, Color.BLACK));
 
 	@NotNull private final Texture texture;
 

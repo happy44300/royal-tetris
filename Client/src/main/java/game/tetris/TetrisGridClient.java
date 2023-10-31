@@ -2,10 +2,12 @@ package game.tetris;
 
 import com.almasb.fxgl.entity.Entity;
 import game.tetris.datastructure.ClientCell;
+import game.tetris.datastructure.TetrisGrid;
+import kotlin.NotImplementedError;
 
 import java.util.function.Consumer;
 
-public class TetrisGrid {
+public class TetrisGridClient implements TetrisGrid {
 
 	public static final int CELL_SIZE = 30;
 
@@ -13,7 +15,7 @@ public class TetrisGrid {
 	private final int columns;
 	private final ClientCell[][] gridEntities;
 
-	public TetrisGrid(int rows, int columns) {
+	public TetrisGridClient(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
 		gridEntities = new ClientCell[rows][columns];
@@ -30,10 +32,16 @@ public class TetrisGrid {
 		}
 	}
 
+	@Override
 	public void updateGridSynchronously(Consumer<TetrisGrid> gridModification){
 		synchronized (this){
 			gridModification.accept(this);
 		}
+	}
+
+	@Override
+	public void updateGridUnsafe(Consumer<TetrisGrid> gridConsumer) {
+		throw new NotImplementedError();
 	}
 
 	public ClientCell readGrid(int x, int y){

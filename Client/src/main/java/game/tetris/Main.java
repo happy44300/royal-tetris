@@ -39,8 +39,8 @@ public class Main extends GameApplication {
 	protected void initGame() {
 
 
-        TetrisGrid tetrisGrid = new TetrisGrid(ROWS, COLLUMNS);
-		for (Entity[] row : tetrisGrid.getGridEntities()) {
+        TetrisGridClient tetrisGridClient = new TetrisGridClient(ROWS, COLLUMNS);
+		for (Entity[] row : tetrisGridClient.getGridEntities()) {
 			for (Entity cell : row) {
 				getGameWorld().addEntity(cell);
 			}
