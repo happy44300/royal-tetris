@@ -1,4 +1,4 @@
-package game.tetris.datasrtucture;
+package game.tetris.datastructure;
 
 import java.util.Objects;
 

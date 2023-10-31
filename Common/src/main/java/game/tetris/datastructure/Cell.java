@@ -1,6 +1,8 @@
-package game.tetris.datasrtucture;
+package game.tetris.datastructure;
 
-public interface Cell {
+import java.rmi.Remote;
+
+public interface Cell extends Remote {
 
     void setPos(Point point);
 
