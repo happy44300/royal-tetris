@@ -34,13 +34,13 @@ public class TetrisGridClient implements TetrisGrid {
 
 	@Override
 	public void updateGridSynchronously(Consumer<TetrisGrid> gridModification){
-		synchronized (this){
-			gridModification.accept(this);
-		}
+		//Client noes not need any synchronisation on it's grid
+		throw new NotImplementedError();
 	}
 
 	@Override
 	public void updateGridUnsafe(Consumer<TetrisGrid> gridConsumer) {
+		//TODO: Implement
 		throw new NotImplementedError();
 	}
 
