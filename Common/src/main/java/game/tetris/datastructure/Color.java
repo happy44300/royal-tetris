@@ -1,5 +1,8 @@
 package game.tetris.datastructure;
 
 public enum Color {
-	NO
+	NOTHING,
+	BLUE,
+	RED,
+	GREEN
 }

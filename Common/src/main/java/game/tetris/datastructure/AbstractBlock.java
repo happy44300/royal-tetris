@@ -15,7 +15,7 @@ public abstract class AbstractBlock {
 		this.grid = grid;
 		this.rotation = Rotation.UP;
 		this.isBlocked = false;
-		this.color = Color.NO;
+		this.color = Color.NOTHING;
 	}
 
 	//TODO: need to think about when to lock things, for instance there is no need to lock the grid if no write happen
@@ -23,7 +23,7 @@ public abstract class AbstractBlock {
 		grid.updateGridSynchronously(gridConsumer);
 	}
 
-	abstract void move(int x, int y);
+	abstract void move(Point point);
 	abstract void rotate(Rotation dir);
 
 	abstract void block();
@@ -32,7 +32,7 @@ public abstract class AbstractBlock {
 		return color ;
 	}
 
-	abstract boolean canMove(int x, int y);
+	abstract boolean canMove(Point point);
 	abstract boolean canRotate(Rotation dir);
 	abstract boolean canChangeColor();
 	abstract boolean isBlocked();
