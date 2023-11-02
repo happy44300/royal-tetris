@@ -7,9 +7,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-/**
- * @author Alain Defrance
- */
 public class Server {
     public static void main(String[] argv) {
         try {
