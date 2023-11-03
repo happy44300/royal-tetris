@@ -1,6 +1,7 @@
 package game.tetris.datastructure;
 
 
+import java.rmi.RemoteException;
 import java.util.function.Consumer;
 
 public abstract class AbstractBlock {
@@ -20,7 +21,11 @@ public abstract class AbstractBlock {
 
 	//TODO: need to think about when to lock things, for instance there is no need to lock the grid if no write happen
 	protected void updateGridSynchronously(Consumer<TetrisGrid> gridConsumer){
-		grid.updateGridSynchronously(gridConsumer);
+		try {
+			grid.updateGridSynchronously(gridConsumer);
+		} catch (RemoteException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	abstract void move(Point point);
