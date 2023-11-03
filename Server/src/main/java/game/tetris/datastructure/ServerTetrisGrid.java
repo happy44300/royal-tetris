@@ -20,7 +20,7 @@ public class ServerTetrisGrid implements TetrisGrid {
 	private void initializeGrid() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				Cell clientCell = new ServerCell();
+				Cell clientCell = new ServerCell(i, j);
 				cell[i][j] = clientCell;
 			}
 		}

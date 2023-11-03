@@ -6,32 +6,35 @@ import java.util.function.Consumer;
 
 public abstract class AbstractBlock {
 
-	private final TetrisGrid grid;
 	private Rotation rotation;
 	private boolean isBlocked;
-
 	private final Color color;
+	private Point position;
 
-	private AbstractBlock(TetrisGrid grid) {
-		this.grid = grid;
+
+	private AbstractBlock(int x, int y) {
+		this.position = new Point(x, y);
 		this.rotation = Rotation.UP;
 		this.isBlocked = false;
 		this.color = Color.NOTHING;
 	}
 
-	//TODO: need to think about when to lock things, for instance there is no need to lock the grid if no write happen
-	protected void updateGridSynchronously(Consumer<TetrisGrid> gridConsumer){
-		try {
-			grid.updateGridSynchronously(gridConsumer);
-		} catch (RemoteException e) {
-			throw new RuntimeException(e);
-		}
+	private AbstractBlock(Point origin) {
+		this.position = origin;
+		this.rotation = Rotation.UP;
+		this.isBlocked = false;
+		this.color = Color.NOTHING;
 	}
 
+	abstract Point[] getPositions();
+
 	abstract void move(Point point);
+
 	abstract void rotate(Rotation dir);
 
-	abstract void block();
+	void block() {
+		this.isBlocked = true;
+	};
 
 	Color getColor(){
 		return color ;
@@ -39,7 +42,9 @@ public abstract class AbstractBlock {
 
 	abstract boolean canMove(Point point);
 	abstract boolean canRotate(Rotation dir);
-	abstract boolean canChangeColor();
-	abstract boolean isBlocked();
+	boolean isBlocked() {
+		return this.isBlocked;
+	};
 
 }
+

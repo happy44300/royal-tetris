@@ -3,8 +3,13 @@ package game.tetris.datastructure;
 import java.rmi.RemoteException;
 
 public class ServerCell implements Cell{
-	@Override
-	public void setPos(Point point) throws RemoteException {
+	private Point pos;
+
+	public ServerCell(int x, int y){
+
+	}
+
+	public ServerCell(Point pos){
 
 	}
 
