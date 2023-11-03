@@ -1,6 +1,8 @@
 package game.tetris;
 
 import game.tetris.datastructure.Cell;
+import game.tetris.datastructure.ServerCell;
+import game.tetris.datastructure.ServerTetrisGrid;
 import game.tetris.datastructure.TetrisGrid;
 
 import java.rmi.registry.LocateRegistry;
@@ -15,7 +17,7 @@ public class Server {
             // Registry registry = LocateRegistry.createRegistry(10000);
             // registry.rebind("Add", skeleton); // publie notre instance sous le nom "Add"
 
-            TetrisGrid grid = (TetrisGrid) UnicastRemoteObject.exportObject(new ServerTetrisGrid(), 10000);
+            TetrisGrid grid = (TetrisGrid) UnicastRemoteObject.exportObject(new ServerTetrisGrid(20, 40), 10000);
             Cell cell = (Cell) UnicastRemoteObject.exportObject(new ServerCell(), 10000);
 
             Registry registry = LocateRegistry.createRegistry(10000);
