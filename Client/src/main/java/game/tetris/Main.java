@@ -2,17 +2,19 @@ package game.tetris;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 
 import javafx.scene.input.KeyCode;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
-import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class Main extends GameApplication {
 
@@ -38,13 +40,18 @@ public class Main extends GameApplication {
 	@Override
 	protected void initGame() {
 
-
         TetrisGridClient tetrisGridClient = new TetrisGridClient(ROWS, COLLUMNS);
+		var background = FXGL.entityBuilder().
+				at(0,-1,0)
+				.view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
+				.buildAndAttach();
+
 		for (Entity[] row : tetrisGridClient.getGridEntities()) {
 			for (Entity cell : row) {
 				getGameWorld().addEntity(cell);
 			}
 		}
+
 	}
 
 	@Override
