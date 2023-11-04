@@ -1,6 +1,6 @@
 package game.tetris.datastructure;
 
-public enum Color {
+public enum TetrisColor {
 	NOTHING,
 	BLUE,
 	RED,

@@ -1,14 +1,11 @@
 package game.tetris.datastructure;
 
 
-import java.rmi.RemoteException;
-import java.util.function.Consumer;
-
 public abstract class AbstractBlock {
 
 	private Rotation rotation;
 	private boolean isBlocked;
-	private final Color color;
+	private final TetrisColor tetrisColor;
 	private Point position;
 
 
@@ -16,14 +13,14 @@ public abstract class AbstractBlock {
 		this.position = new Point(x, y);
 		this.rotation = Rotation.UP;
 		this.isBlocked = false;
-		this.color = Color.NOTHING;
+		this.tetrisColor = TetrisColor.NOTHING;
 	}
 
 	private AbstractBlock(Point origin) {
 		this.position = origin;
 		this.rotation = Rotation.UP;
 		this.isBlocked = false;
-		this.color = Color.NOTHING;
+		this.tetrisColor = TetrisColor.NOTHING;
 	}
 
 	abstract Point[] getPositions();
@@ -36,8 +33,8 @@ public abstract class AbstractBlock {
 		this.isBlocked = true;
 	};
 
-	Color getColor(){
-		return color ;
+	TetrisColor getColor(){
+		return tetrisColor;
 	}
 
 	abstract boolean canMove(Point point);
