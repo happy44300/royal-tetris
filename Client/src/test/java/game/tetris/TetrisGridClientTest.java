@@ -22,8 +22,10 @@ class TetrisGridClientTest {
     void getGridEntities() {
     }
 
-
+    @Test
     void generateBlock(){
-
+        Main game = new Main();
+        game.initGame();
+        Block b = new Block(5,1);
     }
 }

@@ -7,7 +7,7 @@ import game.tetris.datastructure.Rotation;
 
 class Block extends AbstractBlock {
 
-    private Block(int x, int y) {
+    public Block(int x, int y) {
         super(x,y);
     }
 
@@ -17,21 +17,21 @@ class Block extends AbstractBlock {
 
     @Override
     public void move(Point point) {
-
+        this.setPosition(point);
     }
 
     @Override
     public void rotate(Rotation dir) {
-
+        this.setRotation(dir);
     }
 
     @Override
     public boolean canMove(Point point) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canRotate(Rotation dir) {
-        return false;
+        return true;
     }
 }

@@ -39,7 +39,13 @@ public abstract class AbstractBlock {
 	Color getColor(){
 		return color ;
 	}
+	public void setPosition(Point p){
+		this.position = p;
+	}
 
+	public void setRotation(Rotation r){
+		this.rotation = r;
+	}
 	public abstract boolean canMove(Point point);
 	public abstract boolean canRotate(Rotation dir);
 	boolean isBlocked() {
