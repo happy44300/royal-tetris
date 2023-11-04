@@ -9,7 +9,7 @@ public abstract class AbstractBlock {
 	private Point position;
 
 
-	private AbstractBlock(int x, int y) {
+	public AbstractBlock(int x, int y) {
 		this.position = new Point(x, y);
 		this.rotation = Rotation.UP;
 		this.isBlocked = false;
@@ -23,11 +23,11 @@ public abstract class AbstractBlock {
 		this.tetrisColor = TetrisColor.NOTHING;
 	}
 
-	abstract Point[] getPositions();
+	public abstract Point[] getPositions();
 
-	abstract void move(Point point);
+	public abstract void move(Point point);
 
-	abstract void rotate(Rotation dir);
+	public abstract void rotate(Rotation dir);
 
 	void block() {
 		this.isBlocked = true;
@@ -36,9 +36,15 @@ public abstract class AbstractBlock {
 	TetrisColor getColor(){
 		return tetrisColor;
 	}
+	public void setPosition(Point p){
+		this.position = p;
+	}
 
-	abstract boolean canMove(Point point);
-	abstract boolean canRotate(Rotation dir);
+	public void setRotation(Rotation r){
+		this.rotation = r;
+	}
+	public abstract boolean canMove(Point point);
+	public abstract boolean canRotate(Rotation dir);
 	boolean isBlocked() {
 		return this.isBlocked;
 	};
