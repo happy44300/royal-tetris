@@ -50,7 +50,16 @@ public class TetrisGridClient implements TetrisGrid {
 		return (ClientCell) gridEntities[x][y].copy();
 	}
 
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
 	public Entity[][] getGridEntities() {
 		return gridEntities;
 	}
+
 }

@@ -1,14 +1,15 @@
 package game.tetris;
 
 import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.Color;
+import game.tetris.datastructure.TetrisColor;
 import game.tetris.datastructure.Point;
 import game.tetris.datastructure.Rotation;
 
 class Block extends AbstractBlock {
-
-    public Block(int x, int y) {
+    TetrisGridClient client;
+    public Block(int x, int y,TetrisGridClient client) {
         super(x,y);
+        this.client = client;
     }
 
     public Point[] getPositions() {
