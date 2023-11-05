@@ -1,37 +1,38 @@
 package game.tetris.datastructure;
 
 
+import java.rmi.RemoteException;
+
 public abstract class AbstractBlock {
 
 	private Rotation rotation;
-	private boolean isBlocked;
+	private boolean isLocked;
 	private final TetrisColor tetrisColor;
 	private Point position;
+	protected TetrisGrid tetrisGrid;
 
 
-	public AbstractBlock(int x, int y) {
+	public AbstractBlock(int x, int y, TetrisGrid tetrisGrid) {
 		this.position = new Point(x, y);
 		this.rotation = Rotation.UP;
-		this.isBlocked = false;
+		this.isLocked = false;
 		this.tetrisColor = TetrisColor.NOTHING;
+		this.tetrisGrid = tetrisGrid;
 	}
 
-	private AbstractBlock(Point origin) {
-		this.position = origin;
-		this.rotation = Rotation.UP;
-		this.isBlocked = false;
-		this.tetrisColor = TetrisColor.NOTHING;
-	}
 
-	public abstract Point[] getPositions();
 
-	public abstract void move(Point point);
+	public abstract void translate(Point point) throws RemoteException;
 
 	public abstract void rotate(Rotation dir);
 
 	void block() {
-		this.isBlocked = true;
+		this.isLocked = true;
 	};
+
+	protected void unblock(){
+		this.isLocked =false;
+	}
 
 	TetrisColor getColor(){
 		return tetrisColor;
@@ -43,10 +44,17 @@ public abstract class AbstractBlock {
 	public void setRotation(Rotation r){
 		this.rotation = r;
 	}
-	public abstract boolean canMove(Point point);
+
+	public abstract boolean canTranslate(Point point) throws RemoteException;
+
 	public abstract boolean canRotate(Rotation dir);
-	boolean isBlocked() {
-		return this.isBlocked;
+
+	/**
+	 * Test if this block movement has been locked, after falling down for instance
+	 * @return a boolean true if this block is blocked
+	 */
+	boolean isLocked() {
+		return this.isLocked;
 	};
 
 }

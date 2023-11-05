@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
+
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -23,7 +24,8 @@ public class Main extends GameApplication {
 	private static final int COLLUMNS = 10;
 
 	@Nullable private static String ip = null;
-	@Nullable private static String username = null;
+	@Nullable
+	private static String username = null;
 
 	@Override
 	protected void initSettings(GameSettings settings) {
@@ -38,7 +40,7 @@ public class Main extends GameApplication {
 	}
 
 	@Override
-	protected void initGame() {
+	public void initGame() {
 
         TetrisGridClient tetrisGridClient = new TetrisGridClient(ROWS, COLLUMNS);
 		var background = FXGL.entityBuilder().

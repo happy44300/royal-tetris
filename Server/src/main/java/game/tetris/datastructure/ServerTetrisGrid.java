@@ -27,18 +27,10 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> gridModification) throws RemoteException {
+	public void updateGridSynchronously(Consumer<TetrisGrid> gridModification) {
 		synchronized (this){
 			gridModification.accept(this);
 		}
 	}
-
-	@Override
-	public void updateGridUnsafe(Consumer<TetrisGrid> gridConsumer) throws RemoteException {
-		//TODO: implement
-		throw new RuntimeException("Not implemented");
-	}
-
-
 
 }

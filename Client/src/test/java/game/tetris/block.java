@@ -1,23 +1,17 @@
 package game.tetris;
 
-import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.TetrisColor;
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.Rotation;
+import game.tetris.datastructure.*;
 
 class Block extends AbstractBlock {
     TetrisGridClient client;
-    public Block(int x, int y,TetrisGridClient client) {
-        super(x,y);
+
+    public Block(int x, int y, TetrisGrid tetrisGrid, TetrisGridClient client) {
+        super(x, y, tetrisGrid);
         this.client = client;
     }
 
-    public Point[] getPositions() {
-        return new Point[0];
-    }
-
     @Override
-    public void move(Point point) {
+    public void translate(Point point) {
         this.setPosition(point);
     }
 
@@ -27,7 +21,7 @@ class Block extends AbstractBlock {
     }
 
     @Override
-    public boolean canMove(Point point) {
+    public boolean canTranslate(Point point) {
         return true;
     }
 

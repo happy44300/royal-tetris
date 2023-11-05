@@ -4,5 +4,6 @@ public enum TetrisColor {
 	NOTHING,
 	BLUE,
 	RED,
-	GREEN
+	GREEN,
+	YELLOW
 }

@@ -2,10 +2,13 @@ package game.tetris;
 
 import com.almasb.fxgl.entity.Entity;
 import game.tetris.datastructure.ClientCell;
+import game.tetris.datastructure.Point;
 import game.tetris.datastructure.TetrisGrid;
 import kotlin.NotImplementedError;
 
+import java.rmi.RemoteException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class TetrisGridClient implements TetrisGrid {
 
@@ -33,29 +36,30 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> gridModification){
+	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gridModification){
 		//Client noes not need any synchronisation on it's grid
-		throw new NotImplementedError();
+		return gridModification.apply(this);
+	}
+
+
+	@Override
+	public ClientCell getCell(Point point){
+		return gridEntities[point.getX()][point.getY()];
 	}
 
 	@Override
-	public void updateGridUnsafe(Consumer<TetrisGrid> gridConsumer) {
-		//TODO: Implement
-		throw new NotImplementedError();
-	}
-
-	public ClientCell readGrid(int x, int y){
-		//The copy is here to make sure we do not make an unsafe write to the cell
-		//Todo add syncronisation to prevent reading while a write is in progress
-		return (ClientCell) gridEntities[x][y].copy();
-	}
-
 	public int getRows() {
 		return rows;
 	}
 
+	@Override
 	public int getColumns() {
 		return columns;
+	}
+
+	@Override
+	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) throws RemoteException {
+		tetrisGridObjectFunction.accept(this);
 	}
 
 	public Entity[][] getGridEntities() {

@@ -11,9 +11,13 @@ import game.tetris.tetrominos.TetrominosTexture;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
+import java.rmi.RemoteException;
+
 public class ClientCell extends Entity implements Cell {
 	@NotNull
 	Texture texture;
+
+	TetrisColor color = TetrisColor.NOTHING;
 
 	Point gridPos = new Point(0,0);
 
@@ -25,6 +29,19 @@ public class ClientCell extends Entity implements Cell {
 	@Override
 	public Point getPos() {
 		return gridPos;
+	}
+
+	@Override
+	public void setColor(TetrisColor color) throws RemoteException {
+		this.color = color;
+		this.texture = TetrominosTexture.tetrisColorToTexture(color);
+		this.getViewComponent().removeChild(texture);
+		this.getViewComponent().addChild(texture);
+	}
+
+	@Override
+	public TetrisColor getColor() throws RemoteException {
+		return this.color;
 	}
 
 	public ClientCell() {
