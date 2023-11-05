@@ -9,6 +9,7 @@ import game.tetris.datastructure.Cell;
 import game.tetris.datastructure.Point;
 import game.tetris.tetrominos.TetrominosTexture;
 import javafx.scene.paint.Color;
+import kotlin.NotImplementedError;
 import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
@@ -19,7 +20,7 @@ public class ClientCell extends Entity implements Cell {
 
 	TetrisColor color = TetrisColor.NOTHING;
 
-	Point gridPos = new Point(0,0);
+	Point gridPos;
 
 	public void setPos(Point point){
 		this.gridPos = point;
@@ -28,15 +29,13 @@ public class ClientCell extends Entity implements Cell {
 
 	@Override
 	public Point getPos() {
-		return gridPos;
+		throw new NotImplementedError();
 	}
 
 	@Override
 	public void setColor(TetrisColor color) throws RemoteException {
 		this.color = color;
-		this.texture = TetrominosTexture.tetrisColorToTexture(color);
-		this.getViewComponent().removeChild(texture);
-		this.getViewComponent().addChild(texture);
+		setTexture(TetrominosTexture.tetrisColorToTetrominosColor(color));
 	}
 
 	@Override
@@ -46,10 +45,10 @@ public class ClientCell extends Entity implements Cell {
 
 	public ClientCell() {
 		this.setOpacity(1);
-		this.texture = new ColoredTexture(TetrisGridClient.CELL_SIZE, TetrisGridClient.CELL_SIZE, Color.AQUA);
+		this.texture = new Texture(TetrominosTexture.IMAGE_BACKGROUND.getTexture().getImage());
 		this.getViewComponent().addChild(texture);
 		this.texture.setOpacity(1);
-		makeBackground();
+
 	}
 
 	public void setTexture(TetrominosTexture tetrominosTexture){

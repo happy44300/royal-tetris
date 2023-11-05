@@ -14,6 +14,7 @@ public class OBlock extends AbstractBlock {
 
     public OBlock(int x, int y, TetrisGrid grid) {
         super(x, y, grid);
+
         points[0] = new Point(x,y);
         points[1] = new Point(x+1,y);
         points[2] = new Point(x,y+1);

@@ -4,6 +4,7 @@ import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
 import game.tetris.TetrisGridClient;
 import game.tetris.datastructure.TetrisColor;
+import game.tetris.datastructure.TetrisGrid;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +33,8 @@ public enum TetrominosTexture {
 
 	TetrominosTexture(@NotNull Texture texture) {
 			this.texture = texture;
+			this.texture.setFitHeight(TetrisGridClient.CELL_SIZE);
+			this.texture.setFitWidth(TetrisGridClient.CELL_SIZE);
 	}
 
 	@NotNull

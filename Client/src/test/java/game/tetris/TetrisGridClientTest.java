@@ -80,7 +80,7 @@ public class TetrisGridClientTest extends GameApplication{
             }
         }
 
-        OBlock b = new OBlock(5,1,tetrisGridClient);
+        OBlock b = new OBlock(0,0,tetrisGridClient);
 
     }
 
