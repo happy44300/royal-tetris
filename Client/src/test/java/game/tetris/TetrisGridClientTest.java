@@ -5,7 +5,7 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import game.tetris.block.OBlock;
+import game.tetris.block.*;
 import game.tetris.datastructure.Point;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -22,7 +22,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
 public class TetrisGridClientTest extends GameApplication{
     TetrisGridClient tetrisGridClient;
-    OBlock b1;
+    ClientBlock b1;
     @Test
     void updateGridSynchronously() {
     }
@@ -82,7 +82,7 @@ public class TetrisGridClientTest extends GameApplication{
                 getGameWorld().addEntity(cell);
             }
         }
-        b1 = new OBlock(0,4,tetrisGridClient);
+        b1 = new SRBlock(0,4,tetrisGridClient);
 
 
 
