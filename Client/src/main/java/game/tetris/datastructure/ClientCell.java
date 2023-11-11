@@ -35,7 +35,7 @@ public class ClientCell extends Entity implements Cell {
 	@Override
 	public void setColor(TetrisColor color) throws RemoteException {
 		this.color = color;
-		setTexture(TetrominosTexture.tetrisColorToTetrominosColor(color));
+		setTexture(TetrominosTexture.tetrisColorToTetrominosColor(this.color));
 	}
 
 	@Override

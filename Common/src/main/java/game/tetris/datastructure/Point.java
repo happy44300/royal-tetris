@@ -13,8 +13,8 @@ public class Point implements Serializable {
 		}
 
 		public Point add(Point point){
-			this.x += point.x;
-			this.y += point.y;
+			this.x += point.getX();
+			this.y += point.getY();
 			return this;
 		}
 

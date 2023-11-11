@@ -51,11 +51,13 @@ public class OBlock extends AbstractBlock {
         this.tetrisGrid.updateGridSynchronously(
                 safeGrid-> {
                     try {
-                        if (!canTranslateUnsafe(toPoint, safeGrid)) {
+                        /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
                             return;
-                        }
+                        }*/
                         for (Point point : points) {
                             safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
+                        }
+                        for (Point point : points) {
                             var gridPoint = safeGrid.getCell(point.add(toPoint));
                             gridPoint.setColor(COLOR);
                         }
