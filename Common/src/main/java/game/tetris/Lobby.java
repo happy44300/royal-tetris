@@ -1,4 +1,11 @@
 package game.tetris;
 
-public interface Lobby {
+import game.tetris.datastructure.TetrisGrid;
+
+import java.rmi.Remote;
+
+public interface Lobby extends Remote {
+    void join(String playerName);
+    void start();
+    TetrisGrid getGrid();
 }
