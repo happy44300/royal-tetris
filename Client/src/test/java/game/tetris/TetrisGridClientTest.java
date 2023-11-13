@@ -82,9 +82,7 @@ public class TetrisGridClientTest extends GameApplication{
                 getGameWorld().addEntity(cell);
             }
         }
-        b1 = new LRBlock(0,4,tetrisGridClient);
-
-
+        b1 = new TBlock(0,4,tetrisGridClient);
 
     }
 

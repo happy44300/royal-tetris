@@ -26,10 +26,9 @@ public class OBlock extends ClientBlock {
 
 
     @Override
-    public void rotate(Rotation dir) {
-        //null op
+    public void rotationCoordonate(Rotation dir){
+        return;
     }
-
 
 
     @Override
