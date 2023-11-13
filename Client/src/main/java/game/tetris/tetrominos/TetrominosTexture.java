@@ -19,7 +19,13 @@ public enum TetrominosTexture {
 
 
 	IMAGE_BACKGROUND(new ColoredTexture(TetrisGridClient.CELL_SIZE, TetrisGridClient.CELL_SIZE, Color.WHITE)),
-	SQUAREBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/O-block.jpg")))));
+	SQUAREBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/O-block.jpg"))))),
+	TEEBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/T-block.jpg"))))),
+	LBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/L-block.jpg"))))),
+	JBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/J-block.jpg"))))),
+	SBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/S-block.jpg"))))),
+	ZBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/Z-block.jpg"))))),
+	RODBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/I-block.jpg")))));
 
 
 	@NotNull private final Texture texture;
@@ -29,6 +35,12 @@ public enum TetrominosTexture {
 	static {
 		map.put(TetrisColor.NOTHING, IMAGE_BACKGROUND);
 		map.put(TetrisColor.YELLOW, SQUAREBLOCK);
+		map.put(TetrisColor.PURPLE, TEEBLOCK);
+		map.put(TetrisColor.ORANGE, LBLOCK);
+		map.put(TetrisColor.BLUE, JBLOCK);
+		map.put(TetrisColor.GREEN, SBLOCK);
+		map.put(TetrisColor.RED, ZBLOCK);
+		map.put(TetrisColor.TURQUOISE, RODBLOCK);
 	}
 
 	TetrominosTexture(@NotNull Texture texture) {

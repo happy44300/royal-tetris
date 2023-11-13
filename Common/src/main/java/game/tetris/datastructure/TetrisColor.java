@@ -5,5 +5,8 @@ public enum TetrisColor {
 	BLUE,
 	RED,
 	GREEN,
-	YELLOW
+	YELLOW,
+	TURQUOISE,
+	ORANGE,
+	PURPLE
 }

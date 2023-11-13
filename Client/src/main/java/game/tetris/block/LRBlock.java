@@ -15,7 +15,7 @@ public class LRBlock extends ClientBlock{
         points[1] = new Point(x+1,y);
         points[2] = new Point(x+1,y+1);
         points[3] = new Point(x+1,y+2);
-        COLOR = TetrisColor.YELLOW;
+        COLOR = TetrisColor.BLUE;
         try {
             paint();
         } catch (RemoteException e) {

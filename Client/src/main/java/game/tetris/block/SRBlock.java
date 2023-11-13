@@ -14,7 +14,7 @@ public class SRBlock extends ClientBlock{
         points[1] = new Point(x,y+1);
         points[2] = new Point(x+1,y+1);
         points[3] = new Point(x+1,y+2);
-        COLOR = TetrisColor.YELLOW;
+        COLOR = TetrisColor.RED;
         try {
             paint();
         } catch (RemoteException e) {
