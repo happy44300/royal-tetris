@@ -13,8 +13,8 @@ public class IBlock extends ClientBlock{
 
         points[0] = new Point(x,y);
         points[1] = new Point(x,y-1);
-        points[2] = new Point(x,y+1);
-        points[3] = new Point(x,y+2);
+        points[2] = new Point(x,y-2);
+        points[3] = new Point(x,y-3);
         COLOR = TetrisColor.YELLOW;
         try {
             paint();
@@ -22,10 +22,61 @@ public class IBlock extends ClientBlock{
             throw new RuntimeException(e);
         }
     }
-
     @Override
-    public void rotate(Rotation dir) {
-        //null op
+    public void rotate(Rotation dir) throws RemoteException {
+        if(!canRotate(dir))
+            return;
+        this.tetrisGrid.updateGridSynchronously(
+                safeGrid-> {
+                    try {
+                        /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
+                            return;
+                        }*/
+                        for (Point point : points) {
+                            safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
+                        }
+                        int x = points[0].getX();
+                        int y = points[0].getY();
+                        switch(dir){
+
+                            case RIGHT:
+                                points[0] = new Point(x,y);
+                                points[1] = new Point(x,y+1);
+                                points[2] = new Point(x,y+2);
+                                points[3] = new Point(x,y+3);
+                                break;
+
+                            case UP:
+                                points[0] = new Point(x,y);
+                                points[1] = new Point(x-1,y);
+                                points[2] = new Point(x-2,y);
+                                points[3] = new Point(x-3,y);
+                                break;
+
+                            case DOWN:
+                                points[0] = new Point(x,y);
+                                points[1] = new Point(x+1,y);
+                                points[2] = new Point(x+2,y);
+                                points[3] = new Point(x+3,y);
+                                break;
+                            default:
+                                points[0] = new Point(x,y);
+                                points[1] = new Point(x,y-1);
+                                points[2] = new Point(x,y-2);
+                                points[3] = new Point(x,y-3);
+                                break;
+                        }
+                        for (Point point : points) {
+                            safeGrid.getCell(point).setColor(COLOR);
+                        }
+
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+
+        this.rotation = dir;
     }
 
 

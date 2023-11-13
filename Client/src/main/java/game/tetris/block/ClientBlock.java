@@ -1,17 +1,16 @@
 package game.tetris.block;
 
-import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.TetrisColor;
-import game.tetris.datastructure.TetrisGrid;
+import game.tetris.datastructure.*;
 
 import java.rmi.RemoteException;
 
 public abstract class ClientBlock extends AbstractBlock {
     Point[] points = new Point[4];
     TetrisColor COLOR;
+    Rotation rotation;
     public ClientBlock(int x, int y, TetrisGrid grid){
         super(x, y, grid);
+        rotation = Rotation.LEFT;
     }
 
     public void paint() throws RemoteException {
@@ -74,4 +73,23 @@ public abstract class ClientBlock extends AbstractBlock {
             }
         });
     }
+    public void rotate() throws RemoteException{
+        switch(this.rotation){
+
+            case RIGHT:
+                this.rotate(Rotation.DOWN);
+                break;
+
+            case UP:
+                this.rotate(Rotation.RIGHT);
+                break;
+
+            case DOWN:
+                this.rotate(Rotation.LEFT);
+                break;
+            default:
+                this.rotate(Rotation.UP);
+                break;
+        }
+    };
 }

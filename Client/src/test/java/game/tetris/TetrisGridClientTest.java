@@ -82,7 +82,7 @@ public class TetrisGridClientTest extends GameApplication{
                 getGameWorld().addEntity(cell);
             }
         }
-        b1 = new SRBlock(0,4,tetrisGridClient);
+        b1 = new IBlock(0,4,tetrisGridClient);
 
 
 
@@ -120,7 +120,16 @@ public class TetrisGridClientTest extends GameApplication{
                 }
             }
         }, KeyCode.DOWN);
-
+        getInput().addAction(new UserAction("ROTATED") {
+            @Override
+            protected void onActionBegin() {
+                try {
+                    b1.rotate();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, KeyCode.UP);
         //TODO: Add actions for other Tetris movements (right, rotate, etc.)
     }
 
