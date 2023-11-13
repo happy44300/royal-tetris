@@ -91,5 +91,29 @@ public abstract class ClientBlock extends AbstractBlock {
                 this.rotate(Rotation.UP);
                 break;
         }
-    };
+    }
+    @Override
+    public void rotate(Rotation dir) throws RemoteException {
+        if(!canRotate(dir))
+            return;
+        this.tetrisGrid.updateGridSynchronously(
+                safeGrid-> {
+                    try {
+                        for (Point point : points) {
+                            safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
+                        }
+                        rotationCoordonate(dir);
+                        for (Point point : points) {
+                            safeGrid.getCell(point).setColor(COLOR);
+                        }
+
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+
+        this.rotation = dir;
+    }
+    public void rotationCoordonate(Rotation dir){}
 }

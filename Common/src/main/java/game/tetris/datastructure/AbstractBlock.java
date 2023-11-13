@@ -14,7 +14,7 @@ public abstract class AbstractBlock {
 
 	public AbstractBlock(int x, int y, TetrisGrid tetrisGrid) {
 		this.position = new Point(x, y);
-		this.rotation = Rotation.UP;
+		this.rotation = Rotation.LEFT;
 		this.isLocked = false;
 		this.tetrisColor = TetrisColor.NOTHING;
 		this.tetrisGrid = tetrisGrid;
