@@ -14,7 +14,7 @@ public class SBlock extends ServerBlock{
         points[1] = new Point(x,y+1);
         points[2] = new Point(x+1,y);
         points[3] = new Point(x+1,y-1);
-        COLOR = TetrisColor.YELLOW; // TODO : modify the color when TetrisColor will be updated
+        COLOR = TetrisColor.GREEN;
     }
 
     @Override

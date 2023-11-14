@@ -28,6 +28,20 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
+	public boolean isInLimits(Point point) {
+
+		if(point.getX() < 0 || point.getX() > this.rows){
+			return false;
+		}
+
+		if(point.getY() < 0 || point.getY() > this.columns){
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public Cell getCell(Point point) throws RemoteException {
 		return this.grid[point.getX()][point.getY()];
 	}
