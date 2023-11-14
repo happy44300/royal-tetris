@@ -1,14 +1,11 @@
 package game.tetris.block;
 
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.Rotation;
-import game.tetris.datastructure.TetrisColor;
-import game.tetris.datastructure.TetrisGrid;
+import game.tetris.datastructure.*;
 
 import java.rmi.RemoteException;
 
 public class SRBlock extends ServerBlock{
-    public SRBlock(int x, int y, TetrisGrid grid) {
+    public SRBlock(int x, int y, ServerTetrisGrid grid) {
         super(x, y, grid);
         points[0] = new Point(x,y);
         points[1] = new Point(x,y+1);

@@ -5,7 +5,7 @@ import game.tetris.datastructure.*;
 import java.rmi.RemoteException;
 
 public class IBlock extends ServerBlock{
-    public IBlock(int x, int y, TetrisGrid grid){
+    public IBlock(int x, int y, ServerTetrisGrid grid){
         super(x, y, grid);
 
         points[0] = new Point(x,y);
