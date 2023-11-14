@@ -10,19 +10,9 @@ public class IBlock extends ServerBlock{
 
         points[0] = new Point(x,y);
         points[1] = new Point(x,y-1);
-        points[2] = new Point(x,y+1);
-        points[3] = new Point(x,y+2);
+        points[2] = new Point(x,y-2);
+        points[3] = new Point(x,y-3);
         COLOR = TetrisColor.TURQUOISE;
-    }
-
-    @Override
-    public boolean canTranslateLeft(Point point, TetrisGrid grid) {
-        return false;
-    }
-
-    @Override
-    public boolean canTranslateRight(Point point, TetrisGrid grid) {
-        return false;
     }
 
     @Override

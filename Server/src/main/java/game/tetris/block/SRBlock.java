@@ -7,6 +7,7 @@ import java.rmi.RemoteException;
 public class SRBlock extends ServerBlock{
     public SRBlock(int x, int y, ServerTetrisGrid grid) {
         super(x, y, grid);
+
         points[0] = new Point(x,y);
         points[1] = new Point(x,y+1);
         points[2] = new Point(x+1,y+1);
@@ -15,19 +16,8 @@ public class SRBlock extends ServerBlock{
     }
 
     @Override
-    public void translate(Point point) throws RemoteException {
-        //TODO
-    }
-
-    @Override
     public void rotate(Rotation dir) {
         //TODO
-    }
-
-    @Override
-    public boolean canTranslate(Point point) throws RemoteException {
-        //TODO
-        return false;
     }
 
 

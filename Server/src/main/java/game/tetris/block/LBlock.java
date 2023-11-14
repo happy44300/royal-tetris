@@ -16,31 +16,9 @@ public class LBlock extends ServerBlock{
     }
 
     @Override
-    public void translate(Point point) throws RemoteException {
-        //TODO
-    }
-
-    @Override
     public void rotate(Rotation dir) {
         //TODO
     }
-
-    @Override
-    public boolean canTranslate(Point point) throws RemoteException {
-        //TODO
-        return false;
-    }
-
-    @Override
-    public boolean canTranslateLeft(Point point, TetrisGrid grid) {
-        return false;
-    }
-
-    @Override
-    public boolean canTranslateRight(Point point, TetrisGrid grid) {
-        return false;
-    }
-
 
     @Override
     public boolean canRotate(Rotation dir) {

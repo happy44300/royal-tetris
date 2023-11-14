@@ -15,12 +15,12 @@ public abstract class ServerBlock extends AbstractBlock {
 
     @Override
     public void translate(Point point) throws RemoteException {
-        if(point.getX() == this.points[0].getX()-1){
+        if(point.getY() == this.points[0].getY()-1){
             for(Point p : this.points){
                 p.move(-1,0);
             }
         }
-        if(point.getX() == this.points[0].getX()+1){
+        if(point.getY() == this.points[0].getY()+1){
             for(Point p : this.points){
                 p.move(1,0);
             }
@@ -35,15 +35,15 @@ public abstract class ServerBlock extends AbstractBlock {
     }
 
     private Boolean canTranslateSafe(Point point, ServerTetrisGrid grid) {
-        if(!grid.isInLimits(point)){
+        if(grid.isNotInLimits(point)){
             return false;
         }
 
-        if(point.getX() == this.points[0].getX()-1){
+        if(point.getY() == this.points[0].getY()-1){
             return this.canTranslateLeft(grid);
         }
 
-        if(point.getX() == this.points[0].getX()+1){
+        if(point.getY() == this.points[0].getY()+1){
             return this.canTranslateRight(grid);
         }
 
@@ -53,15 +53,15 @@ public abstract class ServerBlock extends AbstractBlock {
     public boolean canTranslateLeft(ServerTetrisGrid grid){
 
         for(Point p : this.points){
-            Point pointToVerif = new Point(p.getX()-1, p.getY());
+            Point pointToCheck = new Point(p.getX(), p.getY()-1);
 
             // We check if there is not any point out of the grid
-            if(!grid.isInLimits(pointToVerif)){
+            if(grid.isNotInLimits(pointToCheck)){
                 return false;
             }
 
             // We check if there is already a blocked block which prevents movement
-            if(grid.isCellBlocked(pointToVerif)){
+            if(grid.isCellBlocked(pointToCheck)){
                 return false;
             }
         }
@@ -70,15 +70,15 @@ public abstract class ServerBlock extends AbstractBlock {
     }
     public boolean canTranslateRight(ServerTetrisGrid grid){
         for(Point p : this.points){
-            Point pointToVerif = new Point(p.getX()+1, p.getY());
+            Point pointToCheck = new Point(p.getX(), p.getY()+1);
 
             // We check if there is not any point out of the grid
-            if(!grid.isInLimits(pointToVerif)){
+            if(grid.isNotInLimits(pointToCheck)){
                 return false;
             }
 
             // We check if there is already a blocked block which prevents movement
-            if(grid.isCellBlocked(pointToVerif)){
+            if(grid.isCellBlocked(pointToCheck)){
                 return false;
             }
         }

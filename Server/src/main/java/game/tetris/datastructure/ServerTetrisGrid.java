@@ -6,7 +6,6 @@ import java.util.function.Function;
 
 public class ServerTetrisGrid implements TetrisGrid {
 
-
 	private final int rows;
 	private final int columns;
 	private final ServerCell[][] grid;
@@ -27,17 +26,11 @@ public class ServerTetrisGrid implements TetrisGrid {
 		}
 	}
 
-	public boolean isInLimits(Point point) {
-
-		if(point.getX() < 0 || point.getX() > this.rows){
-			return false;
-		}
-
-		if(point.getY() < 0 || point.getY() > this.columns){
-			return false;
-		}
-
-		return true;
+	public boolean isNotInLimits(Point point) {
+		return (point.getY() < 0
+				|| point.getY() > this.columns
+				|| point.getX() < 0
+				|| point.getX() > this.rows);
 	}
 
 	public boolean isCellBlocked(Point point) {
@@ -59,17 +52,14 @@ public class ServerTetrisGrid implements TetrisGrid {
 		return this.columns;
 	}
 
-	// bizarre le meme nom '-'
 	@Override
 	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gridConsumer) throws RemoteException {
-		synchronized (this){
-			return gridConsumer.apply(this);
-		}
+		return gridConsumer.apply(this);
 	}
 
 	@Override
 	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) throws RemoteException {
-		//TODO
+		tetrisGridObjectFunction.accept(this);
 	}
 
 }
