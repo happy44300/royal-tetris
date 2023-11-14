@@ -24,7 +24,7 @@ public class LRBlock extends ClientBlock{
     }
 
     @Override
-    public void rotationCoordonate(Rotation dir){
+    public void rotationCoordinate(Rotation dir){
         int x = points[0].getX();
         int y = points[0].getY();
         switch(dir){

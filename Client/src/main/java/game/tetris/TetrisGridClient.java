@@ -58,7 +58,7 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) throws RemoteException {
+	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) {
 		tetrisGridObjectFunction.accept(this);
 	}
 

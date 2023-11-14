@@ -2,7 +2,6 @@ package game.tetris;
 
 import game.tetris.datastructure.TetrisGrid;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
@@ -12,7 +11,7 @@ import java.util.List;
 public class BasicLobby implements Lobby {
 
     List<Player> playerList = new ArrayList<>();
-    Game game;
+    BasicGame game;
 
     @Override
     public void join(String playerName) throws RemoteException {
@@ -39,7 +38,7 @@ public class BasicLobby implements Lobby {
         for(Player p: this.playerList){
             System.out.println(p.getName());
         }
-        this.game = new Game();
+        this.game = new BasicGame(playerList);
     }
 
     @Override

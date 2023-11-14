@@ -5,15 +5,15 @@ import java.rmi.RemoteException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public interface TetrisGrid extends Remote {
+public interface TetrisGrid{
 
-	<T> T updateGridSynchronously(Function<TetrisGrid, T> gridConsumer) throws RemoteException;
+	<T> T updateGridSynchronously(Function<TetrisGrid, T> gridFunction);
 
-	Cell getCell(Point point) throws RemoteException;
+	Cell getCell(Point point);
 
 	int getRows();
 
 	int getColumns();
 
-	void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction)throws RemoteException;
+	void updateGridSynchronously(Consumer<TetrisGrid> gridConsumer);
 }

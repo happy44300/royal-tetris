@@ -38,7 +38,7 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public Cell getCell(Point point) throws RemoteException {
+	public Cell getCell(Point point) {
 		return this.grid[point.getX()][point.getY()];
 	}
 
@@ -53,13 +53,33 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gridConsumer) throws RemoteException {
-		return gridConsumer.apply(this);
+	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gameAction) {
+		synchronized (this){
+			if(this.isMoveValid(gameAction))
+				return gameAction.apply(this);
+
+			return null;
+		}
+
+	}
+
+	private <T> boolean isMoveValid(Function<TetrisGrid,T> gameAction) {
+		//TODO: implement check, LESS IMPORTANT THAN OTHER ISMOVEVALID METHOD
+		return false;
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) throws RemoteException {
-		tetrisGridObjectFunction.accept(this);
+	public void updateGridSynchronously(Consumer<TetrisGrid> gameAction) {
+		synchronized (this){
+			if(this.isMoveValid(gameAction))
+				gameAction.accept(this);
+
+		}
+	}
+
+	private boolean isMoveValid(Consumer<TetrisGrid> gameAction) {
+		//TODO: implement check
+		return false;
 	}
 
 }

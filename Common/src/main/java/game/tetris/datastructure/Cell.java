@@ -3,7 +3,7 @@ package game.tetris.datastructure;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface Cell extends Remote {
+public interface Cell{
 
     Point getPos() throws RemoteException;
 

@@ -98,7 +98,7 @@ public abstract class ClientBlock extends AbstractBlock {
                         for (Point point : points) {
                             safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
                         }
-                        rotationCoordonate(dir);
+                        rotationCoordinate(dir);
                         for (Point point : points) {
                             safeGrid.getCell(point).setColor(COLOR);
                         }
@@ -111,5 +111,6 @@ public abstract class ClientBlock extends AbstractBlock {
 
         this.rotation = dir;
     }
-    public void rotationCoordonate(Rotation dir){}
+
+    public void rotationCoordinate(Rotation dir){}
 }

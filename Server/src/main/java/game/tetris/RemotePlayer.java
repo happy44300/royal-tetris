@@ -1,6 +1,6 @@
 package game.tetris;
 
-public class RemotePlayer implements Player {
+public class RemotePlayer implements Player{
     //TODO: Implement class
     private String name;
     private String ip;
