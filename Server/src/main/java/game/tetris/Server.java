@@ -17,10 +17,10 @@ public class Server {
             // Registry registry = LocateRegistry.createRegistry(10000);
             // registry.rebind("Add", skeleton); // publie notre instance sous le nom "Add"
 
-            TetrisGrid grid = (TetrisGrid) UnicastRemoteObject.exportObject(new ServerTetrisGrid(20, 40), 10000);
+            //TetrisGrid grid = (TetrisGrid) UnicastRemoteObject.exportObject(new ServerTetrisGrid(20, 40), 10000);
 
             Registry registry = LocateRegistry.createRegistry(10000);
-            registry.rebind("Grid", grid);
+            //registry.rebind("Grid", grid);
 
             Lobby lobby = (Lobby) UnicastRemoteObject.exportObject(new BasicLobby(), 10000);
             registry.rebind("Lobby", lobby);
