@@ -13,7 +13,6 @@ public abstract class ServerBlock extends AbstractBlock {
         super(x, y, tetrisGrid);
     }
 
-
     @Override
     public void translate(Point point) throws RemoteException {
         if(point.getX() == this.points[0].getX()-1){
@@ -27,7 +26,6 @@ public abstract class ServerBlock extends AbstractBlock {
             }
         }
     }
-
 
     @Override
     public boolean canTranslate(Point point) throws RemoteException {
@@ -54,19 +52,37 @@ public abstract class ServerBlock extends AbstractBlock {
 
     public boolean canTranslateLeft(ServerTetrisGrid grid){
 
-        // We check if there is not any point out of the grid
         for(Point p : this.points){
             Point pointToVerif = new Point(p.getX()-1, p.getY());
+
+            // We check if there is not any point out of the grid
             if(!grid.isInLimits(pointToVerif)){
+                return false;
+            }
+
+            // We check if there is already a blocked block which prevents movement
+            if(grid.isCellBlocked(pointToVerif)){
                 return false;
             }
         }
 
-        // We check if there is already a blocked block which prevents movement
-
-        return false;
+        return true;
     }
-    public boolean canTranslateRight(TetrisGrid grid){
-        return false;//TODO
+    public boolean canTranslateRight(ServerTetrisGrid grid){
+        for(Point p : this.points){
+            Point pointToVerif = new Point(p.getX()+1, p.getY());
+
+            // We check if there is not any point out of the grid
+            if(!grid.isInLimits(pointToVerif)){
+                return false;
+            }
+
+            // We check if there is already a blocked block which prevents movement
+            if(grid.isCellBlocked(pointToVerif)){
+                return false;
+            }
+        }
+
+        return true;
     }
 }
