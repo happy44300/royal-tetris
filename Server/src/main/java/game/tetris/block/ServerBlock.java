@@ -9,7 +9,7 @@ public abstract class ServerBlock extends AbstractBlock {
     Point[] points = new Point[4];
     TetrisColor COLOR;
 
-    public ServerBlock(int x, int y, TetrisGrid tetrisGrid) {
+    public ServerBlock(int x, int y, ServerTetrisGrid tetrisGrid) {
         super(x, y, tetrisGrid);
     }
 
@@ -32,26 +32,41 @@ public abstract class ServerBlock extends AbstractBlock {
     @Override
     public boolean canTranslate(Point point) throws RemoteException {
         return this.tetrisGrid.updateGridSynchronously(grid -> {
-            return canTranslateSafe(point,grid);
+            return canTranslateSafe(point, (ServerTetrisGrid) grid);
         });
     }
 
-    private Boolean canTranslateSafe(Point point, TetrisGrid grid) {
+    private Boolean canTranslateSafe(Point point, ServerTetrisGrid grid) {
         if(!grid.isInLimits(point)){
             return false;
         }
 
         if(point.getX() == this.points[0].getX()-1){
-            return this.canTranslateLeft(point, grid);
+            return this.canTranslateLeft(grid);
         }
 
         if(point.getX() == this.points[0].getX()+1){
-            return this.canTranslateRight(point, grid);
+            return this.canTranslateRight(grid);
         }
 
         return false;
     }
 
-    public abstract boolean canTranslateLeft(Point point, TetrisGrid grid);
-    public abstract boolean canTranslateRight(Point point, TetrisGrid grid);
+    public boolean canTranslateLeft(ServerTetrisGrid grid){
+
+        // We check if there is not any point out of the grid
+        for(Point p : this.points){
+            Point pointToVerif = new Point(p.getX()-1, p.getY());
+            if(!grid.isInLimits(pointToVerif)){
+                return false;
+            }
+        }
+
+        // We check if there is already a blocked block which prevents movement
+
+        return false;
+    }
+    public boolean canTranslateRight(TetrisGrid grid){
+        return false;//TODO
+    }
 }

@@ -9,25 +9,24 @@ public class ServerTetrisGrid implements TetrisGrid {
 
 	private final int rows;
 	private final int columns;
-	private final Cell[][] grid;
+	private final ServerCell[][] grid;
 
 	public ServerTetrisGrid(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
-		grid = new Cell[rows][columns];
+		grid = new ServerCell[rows][columns];
 		initializeGrid();
 	}
 
 	private void initializeGrid() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				Cell clientCell = new ServerCell(i, j);
+				ServerCell clientCell = new ServerCell(i, j);
 				grid[i][j] = clientCell;
 			}
 		}
 	}
 
-	@Override
 	public boolean isInLimits(Point point) {
 
 		if(point.getX() < 0 || point.getX() > this.rows){
@@ -39,6 +38,10 @@ public class ServerTetrisGrid implements TetrisGrid {
 		}
 
 		return true;
+	}
+
+	public boolean isCellBlocked(Point point) {
+		return grid[point.getX()][point.getY()].getIsBlocked();
 	}
 
 	@Override

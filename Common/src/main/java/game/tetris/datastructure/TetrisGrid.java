@@ -15,7 +15,5 @@ public interface TetrisGrid extends Remote {
 
 	int getColumns();
 
-	boolean isInLimits(Point point);
-
 	void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction)throws RemoteException;
 }
