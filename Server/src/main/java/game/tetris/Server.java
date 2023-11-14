@@ -18,7 +18,7 @@ public class Server {
             // registry.rebind("Add", skeleton); // publie notre instance sous le nom "Add"
 
             //TetrisGrid grid = (TetrisGrid) UnicastRemoteObject.exportObject(new ServerTetrisGrid(20, 40), 10000);
-
+            System.setProperty("java.rmi.server.hostname","192.168.1.2");
             Registry registry = LocateRegistry.createRegistry(10000);
             //registry.rebind("Grid", grid);
 
