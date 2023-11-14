@@ -22,6 +22,9 @@ public class Server {
             Registry registry = LocateRegistry.createRegistry(10000);
             registry.rebind("Grid", grid);
 
+            Lobby lobby = (Lobby) UnicastRemoteObject.exportObject(new BasicLobby(), 10000);
+            registry.rebind("Lobby", lobby);
+
 
 
         } catch (Exception e) {

@@ -3,9 +3,10 @@ package game.tetris;
 import game.tetris.datastructure.TetrisGrid;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface Lobby extends Remote {
-    void join(String playerName);
-    void start();
-    TetrisGrid getGrid();
+    void join(String playerName) throws RemoteException;
+    void start() throws RemoteException;
+    TetrisGrid getGrid() throws RemoteException;
 }
