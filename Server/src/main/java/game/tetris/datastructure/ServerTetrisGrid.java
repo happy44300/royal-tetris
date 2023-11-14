@@ -62,8 +62,9 @@ public class ServerTetrisGrid implements TetrisGrid {
 	// bizarre le meme nom '-'
 	@Override
 	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gridConsumer) throws RemoteException {
-		//TODO
-		return null;
+		synchronized (this){
+			return gridConsumer.apply(this);
+		}
 	}
 
 	@Override

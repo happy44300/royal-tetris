@@ -16,6 +16,16 @@ public class IBlock extends ServerBlock{
     }
 
     @Override
+    public boolean canTranslateLeft(Point point, TetrisGrid grid) {
+        return false;
+    }
+
+    @Override
+    public boolean canTranslateRight(Point point, TetrisGrid grid) {
+        return false;
+    }
+
+    @Override
     public void rotate(Rotation dir) {
         //TODO
     }

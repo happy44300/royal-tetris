@@ -54,10 +54,17 @@ public abstract class ClientBlock extends AbstractBlock {
         );
     }
     private boolean canTranslateUnsafe(Point toPoint, TetrisGrid grid) throws RemoteException {
+        boolean isSelfColliding = false;
         for (Point point : points) {
             var neededPoint = grid.getCell(point.add(toPoint));
             if(neededPoint.getColor() != TetrisColor.NOTHING){
-                return false;
+                isSelfColliding = false;
+                for (Point p: this.points){
+                    if (neededPoint.equals(p)){
+                        isSelfColliding = true;
+                    }
+                }
+                return isSelfColliding;
             }
         }
         return true;
@@ -74,22 +81,11 @@ public abstract class ClientBlock extends AbstractBlock {
         });
     }
     public void rotate() throws RemoteException{
-        switch(this.rotation){
-
-            case RIGHT:
-                this.rotate(Rotation.DOWN);
-                break;
-
-            case UP:
-                this.rotate(Rotation.RIGHT);
-                break;
-
-            case DOWN:
-                this.rotate(Rotation.LEFT);
-                break;
-            default:
-                this.rotate(Rotation.UP);
-                break;
+        switch (this.rotation) {
+            case RIGHT -> this.rotate(Rotation.DOWN);
+            case UP -> this.rotate(Rotation.RIGHT);
+            case DOWN -> this.rotate(Rotation.LEFT);
+            default -> this.rotate(Rotation.UP);
         }
     }
     @Override

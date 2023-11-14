@@ -12,6 +12,8 @@ gradle
 gradlew
 gradlew.bat
 .gradle
+.gradle/
+.gradle/*
 
 # idea
 out

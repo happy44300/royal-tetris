@@ -26,6 +26,10 @@ public class BasicLobby implements Lobby {
             throw new RuntimeException(e);
         }
 
+        if(this.playerList.size() >= 4){
+            this.start();
+        }
+
         //TODO: Finish constructor
     }
 

@@ -34,6 +34,16 @@ public class LBlock extends ServerBlock{
         return false;
     }
 
+    @Override
+    public boolean canTranslateLeft(Point point, TetrisGrid grid) {
+        return false;
+    }
+
+    @Override
+    public boolean canTranslateRight(Point point, TetrisGrid grid) {
+        return false;
+    }
+
 
     @Override
     public boolean canRotate(Rotation dir) {
