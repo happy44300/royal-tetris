@@ -85,4 +85,14 @@ public abstract class ServerBlock extends AbstractBlock {
 
         return true;
     }
+
+    public boolean ArePointsInLimits(Point[] pointsToCheck) {
+
+        for(Point p : pointsToCheck){
+            if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(p)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
