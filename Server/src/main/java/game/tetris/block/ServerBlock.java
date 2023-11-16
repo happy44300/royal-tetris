@@ -86,10 +86,22 @@ public abstract class ServerBlock extends AbstractBlock {
         return true;
     }
 
+    // If a point isn't in the grid, return false.
     public boolean ArePointsInLimits(Point[] pointsToCheck) {
 
         for(Point p : pointsToCheck){
             if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(p)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // If a point indicates a blocked cell in the grid, return false.
+    public boolean ArePointsNotOnBlockedCells(Point[] pointsToCheck) {
+
+        for(Point p : pointsToCheck){
+            if(((ServerTetrisGrid) this.tetrisGrid).isCellBlocked(p)){
                 return false;
             }
         }

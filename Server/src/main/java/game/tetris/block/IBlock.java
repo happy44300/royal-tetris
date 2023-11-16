@@ -2,8 +2,6 @@ package game.tetris.block;
 
 import game.tetris.datastructure.*;
 
-import java.rmi.RemoteException;
-
 public class IBlock extends ServerBlock{
     public IBlock(int x, int y, ServerTetrisGrid grid){
         super(x, y, grid);
@@ -63,29 +61,32 @@ public class IBlock extends ServerBlock{
                 pointsToCheck[1] = new Point(x,y+1);
                 pointsToCheck[2] = new Point(x,y+2);
                 pointsToCheck[3] = new Point(x,y+3);
-                return this.ArePointsInLimits(pointsToCheck);
+                return this.ArePointsInLimits(pointsToCheck)
+                        && this.ArePointsNotOnBlockedCells(pointsToCheck);
 
             case UP:
                 pointsToCheck[0] = new Point(x,y);
                 pointsToCheck[1] = new Point(x-1,y);
                 pointsToCheck[2] = new Point(x-2,y);
                 pointsToCheck[3] = new Point(x-3,y);
-                return this.ArePointsInLimits(pointsToCheck);
+                return this.ArePointsInLimits(pointsToCheck)
+                        && this.ArePointsNotOnBlockedCells(pointsToCheck);
 
             case DOWN:
                 pointsToCheck[0] = new Point(x,y);
                 pointsToCheck[1] = new Point(x+1,y);
                 pointsToCheck[2] = new Point(x+2,y);
                 pointsToCheck[3] = new Point(x+3,y);
-                return this.ArePointsInLimits(pointsToCheck);
+                return this.ArePointsInLimits(pointsToCheck)
+                        && this.ArePointsNotOnBlockedCells(pointsToCheck);
 
             default: // LEFT
                 pointsToCheck[0] = new Point(x,y);
                 pointsToCheck[1] = new Point(x,y-1);
                 pointsToCheck[2] = new Point(x,y-2);
                 pointsToCheck[3] = new Point(x,y-3);
-                return this.ArePointsInLimits(pointsToCheck);
+                return this.ArePointsInLimits(pointsToCheck)
+                        && this.ArePointsNotOnBlockedCells(pointsToCheck);
         }
-        // TODO : traiter l'autre cas où la cell est bloquée
     }
 }

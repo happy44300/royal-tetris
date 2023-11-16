@@ -17,12 +17,11 @@ public class OBlock extends ServerBlock {
 
     @Override
     public void rotate(Rotation dir) {
-        //TODO
+        // do nothing
     }
 
     @Override
     public boolean canRotate(Rotation dir) {
-        //TODO
-        return false;
+        return true;
     }
 }
