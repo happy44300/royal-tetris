@@ -16,18 +16,25 @@ public class BasicLobby implements Lobby {
     @Override
     public void join(String playerName) throws RemoteException {
 
-        System.out.println("IP OF CLIENT : ");
-        try {
-            String playerIP = RemoteServer.getClientHost();
-            System.out.println(playerIP);
-            playerList.add(new RemotePlayer(playerName, playerIP));
-        } catch (ServerNotActiveException e) {
-            throw new RuntimeException(e);
+        synchronized (this){
+            System.out.println("IP OF CLIENT : ");
+            try {
+                String playerIP = RemoteServer.getClientHost();
+                System.out.println(playerIP);
+                playerList.add(new RemotePlayer(playerName, playerIP));
+            } catch (ServerNotActiveException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        if(this.playerList.size() >= 4){
+        if(this.playerList.size() == 4){
             this.start();
         }
+
+        if(this.playerList.size() > 4){
+            throw new RemoteException("Too many players!");
+        }
+
 
         //TODO: Finish constructor
     }
@@ -42,8 +49,7 @@ public class BasicLobby implements Lobby {
     }
 
     @Override
-    public TetrisGrid getGrid() throws RemoteException{
-        //TODO: Implement game's tetris grid getter
-        return this.game.getGrid();
+    public Game getGame() throws RemoteException {
+        return this.game;
     }
 }

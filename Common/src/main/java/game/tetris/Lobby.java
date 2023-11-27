@@ -8,5 +8,5 @@ import java.rmi.RemoteException;
 public interface Lobby extends Remote {
     void join(String playerName) throws RemoteException;
     void start() throws RemoteException;
-    TetrisGrid getGrid() throws RemoteException;
+    Game getGame() throws RemoteException;
 }

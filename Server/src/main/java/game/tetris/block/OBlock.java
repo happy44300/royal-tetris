@@ -5,7 +5,7 @@ import game.tetris.datastructure.*;
 import java.rmi.RemoteException;
 
 public class OBlock extends ServerBlock {
-    public OBlock(int x, int y, ServerTetrisGrid grid) {
+    public OBlock(int x, int y, TetrisGrid grid) {
         super(x, y, grid);
 
         points[0] = new Point(x,y);
@@ -16,7 +16,7 @@ public class OBlock extends ServerBlock {
     }
 
     @Override
-    public void rotate(Rotation dir) {
+    public void rotate(Rotation dir) throws Exception{
         // do nothing
     }
 

@@ -3,7 +3,7 @@ package game.tetris.block;
 import game.tetris.datastructure.*;
 
 public class LRBlock extends ServerBlock{
-    public LRBlock(int x, int y, ServerTetrisGrid grid){
+    public LRBlock(int x, int y, TetrisGrid grid){
         super(x, y, grid);
 
         points[0] = new Point(x,y);
@@ -14,9 +14,12 @@ public class LRBlock extends ServerBlock{
     }
 
     @Override
-    public void rotate(Rotation dir) {
+    public void rotate(Rotation dir) throws Exception{
         int x = points[0].getX();
         int y = points[0].getY();
+
+        //We check if the rotation is valid within the rotate method
+        if(!canRotate(dir)) throw new Exception("can't rotate this way!");
 
         switch(dir){
             case RIGHT:

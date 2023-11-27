@@ -9,12 +9,14 @@ public abstract class ServerBlock extends AbstractBlock {
     Point[] points = new Point[4];
     TetrisColor COLOR;
 
-    public ServerBlock(int x, int y, ServerTetrisGrid tetrisGrid) {
+    public ServerBlock(int x, int y, TetrisGrid tetrisGrid) {
         super(x, y, tetrisGrid);
     }
 
     @Override
-    public void translate(Point point) throws RemoteException {
+    public void translate(Point point) throws Exception {
+        if(!canTranslate(point)) throw new Exception("can't translate this way!");
+
         if(point.getY() == this.points[0].getY()-1){
             for(Point p : this.points){
                 p.move(-1,0);

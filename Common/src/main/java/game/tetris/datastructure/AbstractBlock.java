@@ -22,9 +22,9 @@ public abstract class AbstractBlock {
 
 
 
-	public abstract void translate(Point point) throws RemoteException;
+	public abstract void translate(Point point) throws Exception;
 
-	public abstract void rotate(Rotation dir) throws RemoteException;
+	public abstract void rotate(Rotation dir) throws Exception;
 
 	void block() {
 		this.isLocked = true;

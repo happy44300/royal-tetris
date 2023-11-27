@@ -55,31 +55,17 @@ public class ServerTetrisGrid implements TetrisGrid {
 	@Override
 	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gameAction) {
 		synchronized (this){
-			if(this.isMoveValid(gameAction))
-				return gameAction.apply(this);
-
-			return null;
+			return gameAction.apply(this);
 		}
-
 	}
 
-	private <T> boolean isMoveValid(Function<TetrisGrid,T> gameAction) {
-		//TODO: implement check, LESS IMPORTANT THAN OTHER ISMOVEVALID METHOD
-		return false;
-	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> gameAction) {
+	public void updateGridSynchronously(Consumer<TetrisGrid> gameAction){
 		synchronized (this){
-			if(this.isMoveValid(gameAction))
-				gameAction.accept(this);
-
+			gameAction.accept(this);
 		}
 	}
 
-	private boolean isMoveValid(Consumer<TetrisGrid> gameAction) {
-		//TODO: implement check
-		return false;
-	}
 
 }
