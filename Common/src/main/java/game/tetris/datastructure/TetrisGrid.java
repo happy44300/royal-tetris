@@ -16,4 +16,6 @@ public interface TetrisGrid{
 	int getColumns();
 
 	void updateGridSynchronously(Consumer<TetrisGrid> gridConsumer);
+
+	void removeCompletedLines();
 }

@@ -27,6 +27,21 @@ public abstract class ServerBlock extends AbstractBlock {
                 p.move(1,0);
             }
         }
+
+        if(this.isDirectlyAboveLockedCell()){
+            this.lockBlock();
+            this.tetrisGrid.removeCompletedLines();
+        }
+    }
+
+    void lockBlock() {
+        //TODO: implement
+        //Must lock block, and update give the player a new tetromino to play with
+    }
+
+    boolean isDirectlyAboveLockedCell() {
+        //TODO: implement
+        return  false;
     }
 
     @Override

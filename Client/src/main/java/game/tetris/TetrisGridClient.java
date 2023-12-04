@@ -62,6 +62,12 @@ public class TetrisGridClient implements TetrisGrid {
 		tetrisGridObjectFunction.accept(this);
 	}
 
+	@Override
+	public void removeCompletedLines() {
+		//TODO: implement
+		//This is mostly useful for server side grid, though it would be very convenient to have it implemented client side as well
+	}
+
 	public Entity[][] getGridEntities() {
 		return gridEntities;
 	}

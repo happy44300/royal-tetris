@@ -67,5 +67,10 @@ public class ServerTetrisGrid implements TetrisGrid {
 		}
 	}
 
+	@Override
+	public void removeCompletedLines() {
+		//TODO: implement
+	}
+
 
 }

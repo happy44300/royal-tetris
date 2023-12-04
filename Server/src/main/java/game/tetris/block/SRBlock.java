@@ -52,6 +52,11 @@ public class SRBlock extends ServerBlock{
                 points[3] = new Point(x+1,y+2);
                 break;
         }
+
+        if(this.isDirectlyAboveLockedCell()){
+            this.lockBlock();
+            this.tetrisGrid.removeCompletedLines();
+        }
     }
 
 
