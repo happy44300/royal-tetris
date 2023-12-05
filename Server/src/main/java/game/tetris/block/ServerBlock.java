@@ -9,7 +9,7 @@ public abstract class ServerBlock extends AbstractBlock {
     Point[] points = new Point[4];
     TetrisColor COLOR;
 
-    public ServerBlock(int x, int y, TetrisGrid tetrisGrid) {
+    public ServerBlock(int x, int y, ServerTetrisGrid tetrisGrid) {
         super(x, y, tetrisGrid);
     }
 
@@ -40,8 +40,13 @@ public abstract class ServerBlock extends AbstractBlock {
     }
 
     boolean isDirectlyAboveLockedCell() {
-        //TODO: implement
-        return  false;
+        for (Point p : this.points){
+            Point pointToCheck = new Point(p.getX()+1, p.getY());
+            if(((ServerTetrisGrid) this.tetrisGrid).isCellBlocked(pointToCheck)){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

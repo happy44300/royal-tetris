@@ -1,5 +1,7 @@
 package game.tetris.datastructure;
 
+import game.tetris.Server;
+
 import java.rmi.RemoteException;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -59,7 +61,6 @@ public class ServerTetrisGrid implements TetrisGrid {
 		}
 	}
 
-
 	@Override
 	public void updateGridSynchronously(Consumer<TetrisGrid> gameAction){
 		synchronized (this){
@@ -69,7 +70,41 @@ public class ServerTetrisGrid implements TetrisGrid {
 
 	@Override
 	public void removeCompletedLines() {
-		//TODO: implement
+		int numLine = 0;
+		for (ServerCell[] cells : this.grid){
+			if(this.areBlocked(cells)){
+				this.removeLine(numLine);
+			}
+			numLine += 1;
+		}
+	}
+
+	private void removeLine(int numLine) {
+		this.shiftUpLinesDown(numLine);
+		this.addOnTopEmptyLine();
+	}
+
+	private void shiftUpLinesDown(int numLine) {
+		for(int i = 0; i < numLine; i++){
+			this.grid[i] = this.grid[i+1];
+		}
+	}
+
+	private void addOnTopEmptyLine() {
+		ServerCell[] newLine = new ServerCell[columns];
+		for (int j = 0; j < columns; j++) {
+			newLine[j] = new ServerCell(0, j);
+		}
+		this.grid[0] = newLine;
+	}
+
+	private boolean areBlocked(ServerCell[] cells) {
+		for (ServerCell cell : cells){
+			if(!cell.getIsBlocked()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 

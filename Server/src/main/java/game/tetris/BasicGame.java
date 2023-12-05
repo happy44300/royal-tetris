@@ -21,8 +21,8 @@ public class BasicGame implements Game{
         this.grid = new ServerTetrisGrid(20,40);
 
         this.ipToPlayer = new HashMap<>();
-        for(int i = 0; i < playerList.size(); i++){
-            this.ipToPlayer.put(playerList.get(i).getIP(), playerList.get(i));
+        for (Player player : playerList) {
+            this.ipToPlayer.put(player.getIP(), player);
         }
 
         this.play();
