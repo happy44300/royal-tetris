@@ -1,7 +1,6 @@
 package game.tetris.datastructure;
 
 import java.rmi.RemoteException;
-
 import static game.tetris.datastructure.TetrisColor.NOTHING;
 
 public class ServerCell implements Cell{

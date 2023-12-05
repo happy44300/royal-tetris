@@ -2,8 +2,6 @@ package game.tetris.block;
 
 import game.tetris.datastructure.*;
 
-import java.rmi.RemoteException;
-
 public class OBlock extends ServerBlock {
     public OBlock(int x, int y, TetrisGrid grid) {
         super(x, y, grid);

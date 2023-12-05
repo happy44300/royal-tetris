@@ -1,7 +1,5 @@
 package game.tetris;
 
-import game.tetris.datastructure.TetrisGrid;
-
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;

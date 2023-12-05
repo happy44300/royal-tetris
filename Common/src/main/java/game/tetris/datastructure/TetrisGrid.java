@@ -1,7 +1,5 @@
 package game.tetris.datastructure;
 
-import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 

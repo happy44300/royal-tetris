@@ -1,10 +1,5 @@
 package game.tetris;
 
-import game.tetris.datastructure.Cell;
-import game.tetris.datastructure.ServerCell;
-import game.tetris.datastructure.ServerTetrisGrid;
-import game.tetris.datastructure.TetrisGrid;
-
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;

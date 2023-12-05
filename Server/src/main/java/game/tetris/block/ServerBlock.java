@@ -1,7 +1,6 @@
 package game.tetris.block;
 
 import game.tetris.datastructure.*;
-
 import java.rmi.RemoteException;
 
 public abstract class ServerBlock extends AbstractBlock {
@@ -9,7 +8,7 @@ public abstract class ServerBlock extends AbstractBlock {
     Point[] points = new Point[4];
     TetrisColor COLOR;
 
-    public ServerBlock(int x, int y, ServerTetrisGrid tetrisGrid) {
+    public ServerBlock(int x, int y, TetrisGrid tetrisGrid) {
         super(x, y, tetrisGrid);
     }
 

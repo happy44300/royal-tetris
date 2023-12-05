@@ -1,10 +1,8 @@
 package game.tetris;
 
 import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.Point;
 import game.tetris.datastructure.ServerTetrisGrid;
 import game.tetris.datastructure.TetrisGrid;
-
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.util.HashMap;
