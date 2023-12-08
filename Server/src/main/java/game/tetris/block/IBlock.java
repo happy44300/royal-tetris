@@ -50,11 +50,6 @@ public class IBlock extends ServerBlock{
                 points[3] = new Point(x,y-3);
                 break;
         }
-
-        if(this.isDirectlyAboveLockedCell()){
-            this.lockBlock();
-            this.tetrisGrid.removeCompletedLines();
-        }
     }
 
     @Override
