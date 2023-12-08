@@ -14,7 +14,7 @@ public abstract class ClientBlock extends AbstractBlock {
     }
 
     public void paint() throws RemoteException {
-        this.tetrisGrid.updateGridSynchronously(
+        this.tetrisGrid.updateGrid(
                 safeGrid-> {
                     try {
                         if (!canTranslateUnsafe(new Point(0,0), safeGrid)) {
@@ -33,7 +33,7 @@ public abstract class ClientBlock extends AbstractBlock {
 
     @Override
     public void translate(Point toPoint) throws RemoteException {
-        this.tetrisGrid.updateGridSynchronously(
+        this.tetrisGrid.updateGrid(
                 safeGrid-> {
                     try {
                         /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
@@ -72,7 +72,7 @@ public abstract class ClientBlock extends AbstractBlock {
 
     @Override
     public boolean canTranslate(Point point) throws RemoteException {
-        return tetrisGrid.updateGridSynchronously(grid -> {
+        return tetrisGrid.updateGrid(grid -> {
             try {
                 return canTranslateUnsafe(point,grid);
             } catch (RemoteException e) {
@@ -92,7 +92,7 @@ public abstract class ClientBlock extends AbstractBlock {
     public void rotate(Rotation dir) throws RemoteException {
         if(!canRotate(dir))
             return;
-        this.tetrisGrid.updateGridSynchronously(
+        this.tetrisGrid.updateGrid(
                 safeGrid-> {
                     try {
                         for (Point point : points) {

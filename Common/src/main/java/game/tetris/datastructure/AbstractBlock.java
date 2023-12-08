@@ -57,5 +57,9 @@ public abstract class AbstractBlock {
 		return this.isLocked;
 	};
 
+    public void goDown() {
+		//TODO: implement
+    }
+
 }
 

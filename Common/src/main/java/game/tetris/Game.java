@@ -6,6 +6,7 @@ import game.tetris.datastructure.TetrisGrid;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.ServerNotActiveException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 

@@ -7,6 +7,9 @@ import game.tetris.datastructure.TetrisGrid;
 import kotlin.NotImplementedError;
 
 import java.rmi.RemoteException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -36,7 +39,7 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gridModification){
+	public <T> T updateGrid(Function<TetrisGrid, T> gridModification){
 		//Client noes not need any synchronisation on it's grid
 		return gridModification.apply(this);
 	}
@@ -58,14 +61,15 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> tetrisGridObjectFunction) {
+	public void updateGrid(Consumer<TetrisGrid> tetrisGridObjectFunction) {
 		tetrisGridObjectFunction.accept(this);
 	}
 
 	@Override
-	public void removeCompletedLines() {
+	public Collection<Integer> removeCompletedLines() {
 		//TODO: implement
 		//This is mostly useful for server side grid, though it would be very convenient to have it implemented client side as well
+		return new ArrayList<>();
 	}
 
 	public Entity[][] getGridEntities() {

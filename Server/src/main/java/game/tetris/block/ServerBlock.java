@@ -26,19 +26,14 @@ public abstract class ServerBlock extends AbstractBlock {
                 p.move(1,0);
             }
         }
-
-        if(this.isDirectlyAboveLockedCell()){
-            this.lockBlock();
-            this.tetrisGrid.removeCompletedLines();
-        }
     }
 
-    void lockBlock() {
+    public void lockBlock() {
         //TODO: implement
-        //Must lock block, and update give the player a new tetromino to play with
+        //Must lock block
     }
 
-    boolean isDirectlyAboveLockedCell() {
+    public boolean isDirectlyAboveLockedCell() {
         for (Point p : this.points){
             Point pointToCheck = new Point(p.getX()+1, p.getY());
             if(((ServerTetrisGrid) this.tetrisGrid).isCellBlocked(pointToCheck)){
@@ -50,7 +45,7 @@ public abstract class ServerBlock extends AbstractBlock {
 
     @Override
     public boolean canTranslate(Point point) throws RemoteException {
-        return this.tetrisGrid.updateGridSynchronously(grid -> {
+        return this.tetrisGrid.updateGrid(grid -> {
             return canTranslateSafe(point, (ServerTetrisGrid) grid);
         });
     }

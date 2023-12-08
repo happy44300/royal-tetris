@@ -1,5 +1,7 @@
 package game.tetris.datastructure;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -52,28 +54,29 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public <T> T updateGridSynchronously(Function<TetrisGrid, T> gameAction) {
-		synchronized (this){
-			return gameAction.apply(this);
-		}
+	public <T> T updateGrid(Function<TetrisGrid, T> gameAction) {
+		return gameAction.apply(this);
 	}
 
 	@Override
-	public void updateGridSynchronously(Consumer<TetrisGrid> gameAction){
-		synchronized (this){
-			gameAction.accept(this);
-		}
+	public void updateGrid(Consumer<TetrisGrid> gameAction){
+		gameAction.accept(this);
 	}
 
 	@Override
-	public void removeCompletedLines() {
+	public Collection<Integer> removeCompletedLines() {
 		int numLine = 0;
+		ArrayList<Integer> numLinesDeleted = new ArrayList<>();
+
 		for (ServerCell[] cells : this.grid){
 			if(this.areBlocked(cells)){
 				this.removeLine(numLine);
+				numLinesDeleted.add(numLine);
 			}
 			numLine += 1;
 		}
+
+		return numLinesDeleted;
 	}
 
 	private void removeLine(int numLine) {

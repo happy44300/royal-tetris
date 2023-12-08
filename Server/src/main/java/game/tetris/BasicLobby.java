@@ -8,7 +8,7 @@ import java.util.List;
 
 public class BasicLobby implements Lobby {
 
-    List<Player> playerList = new ArrayList<>();
+    List<RemotePlayer> playerList = new ArrayList<>();
     BasicGame game;
 
     @Override
@@ -32,15 +32,12 @@ public class BasicLobby implements Lobby {
         if(this.playerList.size() > 4){
             throw new RemoteException("Too many players!");
         }
-
-
-        //TODO: Finish constructor
     }
 
     @Override
     public void start() throws RemoteException{
         System.out.println("starting game with :");
-        for(Player p: this.playerList){
+        for(RemotePlayer p: this.playerList){
             System.out.println(p.getName());
         }
         this.game = new BasicGame(playerList);
