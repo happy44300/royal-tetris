@@ -1,5 +1,6 @@
 package game.tetris;
 
+import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
 import game.tetris.datastructure.AbstractBlock;
 import game.tetris.datastructure.ServerTetrisGrid;
@@ -59,7 +60,7 @@ public class BasicGame implements Game{
 
                 if(currentBlock.isDirectlyAboveLockedCell()){
                     currentBlock.lockBlock();
-                    currentPlayer.setNewBlock();
+                    currentPlayer.setNewBlock(new OBlock(0,0, this.grid));
                     this.grid.removeCompletedLines();
                 }
 

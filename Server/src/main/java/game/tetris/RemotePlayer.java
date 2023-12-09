@@ -1,6 +1,8 @@
 package game.tetris;
 
+import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
+import game.tetris.datastructure.AbstractBlock;
 
 public class RemotePlayer{
 
@@ -31,6 +33,7 @@ public class RemotePlayer{
         return this.ip;
     }
 
-    public void setNewBlock() {
+    public void setNewBlock(ServerBlock serverBlock) {
+        this.currentBlock = serverBlock;
     }
 }
