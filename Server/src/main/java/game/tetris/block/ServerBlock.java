@@ -29,8 +29,10 @@ public abstract class ServerBlock extends AbstractBlock {
     }
 
     public void lockBlock() {
-        //TODO: implement
-        //Must lock block
+        this.block();
+        for (Point p : this.points){
+            ((ServerCell) this.tetrisGrid.getCell(p)).block();
+        }
     }
 
     public boolean isDirectlyAboveLockedCell() {

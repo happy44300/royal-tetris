@@ -26,7 +26,7 @@ public abstract class AbstractBlock {
 
 	public abstract void rotate(Rotation dir) throws Exception;
 
-	void block() {
+	public void block() {
 		this.isLocked = true;
 	};
 
