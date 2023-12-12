@@ -39,13 +39,6 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public <T> T updateGrid(Function<TetrisGrid, T> gridModification){
-		//Client noes not need any synchronisation on it's grid
-		return gridModification.apply(this);
-	}
-
-
-	@Override
 	public ClientCell getCell(Point point){
 		return gridEntities[point.getX()][point.getY()];
 	}
@@ -61,8 +54,8 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGrid(Consumer<TetrisGrid> tetrisGridObjectFunction) {
-		tetrisGridObjectFunction.accept(this);
+	public void updateGrid(Runnable tetrisGridObjectFunction) {
+		tetrisGridObjectFunction.run();
 	}
 
 	@Override

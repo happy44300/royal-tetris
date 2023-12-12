@@ -2,6 +2,8 @@ package game.tetris.block;
 
 import game.tetris.datastructure.*;
 
+import java.util.function.Consumer;
+
 public class OBlock extends ServerBlock {
     public OBlock(int x, int y, TetrisGrid grid) {
         super(x, y, grid);
@@ -15,8 +17,8 @@ public class OBlock extends ServerBlock {
     }
 
     @Override
-    public void rotate(Rotation dir) throws Exception{
-        // do nothing
+    public Runnable rotate(Rotation dir) throws Exception{
+        return () -> {};
     }
 
     @Override

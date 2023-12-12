@@ -54,13 +54,8 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public <T> T updateGrid(Function<TetrisGrid, T> gameAction) {
-		return gameAction.apply(this);
-	}
-
-	@Override
-	public void updateGrid(Consumer<TetrisGrid> gameAction){
-		gameAction.accept(this);
+	public void updateGrid(Runnable gameAction){
+		gameAction.run();
 	}
 
 	@Override

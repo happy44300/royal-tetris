@@ -11,6 +11,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface Game extends Remote {
-    public void submitGameAction(Consumer<TetrisGrid> tetrisGridObjectFunction) throws RemoteException;
+    public void submitGameAction(Runnable tetrisGridObjectFunction) throws RemoteException;
     public AbstractBlock getBlock() throws RemoteException;
 }

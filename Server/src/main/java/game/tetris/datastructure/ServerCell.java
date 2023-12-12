@@ -21,17 +21,17 @@ public class ServerCell implements Cell{
 	}
 
 	@Override
-	public Point getPos() throws RemoteException {
+	public Point getPos() {
 		return this.pos;
 	}
 
 	@Override
-	public void setColor(TetrisColor color) throws RemoteException {
+	public void setColor(TetrisColor color) {
 		this.color = color;
 	}
 
 	@Override
-	public TetrisColor getColor() throws RemoteException {
+	public TetrisColor getColor() {
 		return this.color;
 	}
 

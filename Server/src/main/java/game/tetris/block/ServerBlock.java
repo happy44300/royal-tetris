@@ -1,11 +1,9 @@
 package game.tetris.block;
 
 import game.tetris.datastructure.*;
-import java.rmi.RemoteException;
 
 public abstract class ServerBlock extends AbstractBlock {
 
-    Point[] points = new Point[4];
     TetrisColor COLOR;
 
     public ServerBlock(int x, int y, TetrisGrid tetrisGrid) {
@@ -13,19 +11,21 @@ public abstract class ServerBlock extends AbstractBlock {
     }
 
     @Override
-    public void translate(Point point) throws Exception {
-        if(!canTranslate(point)) throw new Exception("can't translate this way!");
+    public Runnable translate(Point point) {
+        return () -> {
+            if(!canTranslate(point)) return;
 
-        if(point.getY() == this.points[0].getY()-1){
-            for(Point p : this.points){
-                p.move(-1,0);
+            if(point.getY() == this.points[0].getY()-1){
+                for(Point p : this.points){
+                    p.move(-1,0);
+                }
             }
-        }
-        if(point.getY() == this.points[0].getY()+1){
-            for(Point p : this.points){
-                p.move(1,0);
+            if(point.getY() == this.points[0].getY()+1){
+                for(Point p : this.points){
+                    p.move(1,0);
+                }
             }
-        }
+        };
     }
 
     public void lockBlock() {
@@ -45,58 +45,51 @@ public abstract class ServerBlock extends AbstractBlock {
         return false;
     }
 
-    @Override
-    public boolean canTranslate(Point point) throws RemoteException {
-        return this.tetrisGrid.updateGrid(grid -> {
-            return canTranslateSafe(point, (ServerTetrisGrid) grid);
-        });
-    }
-
-    private Boolean canTranslateSafe(Point point, ServerTetrisGrid grid) {
-        if(grid.isNotInLimits(point)){
+    public boolean canTranslate(Point point) {
+        if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(point)){
             return false;
         }
 
         if(point.getY() == this.points[0].getY()-1){
-            return this.canTranslateLeft(grid);
+            return this.canTranslateLeft();
         }
 
         if(point.getY() == this.points[0].getY()+1){
-            return this.canTranslateRight(grid);
+            return this.canTranslateRight();
         }
 
         return false;
     }
 
-    public boolean canTranslateLeft(ServerTetrisGrid grid){
+    public boolean canTranslateLeft(){
 
         for(Point p : this.points){
             Point pointToCheck = new Point(p.getX(), p.getY()-1);
 
             // We check if there is not any point out of the grid
-            if(grid.isNotInLimits(pointToCheck)){
+            if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(pointToCheck)){
                 return false;
             }
 
             // We check if there is already a blocked block which prevents movement
-            if(grid.isCellBlocked(pointToCheck)){
+            if(((ServerTetrisGrid) this.tetrisGrid).isCellBlocked(pointToCheck)){
                 return false;
             }
         }
 
         return true;
     }
-    public boolean canTranslateRight(ServerTetrisGrid grid){
+    public boolean canTranslateRight(){
         for(Point p : this.points){
             Point pointToCheck = new Point(p.getX(), p.getY()+1);
 
             // We check if there is not any point out of the grid
-            if(grid.isNotInLimits(pointToCheck)){
+            if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(pointToCheck)){
                 return false;
             }
 
             // We check if there is already a blocked block which prevents movement
-            if(grid.isCellBlocked(pointToCheck)){
+            if(((ServerTetrisGrid) this.tetrisGrid).isCellBlocked(pointToCheck)){
                 return false;
             }
         }
@@ -105,7 +98,7 @@ public abstract class ServerBlock extends AbstractBlock {
     }
 
     // If a point isn't in the grid, return false.
-    public boolean ArePointsInLimits(Point[] pointsToCheck) {
+    public boolean ArePointsWithinBounds(Point[] pointsToCheck) {
 
         for(Point p : pointsToCheck){
             if(((ServerTetrisGrid) this.tetrisGrid).isNotInLimits(p)){
@@ -125,4 +118,6 @@ public abstract class ServerBlock extends AbstractBlock {
         }
         return true;
     }
+
+
 }

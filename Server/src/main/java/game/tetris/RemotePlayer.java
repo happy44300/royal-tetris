@@ -24,7 +24,6 @@ public class RemotePlayer{
         return this.currentBlock;
     }
 
-
     public String getName() {
         return this.name;
     }

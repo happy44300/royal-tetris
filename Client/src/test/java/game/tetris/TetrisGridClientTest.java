@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.rmi.RemoteException;
 import java.util.Map;
@@ -122,7 +121,7 @@ public class TetrisGridClientTest extends GameApplication{
             @Override
             protected void onActionBegin() {
                 try {
-                    b1.rotate();
+                    b1.rotateClockwise();
                 } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }

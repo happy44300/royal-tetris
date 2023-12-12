@@ -3,6 +3,7 @@ package game.tetris;
 import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
 import game.tetris.datastructure.AbstractBlock;
+import game.tetris.datastructure.Point;
 import game.tetris.datastructure.ServerTetrisGrid;
 import game.tetris.datastructure.TetrisGrid;
 import java.rmi.RemoteException;
@@ -50,38 +51,52 @@ public class BasicGame implements Game{
     }
 
     @Override
-    public void submitGameAction(Consumer<TetrisGrid> gameAction) throws RemoteException {
+    public void submitGameAction(Runnable gameAction) throws RemoteException {
         synchronized (this.grid){
             this.grid.updateGrid(gameAction);
 
-            try{
-                RemotePlayer currentPlayer = this.ipToPlayer.get(RemoteServer.getClientHost());
-                ServerBlock currentBlock = ((ServerBlock) currentPlayer.getCurrentBlock());
-
-                if(currentBlock.isDirectlyAboveLockedCell()){
-                    currentBlock.lockBlock();
-                    currentPlayer.setNewBlock(new OBlock(0,0, this.grid));
-                    this.grid.removeCompletedLines();
-                }
-
-            } catch (ServerNotActiveException e){
-                throw new RemoteException("Couldn't find client ip!");
+            try {
+                handleGameActionConsequences();
+            } catch (Exception e) {
+                throw new RemoteException("Couldn't handle the consequences of game action!");
             }
+        }
+    }
+
+    public void submitBlockDescent() {
+        synchronized (this.grid){
+            for (RemotePlayer p : this.ipToPlayer.values()) {
+                p.getCurrentBlock().goDown();
+            }
+
+            try {
+                handleGameActionConsequences();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void handleGameActionConsequences() throws Exception {
+        try{
+            RemotePlayer currentPlayer = this.ipToPlayer.get(RemoteServer.getClientHost());
+            ServerBlock currentBlock = currentPlayer.getCurrentBlock();
+
+            if(currentBlock.isDirectlyAboveLockedCell()){
+                currentBlock.lockBlock();
+                currentPlayer.setNewBlock(new OBlock(0,0, this.grid));
+                this.grid.removeCompletedLines();
+            }
+
+        } catch (ServerNotActiveException e){
+            throw new RemoteException("Couldn't find client ip!");
         }
     }
 
     public void sendUpdateClient(RemotePlayer p) throws RemoteException {
         //TODO
-    }
 
-    public void submitBlockDescent(){
-        synchronized (this.grid){
-            for (RemotePlayer p : this.ipToPlayer.values()) {
-                p.getCurrentBlock().goDown();
-            }
-        }
     }
-
 
     private void play(){
         while(true){

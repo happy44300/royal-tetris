@@ -2,9 +2,11 @@ package game.tetris.datastructure;
 
 
 import java.rmi.RemoteException;
+import java.util.function.Consumer;
 
 public abstract class AbstractBlock {
 
+	protected Point[] points = new Point[4];
 	private Rotation rotation;
 	private boolean isLocked;
 	private final TetrisColor tetrisColor;
@@ -20,11 +22,9 @@ public abstract class AbstractBlock {
 		this.tetrisGrid = tetrisGrid;
 	}
 
+	public abstract Runnable translate(Point point) throws Exception;
 
-
-	public abstract void translate(Point point) throws Exception;
-
-	public abstract void rotate(Rotation dir) throws Exception;
+	public abstract Runnable rotate(Rotation dir) throws Exception;
 
 	public void block() {
 		this.isLocked = true;
@@ -45,7 +45,7 @@ public abstract class AbstractBlock {
 		this.rotation = r;
 	}
 
-	public abstract boolean canTranslate(Point point) throws RemoteException;
+	public abstract boolean canTranslate(Point point);
 
 	public abstract boolean canRotate(Rotation dir);
 
@@ -58,8 +58,10 @@ public abstract class AbstractBlock {
 	};
 
     public void goDown() {
-		//TODO: implement
-    }
+		for(Point point : this.points){
+			point.move(1, 0);
+		}
+	}
 
 }
 

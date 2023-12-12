@@ -5,10 +5,10 @@ import java.rmi.RemoteException;
 
 public interface Cell{
 
-    Point getPos() throws RemoteException;
+    Point getPos();
 
-    void setColor(TetrisColor color) throws RemoteException;
+    void setColor(TetrisColor color);
 
-    TetrisColor getColor() throws RemoteException;
+    TetrisColor getColor();
 
 }

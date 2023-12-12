@@ -10,14 +10,15 @@ class Block extends AbstractBlock {
         this.client = client;
     }
 
+
     @Override
-    public void translate(Point point) {
-        this.setPosition(point);
+    public Runnable translate(Point point) throws Exception {
+        return null;
     }
 
     @Override
-    public void rotate(Rotation dir) {
-        this.setRotation(dir);
+    public Runnable rotate(Rotation dir) throws Exception {
+        return null;
     }
 
     @Override

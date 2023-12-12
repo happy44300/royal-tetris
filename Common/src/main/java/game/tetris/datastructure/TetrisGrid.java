@@ -5,16 +5,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface TetrisGrid{
-
-	<T> T updateGrid(Function<TetrisGrid, T> gridFunction);
-
 	Cell getCell(Point point);
 
 	int getRows();
 
 	int getColumns();
 
-	void updateGrid(Consumer<TetrisGrid> gridConsumer);
+	void updateGrid(Runnable gridConsumer);
 
 	Collection<Integer> removeCompletedLines();
 }

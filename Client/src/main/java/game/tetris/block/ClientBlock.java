@@ -5,7 +5,6 @@ import game.tetris.datastructure.*;
 import java.rmi.RemoteException;
 
 public abstract class ClientBlock extends AbstractBlock {
-    Point[] points = new Point[4];
     TetrisColor COLOR;
     Rotation rotation;
     public ClientBlock(int x, int y, TetrisGrid grid){
@@ -13,50 +12,39 @@ public abstract class ClientBlock extends AbstractBlock {
         rotation = Rotation.LEFT;
     }
 
-    public void paint() throws RemoteException {
-        this.tetrisGrid.updateGrid(
-                safeGrid-> {
-                    try {
-                        if (!canTranslateUnsafe(new Point(0,0), safeGrid)) {
-                            throw new RuntimeException("Cannot draw cell on occupied cell");
-                        }
-                        for (Point point : points) {
-                            safeGrid.getCell(point).setColor(COLOR);
-                        }
+    public Runnable paint() throws RemoteException {
+        return () -> {
+            if (!canTranslate(new Point(0,0))) {
+                throw new RuntimeException("Cannot draw cell on occupied cell");
+            }
+            for (Point point : points) {
+                this.tetrisGrid.getCell(point).setColor(COLOR);
+            }
+        };
 
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
     }
 
     @Override
-    public void translate(Point toPoint) throws RemoteException {
-        this.tetrisGrid.updateGrid(
-                safeGrid-> {
-                    try {
-                        /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
-                            return;
-                        }*/
-                        for (Point point : points) {
-                            safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
-                        }
-                        for (Point point : points) {
-                            var gridPoint = safeGrid.getCell(point.add(toPoint));
-                            gridPoint.setColor(COLOR);
-                        }
-
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
+    public Runnable translate(Point toPoint) throws RemoteException {
+        return () -> {
+            /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
+                return;
+            }*/
+            for (Point point : points) {
+                this.tetrisGrid.getCell(point).setColor(TetrisColor.NOTHING);
+            }
+            for (Point point : points) {
+                var gridPoint = this.tetrisGrid.getCell(point.add(toPoint));
+                gridPoint.setColor(COLOR);
+            }
+        };
     }
-    private boolean canTranslateUnsafe(Point toPoint, TetrisGrid grid) throws RemoteException {
+
+    @Override
+    public boolean canTranslate(Point toPoint) {
         boolean isSelfColliding = false;
         for (Point point : points) {
-            var neededPoint = grid.getCell(point.add(toPoint));
+            var neededPoint = this.tetrisGrid.getCell(point.add(toPoint));
             if(neededPoint.getColor() != TetrisColor.NOTHING){
                 isSelfColliding = false;
                 for (Point p: this.points){
@@ -70,17 +58,7 @@ public abstract class ClientBlock extends AbstractBlock {
         return true;
     }
 
-    @Override
-    public boolean canTranslate(Point point) throws RemoteException {
-        return tetrisGrid.updateGrid(grid -> {
-            try {
-                return canTranslateUnsafe(point,grid);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-    public void rotate() throws RemoteException{
+    public void rotateClockwise() throws RemoteException{
         switch (this.rotation) {
             case RIGHT -> this.rotate(Rotation.DOWN);
             case UP -> this.rotate(Rotation.RIGHT);
@@ -88,28 +66,21 @@ public abstract class ClientBlock extends AbstractBlock {
             default -> this.rotate(Rotation.UP);
         }
     }
+
     @Override
-    public void rotate(Rotation dir) throws RemoteException {
-        if(!canRotate(dir))
-            return;
-        this.tetrisGrid.updateGrid(
-                safeGrid-> {
-                    try {
-                        for (Point point : points) {
-                            safeGrid.getCell(point).setColor(TetrisColor.NOTHING);
-                        }
-                        rotationCoordinate(dir);
-                        for (Point point : points) {
-                            safeGrid.getCell(point).setColor(COLOR);
-                        }
+    public Runnable rotate(Rotation dir) throws RemoteException {
+        return () -> {
+            if(!canRotate(dir)) return;
+            for (Point point : points) {
+                this.tetrisGrid.getCell(point).setColor(TetrisColor.NOTHING);
+            }
+            rotationCoordinate(dir);
+            for (Point point : points) {
+                this.tetrisGrid.getCell(point).setColor(COLOR);
+            }
 
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-
-        this.rotation = dir;
+            this.rotation = dir;
+        };
     }
 
     public void rotationCoordinate(Rotation dir){}
