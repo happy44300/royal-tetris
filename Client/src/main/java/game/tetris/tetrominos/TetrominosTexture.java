@@ -2,16 +2,12 @@ package game.tetris.tetrominos;
 
 import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
-import game.tetris.TetrisGridClient;
+import game.tetris.datastructure.TetrisGridClient;
 import game.tetris.datastructure.TetrisColor;
-import game.tetris.datastructure.TetrisGrid;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.EnumMap;
 import java.util.Objects;
 

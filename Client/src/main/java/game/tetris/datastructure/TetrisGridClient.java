@@ -1,4 +1,4 @@
-package game.tetris;
+package game.tetris.datastructure;
 
 import com.almasb.fxgl.entity.Entity;
 import game.tetris.datastructure.ClientCell;

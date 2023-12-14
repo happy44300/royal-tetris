@@ -8,12 +8,14 @@ public class RemotePlayer{
 
     private String name;
     private String ip;
+    private Client client;
 
     ServerBlock currentBlock;
 
-    public RemotePlayer(String name, String ip){
+    public RemotePlayer(String name, String ip, Client client){
         this.name = name;
         this.ip = ip;
+        this.client = client;
     }
 
     public void setCurrentBlock(ServerBlock serverBlock){
@@ -30,6 +32,14 @@ public class RemotePlayer{
 
     public String getIP() {
         return this.ip;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public void setNewBlock(ServerBlock serverBlock) {

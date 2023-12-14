@@ -2,17 +2,10 @@ package game.tetris.datastructure;
 
 import com.almasb.fxgl.core.math.Vec2;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
-import game.tetris.TetrisGridClient;
-import game.tetris.datastructure.Cell;
-import game.tetris.datastructure.Point;
 import game.tetris.tetrominos.TetrominosTexture;
-import javafx.scene.paint.Color;
 import kotlin.NotImplementedError;
 import org.jetbrains.annotations.NotNull;
-
-import java.rmi.RemoteException;
 
 public class ClientCell extends Entity implements Cell {
 	@NotNull

@@ -6,6 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 
+import game.tetris.datastructure.TetrisGridClient;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
@@ -13,6 +14,9 @@ import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -102,6 +106,25 @@ public class Main extends GameApplication {
 		}
 
 		launch(args);
+
+		//Connecting with server, and setting up local endpoint for server to send updates
+		try {
+			Registry remoteRegistry = LocateRegistry.getRegistry(ip, 10000);
+			Lobby lobby = (Lobby) remoteRegistry.lookup("Lobby");
+			String usedIP = lobby.join(username);
+			lobby.start();
+
+
+			System.setProperty("java.rmi.server.hostname",usedIP);
+			Registry localRegistry = LocateRegistry.createRegistry(10000);
+
+			Client client = (Client) UnicastRemoteObject.exportObject(new BasicClient(), 10000);
+			localRegistry.rebind("Client", client);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 	}
 
 

@@ -12,11 +12,12 @@ import java.rmi.server.ServerNotActiveException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class BasicGame implements Game{
 
-    private Map<String, RemotePlayer> ipToPlayer;
+    private final Map<String, RemotePlayer> ipToPlayer;
     private final TetrisGrid grid;
 
     public BasicGame(List<RemotePlayer> playerList){
@@ -94,15 +95,29 @@ public class BasicGame implements Game{
     }
 
     public void sendUpdateClient(RemotePlayer p) throws RemoteException {
-        //TODO
-
+        p.getClient().deliver("test message");
+        //TODO: implement
     }
 
     private void play(){
-        while(true){
-            //game loop, here we should add the forced block descent
-            return;
-        }
+        BasicGame game = this;
+        Thread descentThread = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    game.submitBlockDescent();
+                }
+            }
+        });
+
+        descentThread.start();
     }
 
 }
