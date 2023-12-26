@@ -6,7 +6,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 
-import game.tetris.datastructure.TetrisGridClient;
+import game.tetris.datastructure.ClientTetrisGrid;
 import javafx.scene.input.KeyCode;
 
 import javafx.scene.paint.Color;
@@ -46,13 +46,13 @@ public class Main extends GameApplication {
 	@Override
 	public void initGame() {
 
-        TetrisGridClient tetrisGridClient = new TetrisGridClient(ROWS, COLLUMNS);
+        ClientTetrisGrid clientTetrisGrid = new ClientTetrisGrid(ROWS, COLLUMNS);
 		var background = FXGL.entityBuilder().
 				at(0,-1,0)
 				.view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
 				.buildAndAttach();
 
-		for (Entity[] row : tetrisGridClient.getGridEntities()) {
+		for (Entity[] row : clientTetrisGrid.getGridEntities()) {
 			for (Entity cell : row) {
 				getGameWorld().addEntity(cell);
 			}

@@ -1,9 +1,7 @@
 package game.tetris.datastructure;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.List;
 
 public class ServerTetrisGrid implements TetrisGrid {
 
@@ -59,9 +57,9 @@ public class ServerTetrisGrid implements TetrisGrid {
 	}
 
 	@Override
-	public Collection<Integer> removeCompletedLines() {
+	public List<Integer> removeCompletedLines() {
 		int numLine = 0;
-		ArrayList<Integer> numLinesDeleted = new ArrayList<>();
+		List<Integer> numLinesDeleted = new ArrayList<>();
 
 		for (ServerCell[] cells : this.grid){
 			if(this.areBlocked(cells)){

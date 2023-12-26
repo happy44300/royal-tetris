@@ -1,8 +1,6 @@
 package game.tetris.datastructure;
 
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.List;
 
 public interface TetrisGrid{
 	Cell getCell(Point point);
@@ -13,5 +11,5 @@ public interface TetrisGrid{
 
 	void updateGrid(Runnable gridConsumer);
 
-	Collection<Integer> removeCompletedLines();
+	List<Integer> removeCompletedLines();
 }

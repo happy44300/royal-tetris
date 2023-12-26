@@ -1,19 +1,11 @@
 package game.tetris.datastructure;
 
 import com.almasb.fxgl.entity.Entity;
-import game.tetris.datastructure.ClientCell;
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.TetrisGrid;
-import kotlin.NotImplementedError;
 
-import java.rmi.RemoteException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.List;
 
-public class TetrisGridClient implements TetrisGrid {
+public class ClientTetrisGrid implements TetrisGrid {
 
 	public static final int CELL_SIZE = 30;
 
@@ -21,7 +13,7 @@ public class TetrisGridClient implements TetrisGrid {
 	private final int columns;
 	private final ClientCell[][] gridEntities;
 
-	public TetrisGridClient(int rows, int columns) {
+	public ClientTetrisGrid(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
 		gridEntities = new ClientCell[rows][columns];
@@ -54,12 +46,12 @@ public class TetrisGridClient implements TetrisGrid {
 	}
 
 	@Override
-	public void updateGrid(Runnable tetrisGridObjectFunction) {
-		tetrisGridObjectFunction.run();
+	public void updateGrid(Runnable gameAction) {
+		gameAction.run();
 	}
 
 	@Override
-	public Collection<Integer> removeCompletedLines() {
+	public List<Integer> removeCompletedLines() {
 		//TODO: implement
 		//This is mostly useful for server side grid, though it would be very convenient to have it implemented client side as well
 		return new ArrayList<>();

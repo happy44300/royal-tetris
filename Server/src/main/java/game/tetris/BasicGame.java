@@ -104,10 +104,14 @@ public class BasicGame implements Game{
                 currentBlock.lockBlock();
                 AbstractBlock newBlock = new OBlock(0,0, this.grid);
                 currentPlayer.setNewBlock((ServerBlock) newBlock);
-                this.grid.removeCompletedLines();
+                List<Integer> removedLines = this.grid.removeCompletedLines();
 
                 for(Client c: getClients()){
                     c.lockBlockUpdate(currentBlock, newBlock);
+
+                    if(!removedLines.isEmpty()){
+                        c.handleLineRemoval(removedLines);
+                    }
                 }
             }
 

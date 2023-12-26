@@ -7,7 +7,7 @@ import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
 import game.tetris.block.*;
 import game.tetris.datastructure.Point;
-import game.tetris.datastructure.TetrisGridClient;
+import game.tetris.datastructure.ClientTetrisGrid;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -20,8 +20,8 @@ import java.util.Map;
 import static com.almasb.fxgl.app.GameApplication.launch;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-public class TetrisGridClientTest extends GameApplication{
-    TetrisGridClient tetrisGridClient;
+public class ClientTetrisGridTest extends GameApplication{
+    ClientTetrisGrid clientTetrisGrid;
     ClientBlock b1;
     @Test
     void updateGridSynchronously() {
@@ -71,18 +71,18 @@ public class TetrisGridClientTest extends GameApplication{
     @Override
     public void initGame() {
 
-        tetrisGridClient = new TetrisGridClient(ROWS, COLLUMNS);
+        clientTetrisGrid = new ClientTetrisGrid(ROWS, COLLUMNS);
         var background = FXGL.entityBuilder().
                 at(0, -1, 0)
                 .view(new Rectangle(getAppWidth(), getAppHeight(), Color.BLACK))
                 .buildAndAttach();
 
-        for (Entity[] row : tetrisGridClient.getGridEntities()) {
+        for (Entity[] row : clientTetrisGrid.getGridEntities()) {
             for (Entity cell : row) {
                 getGameWorld().addEntity(cell);
             }
         }
-        b1 = new SRBlock(0,4,tetrisGridClient);
+        b1 = new SRBlock(0,4, clientTetrisGrid);
 
     }
 

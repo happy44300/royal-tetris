@@ -17,7 +17,7 @@ public class ClientCell extends Entity implements Cell {
 
 	public void setPos(Point point){
 		this.gridPos = point;
-		this.setPosition(new Vec2(point.getX() * (TetrisGridClient.CELL_SIZE+1),(point.getY() * TetrisGridClient.CELL_SIZE)+1));
+		this.setPosition(new Vec2(point.getX() * (ClientTetrisGrid.CELL_SIZE+1),(point.getY() * ClientTetrisGrid.CELL_SIZE)+1));
 	}
 
 	@Override

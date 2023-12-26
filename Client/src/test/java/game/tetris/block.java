@@ -3,9 +3,9 @@ package game.tetris;
 import game.tetris.datastructure.*;
 
 class Block extends AbstractBlock {
-    TetrisGridClient client;
+    ClientTetrisGrid client;
 
-    public Block(int x, int y, TetrisGrid tetrisGrid, TetrisGridClient client) {
+    public Block(int x, int y, TetrisGrid tetrisGrid, ClientTetrisGrid client) {
         super(x, y, tetrisGrid);
         this.client = client;
     }
