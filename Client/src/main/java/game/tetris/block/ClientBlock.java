@@ -27,9 +27,6 @@ public abstract class ClientBlock extends AbstractBlock {
     @Override
     public Runnable translate(Point toPoint) throws RemoteException {
         return () -> {
-            /*if (!canTranslateUnsafe(toPoint, safeGrid)) {
-                return;
-            }*/
             for (Point point : points) {
                 this.tetrisGrid.getCell(point).setColor(TetrisColor.NOTHING);
             }

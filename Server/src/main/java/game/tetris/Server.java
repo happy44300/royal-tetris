@@ -5,6 +5,15 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Server {
+
+
+    private static final int ROWS = 15;
+    private static final int COLLUMNS = 10;
+    private static String ip = null;
+    private static String username = null;
+    private static String clientID = null;
+
+
     public static void main(String[] argv) {
         try {
             System.setProperty("java.rmi.server.hostname","192.168.1.2");

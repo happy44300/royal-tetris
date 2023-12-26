@@ -20,7 +20,7 @@ import java.util.Map;
 import static com.almasb.fxgl.app.GameApplication.launch;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-public class ClientTetrisGridTest extends GameApplication{
+public class UpdateHandlerTetrisGridTest extends GameApplication{
     ClientTetrisGrid clientTetrisGrid;
     ClientBlock b1;
     @Test

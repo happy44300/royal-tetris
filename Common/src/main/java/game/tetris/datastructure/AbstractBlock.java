@@ -22,6 +22,10 @@ public abstract class AbstractBlock {
 		this.tetrisGrid = tetrisGrid;
 	}
 
+	public Point getPosition() {
+		return position;
+	}
+
 	public abstract Runnable translate(Point point) throws Exception;
 
 	public abstract Runnable rotate(Rotation dir) throws Exception;

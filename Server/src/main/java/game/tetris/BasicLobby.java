@@ -13,7 +13,7 @@ import java.util.List;
 public class BasicLobby implements Lobby {
 
     List<RemotePlayer> playerList = new ArrayList<>();
-    BasicGame game;
+    Game game;
 
     @Override
     public List<String> join(String playerName) throws RemoteException {
@@ -28,11 +28,11 @@ public class BasicLobby implements Lobby {
 
 
                 Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10000);
-                Client playerClient = (Client) remoteRegistry.lookup("Client");
+                UpdateHandler playerUpdateHandler = (UpdateHandler) remoteRegistry.lookup("Client");
 
                 playerID = String.valueOf(this.playerList.size()+1);
 
-                playerList.add(new RemotePlayer(playerName, playerIP, playerClient, playerID));
+                playerList.add(new RemotePlayer(playerName, playerIP, playerUpdateHandler, playerID));
             } catch (ServerNotActiveException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
@@ -51,11 +51,15 @@ public class BasicLobby implements Lobby {
 
     @Override
     public void start() throws RemoteException{
+        this.game = new BasicGame(playerList);
+
         System.out.println("starting game with :");
         for(RemotePlayer p: this.playerList){
             System.out.println(p.getName());
+            p.getUpdateHandler().setGame(this.game);
         }
-        this.game = new BasicGame(playerList);
+
+        this.game.play();
     }
 
     @Override

@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 public class BasicGame implements Game{
 
@@ -26,22 +25,20 @@ public class BasicGame implements Game{
         for (RemotePlayer player : playerList) {
             this.ipToPlayer.put(player.getIP(), player);
         }
-
-        this.play();
     }
 
     public TetrisGrid getGrid(){
         return this.grid;
     };
 
-    private List<Client> getClients(){
-        List<Client> clients = new ArrayList<>();
+    private List<UpdateHandler> getClients(){
+        List<UpdateHandler> updateHandlers = new ArrayList<>();
 
         for(RemotePlayer rp: this.ipToPlayer.values()){
-            clients.add(rp.getClient());
+            updateHandlers.add(rp.getUpdateHandler());
         }
 
-        return clients;
+        return updateHandlers;
     }
 
     @Override
@@ -67,10 +64,12 @@ public class BasicGame implements Game{
 
             try {
                 handleGameActionConsequences();
-                AbstractBlock block = this.ipToPlayer.get(RemoteServer.getClientHost()).getCurrentBlock();
+                RemotePlayer player = this.ipToPlayer.get(RemoteServer.getClientHost());
+                AbstractBlock block = player.getCurrentBlock();
+                String id = player.getGameID();
 
-                for(Client c: getClients()){
-                    c.blockUpdate(block);
+                for(UpdateHandler c: getClients()){
+                    c.blockUpdate(block, id);
                 }
             } catch (Exception e) {
                 throw new RemoteException("Couldn't handle the consequences of game action!");
@@ -86,7 +85,7 @@ public class BasicGame implements Game{
 
             try {
                 handleGameActionConsequences();
-                for(Client c: getClients()){
+                for(UpdateHandler c: getClients()){
                     c.blockDescentUpdate();
                 }
             } catch (Exception e) {
@@ -106,7 +105,7 @@ public class BasicGame implements Game{
                 currentPlayer.setNewBlock((ServerBlock) newBlock);
                 List<Integer> removedLines = this.grid.removeCompletedLines();
 
-                for(Client c: getClients()){
+                for(UpdateHandler c: getClients()){
                     c.lockBlockUpdate(currentBlock, newBlock);
 
                     if(!removedLines.isEmpty()){
@@ -120,7 +119,8 @@ public class BasicGame implements Game{
         }
     }
 
-    private void play(){
+    @Override
+    public void play(){
         BasicGame game = this;
         Thread descentThread = new Thread(new Runnable() {
 

@@ -1,22 +1,20 @@
 package game.tetris;
 
-import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
-import game.tetris.datastructure.AbstractBlock;
 
 public class RemotePlayer{
 
     private String name;
     private String ip;
-    private Client client;
+    private UpdateHandler updateHandler;
     private String gameID;
 
     ServerBlock currentBlock;
 
-    public RemotePlayer(String name, String ip, Client client, String gameID){
+    public RemotePlayer(String name, String ip, UpdateHandler updateHandler, String gameID){
         this.name = name;
         this.ip = ip;
-        this.client = client;
+        this.updateHandler = updateHandler;
         this.gameID = gameID;
     }
 
@@ -36,12 +34,12 @@ public class RemotePlayer{
         return this.ip;
     }
 
-    public Client getClient() {
-        return client;
+    public UpdateHandler getUpdateHandler() {
+        return updateHandler;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setUpdateHandler(UpdateHandler updateHandler) {
+        this.updateHandler = updateHandler;
     }
 
     public void setNewBlock(ServerBlock serverBlock) {

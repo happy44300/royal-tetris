@@ -22,61 +22,16 @@ import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 
-public class Main extends GameApplication {
+public class Main{
 
-
-	private static final int ROWS = 15;
-	private static final int COLLUMNS = 10;
-
-	@Nullable private static String ip = null;
-	@Nullable
-	private static String username = null;
-
-	@Nullable
-	private static String clientID = null;
-
-	@Override
-	protected void initSettings(GameSettings settings) {
-		settings.setWidth(800);
-		settings.setHeight(600);
-		settings.setTicksPerSecond(1);
-	}
-
-	@Override
-	protected void initGameVars(Map<String, Object> vars) {
-		super.initGameVars(vars);
-	}
-
-	@Override
-	public void initGame() {
-
-        ClientTetrisGrid clientTetrisGrid = new ClientTetrisGrid(ROWS, COLLUMNS);
-		var background = FXGL.entityBuilder().
-				at(0,-1,0)
-				.view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
-				.buildAndAttach();
-
-		for (Entity[] row : clientTetrisGrid.getGridEntities()) {
-			for (Entity cell : row) {
-				getGameWorld().addEntity(cell);
-			}
-		}
-
-	}
-
-	@Override
-	protected void initInput() {
-		getInput().addAction(new UserAction("Move Left") {
-			@Override
-			protected void onActionBegin() {
-				// Handle left movement
-			}
-		}, KeyCode.LEFT);
-
-		//TODO: Add actions for other Tetris movements (right, rotate, etc.)
-	}
 
 	public static void main(String[] args) {
+
+		final int ROWS = 15;
+		String clientID = null;
+		final int COLLUMNS = 10;
+		String ip = null;
+		String username = null;
 
 		for (int i = 0; i < args.length; i++) {
 			if ("-ip".equals(args[i]) && i < args.length - 1) {
@@ -100,31 +55,13 @@ public class Main extends GameApplication {
 			username = "George Abitbol";
 		}
 
-		launch(args);
+		new TetrisApplication(ip, username, clientID, args);
 
 		//Connecting with server, and setting up local endpoint for server to send updates
-		connect();
+
 	}
 
-	private static void connect() {
-		try {
-			Registry remoteRegistry = LocateRegistry.getRegistry(ip, 10000);
-			Lobby lobby = (Lobby) remoteRegistry.lookup("Lobby");
 
-			//logs in a list of two elements : an IP and an ID
-			List<String> logs = lobby.join(username);
-
-			System.setProperty("java.rmi.server.hostname", logs.get(0));
-
-			Registry localRegistry = LocateRegistry.createRegistry(10000);
-
-			Client client = (Client) UnicastRemoteObject.exportObject(new BasicClient(logs.get(1)), 10000);
-			localRegistry.rebind("Client", client);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 }

@@ -17,12 +17,12 @@ public abstract class ServerBlock extends AbstractBlock {
 
             if(point.getY() == this.points[0].getY()-1){
                 for(Point p : this.points){
-                    p.move(-1,0);
+                    p.move(0,-1);
                 }
             }
             if(point.getY() == this.points[0].getY()+1){
                 for(Point p : this.points){
-                    p.move(1,0);
+                    p.move(0,1);
                 }
             }
         };
