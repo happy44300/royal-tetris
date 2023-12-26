@@ -2,10 +2,8 @@ package game.tetris;
 
 import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
-import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.ServerTetrisGrid;
-import game.tetris.datastructure.TetrisGrid;
+import game.tetris.datastructure.*;
+
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
@@ -69,6 +67,11 @@ public class BasicGame implements Game{
 
             try {
                 handleGameActionConsequences();
+                AbstractBlock block = this.ipToPlayer.get(RemoteServer.getClientHost()).getCurrentBlock();
+
+                for(Client c: getClients()){
+                    c.blockUpdate(block);
+                }
             } catch (Exception e) {
                 throw new RemoteException("Couldn't handle the consequences of game action!");
             }
@@ -83,6 +86,9 @@ public class BasicGame implements Game{
 
             try {
                 handleGameActionConsequences();
+                for(Client c: getClients()){
+                    c.blockDescentUpdate();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -96,8 +102,13 @@ public class BasicGame implements Game{
 
             if(currentBlock.isDirectlyAboveLockedCell()){
                 currentBlock.lockBlock();
-                currentPlayer.setNewBlock(new OBlock(0,0, this.grid));
+                AbstractBlock newBlock = new OBlock(0,0, this.grid);
+                currentPlayer.setNewBlock((ServerBlock) newBlock);
                 this.grid.removeCompletedLines();
+
+                for(Client c: getClients()){
+                    c.lockBlockUpdate(currentBlock, newBlock);
+                }
             }
 
         } catch (ServerNotActiveException e){

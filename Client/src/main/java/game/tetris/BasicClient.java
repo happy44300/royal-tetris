@@ -13,22 +13,17 @@ public class BasicClient implements Client{
     }
 
     @Override
+    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock) {
+
+    }
+
+    @Override
     public void blockDescentUpdate() {
 
     }
 
     @Override
-    public void blockRotateUpdate(AbstractBlock block, Rotation rotation) {
-
-    }
-
-    @Override
-    public void blockTranslateUpdate(AbstractBlock block, Point point) {
-
-    }
-
-    @Override
-    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock) {
+    public void blockUpdate(AbstractBlock block) {
 
     }
 }

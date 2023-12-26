@@ -10,9 +10,7 @@ import java.rmi.RemoteException;
 public interface Client extends Remote {
     public void blockDescentUpdate();
 
-    public void blockRotateUpdate(AbstractBlock block, Rotation rotation);
-
-    public void blockTranslateUpdate(AbstractBlock block, Point point);
+    public void blockUpdate(AbstractBlock block);
 
     public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock);
 }
