@@ -9,6 +9,7 @@ import game.tetris.datastructure.TetrisGrid;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,16 @@ public class BasicGame implements Game{
     public TetrisGrid getGrid(){
         return this.grid;
     };
+
+    private List<Client> getClients(){
+        List<Client> clients = new ArrayList<>();
+
+        for(RemotePlayer rp: this.ipToPlayer.values()){
+            clients.add(rp.getClient());
+        }
+
+        return clients;
+    }
 
     @Override
     public AbstractBlock getBlock() throws RemoteException{
@@ -92,11 +103,6 @@ public class BasicGame implements Game{
         } catch (ServerNotActiveException e){
             throw new RemoteException("Couldn't find client ip!");
         }
-    }
-
-    public void sendUpdateClient(RemotePlayer p) throws RemoteException {
-        p.getClient().deliver("test message");
-        //TODO: implement
     }
 
     private void play(){

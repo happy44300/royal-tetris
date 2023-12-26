@@ -77,10 +77,6 @@ public class Main extends GameApplication {
 		//TODO: Update game logic here
 	}
 
-	private void connect(){
-		//TODO: implement connection
-	}
-
 	public static void main(String[] args) {
 
 		for (int i = 0; i < args.length; i++) {
@@ -108,12 +104,15 @@ public class Main extends GameApplication {
 		launch(args);
 
 		//Connecting with server, and setting up local endpoint for server to send updates
+		connect();
+	}
+
+	private static void connect() {
 		try {
 			Registry remoteRegistry = LocateRegistry.getRegistry(ip, 10000);
 			Lobby lobby = (Lobby) remoteRegistry.lookup("Lobby");
 			String usedIP = lobby.join(username);
 			lobby.start();
-
 
 			System.setProperty("java.rmi.server.hostname",usedIP);
 			Registry localRegistry = LocateRegistry.createRegistry(10000);
@@ -123,8 +122,6 @@ public class Main extends GameApplication {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 	}
 
 
