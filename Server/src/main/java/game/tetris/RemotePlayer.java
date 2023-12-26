@@ -48,11 +48,11 @@ public class RemotePlayer{
         this.currentBlock = serverBlock;
     }
 
-    public Integer getGameID() {
+    public String getGameID() {
         return gameID;
     }
 
-    public void setGameID(Integer gameID) {
+    public void setGameID(String gameID) {
         this.gameID = gameID;
     }
 }
