@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 import java.util.Map;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
@@ -30,6 +31,9 @@ public class Main extends GameApplication {
 	@Nullable private static String ip = null;
 	@Nullable
 	private static String username = null;
+
+	@Nullable
+	private static String clientID = null;
 
 	@Override
 	protected void initSettings(GameSettings settings) {
@@ -72,11 +76,6 @@ public class Main extends GameApplication {
 		//TODO: Add actions for other Tetris movements (right, rotate, etc.)
 	}
 
-	@Override
-	protected void onUpdate(double tpf) {
-		//TODO: Update game logic here
-	}
-
 	public static void main(String[] args) {
 
 		for (int i = 0; i < args.length; i++) {
@@ -111,14 +110,17 @@ public class Main extends GameApplication {
 		try {
 			Registry remoteRegistry = LocateRegistry.getRegistry(ip, 10000);
 			Lobby lobby = (Lobby) remoteRegistry.lookup("Lobby");
-			String usedIP = lobby.join(username);
-			lobby.start();
 
-			System.setProperty("java.rmi.server.hostname",usedIP);
+			//logs in a list of two elements : an IP and an ID
+			List<String> logs = lobby.join(username);
+
+			System.setProperty("java.rmi.server.hostname", logs.get(0));
+
 			Registry localRegistry = LocateRegistry.createRegistry(10000);
 
-			Client client = (Client) UnicastRemoteObject.exportObject(new BasicClient(), 10000);
+			Client client = (Client) UnicastRemoteObject.exportObject(new BasicClient(logs.get(1)), 10000);
 			localRegistry.rebind("Client", client);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

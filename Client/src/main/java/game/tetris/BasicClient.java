@@ -10,6 +10,12 @@ import java.util.List;
 
 public class BasicClient implements Client{
 
+    String id;
+
+    public BasicClient(String id) {
+        this.id = id;
+    }
+
     @Override
     public void blockDescentUpdate() {
 

@@ -7,6 +7,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BasicLobby implements Lobby {
@@ -15,8 +16,9 @@ public class BasicLobby implements Lobby {
     BasicGame game;
 
     @Override
-    public String join(String playerName) throws RemoteException {
+    public List<String> join(String playerName) throws RemoteException {
         String playerIP;
+        String playerID;
         synchronized (this){
             System.out.println("IP OF CLIENT : ");
 
@@ -28,7 +30,9 @@ public class BasicLobby implements Lobby {
                 Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10000);
                 Client playerClient = (Client) remoteRegistry.lookup("Client");
 
-                playerList.add(new RemotePlayer(playerName, playerIP, playerClient));
+                playerID = String.valueOf(this.playerList.size()+1);
+
+                playerList.add(new RemotePlayer(playerName, playerIP, playerClient, playerID));
             } catch (ServerNotActiveException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
@@ -42,7 +46,7 @@ public class BasicLobby implements Lobby {
             throw new RemoteException("Too many players!");
         }
 
-        return playerIP;
+        return Arrays.asList(playerIP, playerID);
     }
 
     @Override
