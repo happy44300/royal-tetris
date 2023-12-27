@@ -4,6 +4,7 @@ import com.almasb.fxgl.app.GameApplication;
 import game.tetris.datastructure.AbstractBlock;
 
 import java.util.List;
+import java.util.Map;
 
 public class BasicUpdateHandler implements UpdateHandler {
 
@@ -19,6 +20,11 @@ public class BasicUpdateHandler implements UpdateHandler {
     @Override
     public void blockDescentUpdate() {
         //TODO: implement
+    }
+
+    @Override
+    public void provideStartingBlocks(Map<String, AbstractBlock> startingBlocks) {
+        //TODO:implement
     }
 
     @Override

@@ -4,9 +4,12 @@ import game.tetris.datastructure.AbstractBlock;
 
 import java.rmi.Remote;
 import java.util.List;
+import java.util.Map;
 
 public interface UpdateHandler extends Remote {
     public void blockDescentUpdate();
+
+    public void provideStartingBlocks(Map<String, AbstractBlock> startingBlocks);
 
     public void blockUpdate(AbstractBlock block, String id);
 

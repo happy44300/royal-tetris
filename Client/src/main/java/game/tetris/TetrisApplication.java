@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -29,6 +30,8 @@ public class TetrisApplication extends GameApplication {
     private String ip = null;
     private String username = null;
     private String clientID = null;
+
+    private Map<String, AbstractBlock> playerBlocks = null;
     private Game game = null;
     private ClientTetrisGrid tetrisGrid = null;
 
@@ -42,6 +45,14 @@ public class TetrisApplication extends GameApplication {
 
     public void setGame(Game game){
         this.game = game;
+    }
+
+    public void addPlayerAndHisBlock(String playerKey, AbstractBlock playerBock) {
+        //TODO:implement
+    }
+
+    public void modifyPlayerBlock(String playerKey, AbstractBlock newBlock) {
+        // TODO:implement
     }
 
     @Override
