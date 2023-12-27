@@ -48,12 +48,12 @@ public class TetrisApplication extends GameApplication {
         this.game = game;
     }
 
-    public void addPlayerAndHisBlock(String playerKey, AbstractBlock playerBock) {
-        //TODO:implement
+    public void addPlayerAndHisBlock(String playerKey, AbstractBlock playerBlock) {
+        this.playerBlocks.put(playerKey, playerBlock);
     }
 
     public void modifyPlayerBlock(String playerKey, AbstractBlock newBlock) {
-        // TODO:implement
+        this.playerBlocks.replace(playerKey, newBlock);
     }
 
     public Map<String, AbstractBlock> getPlayerBlocks() {

@@ -26,7 +26,7 @@ public class BasicUpdateHandler implements UpdateHandler {
 
     @Override
     public void provideStartingBlocks(Map<String, AbstractBlock> startingBlocks) {
-        //TODO:implement
+        this.tetrisApplication.setPlayerBlocks(startingBlocks);
     }
 
     @Override
