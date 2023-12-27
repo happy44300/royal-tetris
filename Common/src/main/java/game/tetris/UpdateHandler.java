@@ -13,7 +13,7 @@ public interface UpdateHandler extends Remote {
 
     public void blockUpdate(AbstractBlock block, String id);
 
-    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock);
+    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock, String id);
 
     public void handleLineRemoval(List<Integer> linesToRemove);
 

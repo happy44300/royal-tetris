@@ -106,7 +106,7 @@ public class BasicGame implements Game{
                 List<Integer> removedLines = this.grid.removeCompletedLines();
 
                 for(UpdateHandler c: getClients()){
-                    c.lockBlockUpdate(currentBlock, newBlock);
+                    c.lockBlockUpdate(currentBlock, newBlock, this.ipToPlayer.get(RemoteServer.getClientHost()).getGameID());
 
                     if(!removedLines.isEmpty()){
                         c.handleLineRemoval(removedLines);

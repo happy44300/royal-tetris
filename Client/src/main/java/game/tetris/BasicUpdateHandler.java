@@ -31,11 +31,11 @@ public class BasicUpdateHandler implements UpdateHandler {
 
     @Override
     public void blockUpdate(AbstractBlock block, String id) {
-        //TODO: implement
+        this.tetrisApplication.getPlayerBlocks().replace(id, block);
     }
 
     @Override
-    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock) {
+    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock, String id) {
         //TODO: implement
     }
 
