@@ -30,7 +30,6 @@ public class TetrisApplication extends GameApplication {
     private String ip = null;
     private String username = null;
     private String clientID = null;
-
     private Map<String, AbstractBlock> playerBlocks = null;
     private Game game = null;
     private ClientTetrisGrid tetrisGrid = null;
@@ -39,6 +38,8 @@ public class TetrisApplication extends GameApplication {
         this.ip = ip;
         this.username = username;
         this.clientID = clientID;
+
+        launch(args);
 
         connect();
     }
@@ -53,6 +54,14 @@ public class TetrisApplication extends GameApplication {
 
     public void modifyPlayerBlock(String playerKey, AbstractBlock newBlock) {
         // TODO:implement
+    }
+
+    public Map<String, AbstractBlock> getPlayerBlocks() {
+        return playerBlocks;
+    }
+
+    public void setPlayerBlocks(Map<String, AbstractBlock> playerBlocks) {
+        this.playerBlocks = playerBlocks;
     }
 
     @Override

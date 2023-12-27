@@ -19,7 +19,9 @@ public class BasicUpdateHandler implements UpdateHandler {
 
     @Override
     public void blockDescentUpdate() {
-        //TODO: implement
+        for(AbstractBlock block: this.tetrisApplication.getPlayerBlocks().values()){
+            block.goDown();
+        }
     }
 
     @Override
