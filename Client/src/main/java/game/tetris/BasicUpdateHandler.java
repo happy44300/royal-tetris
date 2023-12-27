@@ -36,7 +36,8 @@ public class BasicUpdateHandler implements UpdateHandler {
 
     @Override
     public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock, String id) {
-        //TODO: implement
+        this.tetrisApplication.getPlayerBlocks().get(id).block();
+        this.tetrisApplication.getPlayerBlocks().replace(id, newBlock);
     }
 
     @Override
