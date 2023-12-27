@@ -20,11 +20,11 @@ public class TBlock extends ServerBlock{
         return () -> {
             int x = points[0].getX();
             int y = points[0].getY();
-
+            Rotation NewDir = rotateClockwise(dir);
             //We check if the rotation is valid within the rotate method
-            if(!canRotate(dir)) return;
+            if(!canRotate(NewDir)) return;
 
-            switch(dir){
+            switch(NewDir){
                 case RIGHT:
                     points[0] = new Point(x,y);
                     points[1] = new Point(x-1,y+1);

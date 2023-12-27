@@ -89,6 +89,32 @@ public class TetrisApplication extends GameApplication {
                 }
             }
         }, KeyCode.LEFT);
+        getInput().addAction(new UserAction("Move Right") {
+            @Override
+            protected void onActionBegin() {
+                try {
+                    AbstractBlock block = game.getBlock();
+                    Point position = block.getPosition();
+
+                    game.submitGameAction(block.translate(new Point(position.getX(), position.getY()+1)));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, KeyCode.RIGHT);
+        getInput().addAction(new UserAction("Move UP") {
+            @Override
+            protected void onActionBegin() {
+                try {
+                    AbstractBlock block = game.getBlock();
+                    Point position = block.getPosition();
+
+                    game.submitGameAction(block.rotate(block.getRotation()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, KeyCode.UP);
 
         //TODO: Add actions for other Tetris movements (right, rotate, etc.)
     }

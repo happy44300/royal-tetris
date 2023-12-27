@@ -2,6 +2,8 @@ package game.tetris.block;
 
 import game.tetris.datastructure.*;
 
+import java.rmi.RemoteException;
+
 public abstract class ServerBlock extends AbstractBlock {
 
     TetrisColor COLOR;
@@ -118,6 +120,15 @@ public abstract class ServerBlock extends AbstractBlock {
         }
         return true;
     }
-
+    public Rotation rotateClockwise(Rotation dir){
+        Rotation rotation;
+        switch ( dir) {
+            case RIGHT -> rotation = Rotation.DOWN;
+            case UP -> rotation = Rotation.RIGHT;
+            case DOWN -> rotation = Rotation.LEFT;
+            default -> rotation = Rotation.UP;
+        }
+        return rotation;
+    }
 
 }

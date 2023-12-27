@@ -67,5 +67,9 @@ public abstract class AbstractBlock {
 		}
 	}
 
+	public Rotation getRotation(){
+		return this.rotation;
+	}
+
 }
 
