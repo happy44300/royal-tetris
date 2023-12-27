@@ -77,7 +77,7 @@ public class UpdateHandlerTetrisGridTest extends GameApplication{
                 .view(new Rectangle(getAppWidth(), getAppHeight(), Color.BLACK))
                 .buildAndAttach();
 
-        for (Entity[] row : clientTetrisGrid.getGridEntities()) {
+        for (Entity[] row : clientTetrisGrid.getGrid()) {
             for (Entity cell : row) {
                 getGameWorld().addEntity(cell);
             }

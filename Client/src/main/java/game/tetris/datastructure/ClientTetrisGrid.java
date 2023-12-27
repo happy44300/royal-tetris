@@ -11,12 +11,12 @@ public class ClientTetrisGrid implements TetrisGrid {
 
 	private final int rows;
 	private final int columns;
-	private final ClientCell[][] gridEntities;
+	private final ClientCell[][] grid;
 
 	public ClientTetrisGrid(int rows, int columns) {
 		this.rows = rows;
 		this.columns = columns;
-		gridEntities = new ClientCell[rows][columns];
+		grid = new ClientCell[rows][columns];
 		initializeGrid();
 	}
 
@@ -25,14 +25,14 @@ public class ClientTetrisGrid implements TetrisGrid {
 			for (int j = 0; j < columns; j++) {
 				ClientCell clientCell = new ClientCell();
 				clientCell.setPosition(j * (CELL_SIZE +1d), i* ( CELL_SIZE +1d)); // Adjust the position based on cell size
-				gridEntities[i][j] = clientCell;
+				grid[i][j] = clientCell;
 			}
 		}
 	}
 
 	@Override
 	public ClientCell getCell(Point point){
-		return gridEntities[point.getX()][point.getY()];
+		return grid[point.getX()][point.getY()];
 	}
 
 	@Override
@@ -57,8 +57,27 @@ public class ClientTetrisGrid implements TetrisGrid {
 		return new ArrayList<>();
 	}
 
-	public Entity[][] getGridEntities() {
-		return gridEntities;
+	public void removeLine(int numLine) {
+		this.shiftUpLinesDown(numLine);
+		this.addOnTopEmptyLine();
+	}
+
+	private void shiftUpLinesDown(int numLine) {
+		for(int i = 0; i < numLine; i++){
+			this.grid[i] = this.grid[i+1];
+		}
+	}
+
+	private void addOnTopEmptyLine() {
+		ClientCell[] newLine = new ClientCell[columns];
+		for (int j = 0; j < columns; j++) {
+			newLine[j] = new ClientCell(0, j);
+		}
+		this.grid[0] = newLine;
+	}
+
+	public Entity[][] getGrid() {
+		return grid;
 	}
 
 }

@@ -7,6 +7,8 @@ import game.tetris.tetrominos.TetrominosTexture;
 import kotlin.NotImplementedError;
 import org.jetbrains.annotations.NotNull;
 
+import static game.tetris.datastructure.TetrisColor.NOTHING;
+
 public class ClientCell extends Entity implements Cell {
 	@NotNull
 	Texture texture;
@@ -41,7 +43,15 @@ public class ClientCell extends Entity implements Cell {
 		this.texture = new Texture(TetrominosTexture.IMAGE_BACKGROUND.getTexture().getImage());
 		this.getViewComponent().addChild(texture);
 		this.texture.setOpacity(1);
+	}
 
+	public ClientCell(int x, int y){
+		this.gridPos = new Point(x, y);
+		this.color = TetrisColor.NOTHING;
+		this.setOpacity(1);
+		this.texture = new Texture(TetrominosTexture.IMAGE_BACKGROUND.getTexture().getImage());
+		this.getViewComponent().addChild(texture);
+		this.texture.setOpacity(1);
 	}
 
 	public void setTexture(TetrominosTexture tetrominosTexture){

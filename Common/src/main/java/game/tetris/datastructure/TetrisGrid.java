@@ -12,4 +12,6 @@ public interface TetrisGrid{
 	void updateGrid(Runnable gridConsumer);
 
 	List<Integer> removeCompletedLines();
+
+	void removeLine(int line);
 }

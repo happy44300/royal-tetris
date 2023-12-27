@@ -8,13 +8,10 @@ import com.almasb.fxgl.input.UserAction;
 import game.tetris.datastructure.AbstractBlock;
 import game.tetris.datastructure.ClientTetrisGrid;
 import game.tetris.datastructure.Point;
-import game.tetris.datastructure.TetrisGrid;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -42,6 +39,14 @@ public class TetrisApplication extends GameApplication {
         launch(args);
 
         connect();
+    }
+
+    public ClientTetrisGrid getTetrisGrid() {
+        return tetrisGrid;
+    }
+
+    public void setTetrisGrid(ClientTetrisGrid tetrisGrid) {
+        this.tetrisGrid = tetrisGrid;
     }
 
     public void setGame(Game game){
@@ -85,7 +90,7 @@ public class TetrisApplication extends GameApplication {
                 .view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
                 .buildAndAttach();
 
-        for (Entity[] row : this.tetrisGrid.getGridEntities()) {
+        for (Entity[] row : this.tetrisGrid.getGrid()) {
             for (Entity cell : row) {
                 getGameWorld().addEntity(cell);
             }

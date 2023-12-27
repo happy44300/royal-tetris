@@ -72,7 +72,7 @@ public class ServerTetrisGrid implements TetrisGrid {
 		return numLinesDeleted;
 	}
 
-	private void removeLine(int numLine) {
+	public void removeLine(int numLine) {
 		this.shiftUpLinesDown(numLine);
 		this.addOnTopEmptyLine();
 	}
