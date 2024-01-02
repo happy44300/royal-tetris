@@ -7,5 +7,4 @@ import java.util.List;
 public interface Lobby extends Remote {
     List<String> join(String playerName) throws RemoteException;
     void start() throws RemoteException;
-    Game getGame() throws RemoteException;
 }

@@ -120,7 +120,7 @@ public class BasicGame implements Game{
     }
 
     @Override
-    public void play(){
+    public void play() throws RemoteException {
         BasicGame game = this;
         Thread descentThread = new Thread(new Runnable() {
 

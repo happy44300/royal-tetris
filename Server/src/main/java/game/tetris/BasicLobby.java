@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,8 @@ public class BasicLobby implements Lobby {
                 playerIP = RemoteServer.getClientHost();
                 System.out.println(playerIP);
 
-
-                Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10000);
-                UpdateHandler playerUpdateHandler = (UpdateHandler) remoteRegistry.lookup("Client");
+                Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
+                UpdateHandler playerUpdateHandler = (UpdateHandler) remoteRegistry.lookup("UpdateHandler");
 
                 playerID = String.valueOf(this.playerList.size()+1);
 
@@ -38,7 +38,7 @@ public class BasicLobby implements Lobby {
             }
         }
 
-        if(this.playerList.size() == 4){
+        if(this.playerList.size() == 1){
             this.start();
         }
 
@@ -51,19 +51,20 @@ public class BasicLobby implements Lobby {
 
     @Override
     public void start() throws RemoteException{
-        this.game = new BasicGame(playerList);
+        Registry registry = LocateRegistry.createRegistry(10002);
+
+        Game game = (Game) UnicastRemoteObject.exportObject(new BasicGame(playerList), 10002);
+        registry.rebind("Game", game);
+
+        this.game = game;
 
         System.out.println("starting game with :");
+
         for(RemotePlayer p: this.playerList){
             System.out.println(p.getName());
-            p.getUpdateHandler().setGame(this.game);
+            p.getUpdateHandler().setGamePort(10002, "127.0.0.1");
         }
 
         this.game.play();
-    }
-
-    @Override
-    public Game getGame() throws RemoteException {
-        return this.game;
     }
 }

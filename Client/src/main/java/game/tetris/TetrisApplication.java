@@ -24,20 +24,17 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 public class TetrisApplication extends GameApplication {
     private final int ROWS = 15;
     private final int COLLUMNS = 10;
-    private String ip = null;
-    private String username = null;
+    private String ip = "127.0.0.1";
+    private String username = "frr";
     private String clientID = null;
     private Map<String, AbstractBlock> playerBlocks = null;
     private Game game = null;
     private ClientTetrisGrid tetrisGrid = null;
 
-    public TetrisApplication(String ip, String username, String clientID, String[] args) {
-        this.ip = ip;
-        this.username = username;
-        this.clientID = clientID;
+    public static void main(String[] args) {
 
-
-        connect();
+        launch(args);
+        //Connecting with server, and setting up local endpoint for server to send updates
     }
 
     public ClientTetrisGrid getTetrisGrid() {
@@ -95,6 +92,7 @@ public class TetrisApplication extends GameApplication {
             }
         }
 
+        connect();
     }
 
     @Override
@@ -139,8 +137,6 @@ public class TetrisApplication extends GameApplication {
                 }
             }
         }, KeyCode.UP);
-
-        //TODO: Add actions for other Tetris movements (right, rotate, etc.)
     }
 
     private void connect() {
@@ -148,17 +144,19 @@ public class TetrisApplication extends GameApplication {
             Registry remoteRegistry = LocateRegistry.getRegistry(ip, 10000);
             Lobby lobby = (Lobby) remoteRegistry.lookup("Lobby");
 
-            this.game = lobby.getGame();
+            Registry localRegistry = LocateRegistry.createRegistry(10001);
 
-            //logs in a list of two elements : an IP and an ID
+            UpdateHandler updateHandler = (UpdateHandler) UnicastRemoteObject.
+                    exportObject(new BasicUpdateHandler(this), 10001);
+
+            localRegistry.rebind("UpdateHandler", updateHandler);
+
+            //logs is a list of two elements : an IP and an ID
             List<String> logs = lobby.join(username);
 
             System.setProperty("java.rmi.server.hostname", logs.get(0));
 
-            Registry localRegistry = LocateRegistry.createRegistry(10000);
-
-            UpdateHandler updateHandler = (UpdateHandler) UnicastRemoteObject.exportObject(new BasicUpdateHandler(logs.get(1), this), 10000);
-            localRegistry.rebind("Client", updateHandler);
+            updateHandler.setID(logs.get(1));
 
         } catch (Exception e) {
             e.printStackTrace();

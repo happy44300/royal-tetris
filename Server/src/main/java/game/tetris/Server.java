@@ -16,14 +16,11 @@ public class Server {
 
     public static void main(String[] argv) {
         try {
-            System.setProperty("java.rmi.server.hostname","192.168.1.2");
+            System.setProperty("java.rmi.server.hostname","127.0.0.1");
             Registry registry = LocateRegistry.createRegistry(10000);
 
             Lobby lobby = (Lobby) UnicastRemoteObject.exportObject(new BasicLobby(), 10000);
             registry.rebind("Lobby", lobby);
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
