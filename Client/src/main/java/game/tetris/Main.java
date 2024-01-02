@@ -55,8 +55,8 @@ public class Main{
 			username = "George Abitbol";
 		}
 
-		new TetrisApplication(ip, username, clientID, args);
-
+		TetrisApplication tetrisApplication = new TetrisApplication(ip, username, clientID, args);
+		tetrisApplication.launch(args);
 		//Connecting with server, and setting up local endpoint for server to send updates
 
 	}

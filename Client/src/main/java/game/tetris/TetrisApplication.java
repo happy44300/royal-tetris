@@ -36,7 +36,6 @@ public class TetrisApplication extends GameApplication {
         this.username = username;
         this.clientID = clientID;
 
-        launch(args);
 
         connect();
     }
