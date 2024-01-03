@@ -1,6 +1,11 @@
 package game.tetris.action;
 
-public abstract class PlayerAction {
+import java.io.Serializable;
+
+public abstract class PlayerAction implements Serializable {
     PlayerActionType playerActionType;
 
+    public PlayerActionType getPlayerActionType() {
+        return playerActionType;
+    }
 }

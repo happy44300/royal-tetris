@@ -1,6 +1,9 @@
 package game.tetris.action;
 
-public class Rotate extends PlayerAction {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Rotate extends PlayerAction implements Serializable {
     boolean isClockwise;
 
     public Rotate(){

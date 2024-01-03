@@ -1,6 +1,8 @@
 package game.tetris.action;
 
-public class Translate extends PlayerAction {
+import java.io.Serializable;
+
+public class Translate extends PlayerAction implements Serializable {
     int translateValue;
 
     public Translate(int translateValue) {
