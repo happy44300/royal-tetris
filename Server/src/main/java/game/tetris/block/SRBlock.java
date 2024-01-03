@@ -5,7 +5,7 @@ import game.tetris.datastructure.*;
 import java.util.function.Consumer;
 
 public class SRBlock extends ServerBlock{
-    public SRBlock(int x, int y, ServerTetrisGrid grid) {
+    public SRBlock(int x, int y, TetrisGrid grid) {
         super(x, y, grid);
 
         points[0] = new Point(x,y);
@@ -13,6 +13,7 @@ public class SRBlock extends ServerBlock{
         points[2] = new Point(x+1,y+1);
         points[3] = new Point(x+1,y+2);
         COLOR = TetrisColor.RED;
+        this.type = BlockType.SRBLOCK;
     }
 
     @Override

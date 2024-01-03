@@ -1,8 +1,9 @@
 package game.tetris.datastructure;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface TetrisGrid{
+public interface TetrisGrid {
 	Cell getCell(Point point);
 
 	int getRows();

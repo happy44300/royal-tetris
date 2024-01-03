@@ -1,6 +1,7 @@
 package game.tetris;
 
 import game.tetris.datastructure.AbstractBlock;
+import game.tetris.datastructure.BlockBluePrint;
 
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
@@ -11,11 +12,11 @@ import java.util.Map;
 public interface UpdateHandler extends Remote {
     public void blockDescentUpdate() throws RemoteException;
 
-    public void provideStartingBlocks(Map<String, AbstractBlock> startingBlocks) throws RemoteException;
+    public void provideStartingBlocks(Map<String, BlockBluePrint> startingBlocks) throws RemoteException;
 
-    public void blockUpdate(AbstractBlock block, String id) throws RemoteException;
+    public void blockUpdate(BlockBluePrint updatedBlock, String id) throws RemoteException;
 
-    public void lockBlockUpdate(AbstractBlock lockedBlock, AbstractBlock newBlock, String id) throws RemoteException;
+    public void lockBlockUpdate(BlockBluePrint newBlock, String id) throws RemoteException;
 
     public void handleLineRemoval(List<Integer> linesToRemove) throws RemoteException;
 

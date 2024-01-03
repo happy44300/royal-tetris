@@ -5,7 +5,7 @@ import game.tetris.datastructure.*;
 import java.util.function.Consumer;
 
 public class IBlock extends ServerBlock{
-    public IBlock(int x, int y, ServerTetrisGrid grid){
+    public IBlock(int x, int y, TetrisGrid grid){
         super(x, y, grid);
 
         points[0] = new Point(x,y);
@@ -13,6 +13,7 @@ public class IBlock extends ServerBlock{
         points[2] = new Point(x,y-2);
         points[3] = new Point(x,y-3);
         COLOR = TetrisColor.TURQUOISE;
+        this.type = BlockType.IBLOCK;
     }
 
     @Override

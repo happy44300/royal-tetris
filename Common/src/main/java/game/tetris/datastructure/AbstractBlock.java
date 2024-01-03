@@ -1,6 +1,7 @@
 package game.tetris.datastructure;
 
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.function.Consumer;
 
@@ -12,6 +13,8 @@ public abstract class AbstractBlock {
 	private final TetrisColor tetrisColor;
 	private Point position;
 	protected TetrisGrid tetrisGrid;
+
+	protected BlockType type;
 
 
 	public AbstractBlock(int x, int y, TetrisGrid tetrisGrid) {
@@ -71,5 +74,8 @@ public abstract class AbstractBlock {
 		return this.rotation;
 	}
 
+	public BlockType getBlockType(){
+		return this.type;
+	}
 }
 

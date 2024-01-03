@@ -1,5 +1,6 @@
 package game.tetris;
 
+import game.tetris.block.IBlock;
 import game.tetris.block.OBlock;
 import game.tetris.block.ServerBlock;
 import game.tetris.datastructure.*;
@@ -7,10 +8,7 @@ import game.tetris.datastructure.*;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class BasicGame implements Game{
@@ -26,10 +24,6 @@ public class BasicGame implements Game{
             this.ipToPlayer.put(player.getIP(), player);
         }
     }
-
-    public TetrisGrid getGrid(){
-        return this.grid;
-    };
 
     private List<UpdateHandler> getClients(){
         List<UpdateHandler> updateHandlers = new ArrayList<>();
@@ -63,13 +57,13 @@ public class BasicGame implements Game{
             this.grid.updateGrid(gameAction);
 
             try {
-                handleGameActionConsequences();
+                handlePlayerActionConsequences();
                 RemotePlayer player = this.ipToPlayer.get(RemoteServer.getClientHost());
                 AbstractBlock block = player.getCurrentBlock();
                 String id = player.getGameID();
 
                 for(UpdateHandler c: getClients()){
-                    c.blockUpdate(block, id);
+                    c.blockUpdate(toBluePrint(block), id);
                 }
             } catch (Exception e) {
                 throw new RemoteException("Couldn't handle the consequences of game action!");
@@ -94,19 +88,43 @@ public class BasicGame implements Game{
         }
     }
 
-    private void handleGameActionConsequences() throws Exception {
+    private void handleGameActionConsequences() throws RemoteException, ServerNotActiveException {
+
+        Collection<RemotePlayer> players = this.ipToPlayer.values();
+
+        for(RemotePlayer p : players){
+            ServerBlock currentBlock = p.getCurrentBlock();
+
+            if(currentBlock.isDirectlyAboveLockedCell()){
+                currentBlock.lockBlock();
+                AbstractBlock newBlock = new OBlock(0,0, this.grid);
+                p.setNewBlock((ServerBlock) newBlock);
+                List<Integer> removedLines = this.grid.removeCompletedLines();
+
+                for(UpdateHandler c: getClients()){
+                    c.lockBlockUpdate(toBluePrint(newBlock), this.ipToPlayer.get(p.getIP()).getGameID());
+
+                    if(!removedLines.isEmpty()){
+                        c.handleLineRemoval(removedLines);
+                    }
+                }
+            }
+        }
+    }
+
+    private void handlePlayerActionConsequences() throws RemoteException {
         try{
             RemotePlayer currentPlayer = this.ipToPlayer.get(RemoteServer.getClientHost());
             ServerBlock currentBlock = currentPlayer.getCurrentBlock();
 
             if(currentBlock.isDirectlyAboveLockedCell()){
                 currentBlock.lockBlock();
-                AbstractBlock newBlock = new OBlock(0,0, this.grid);
+                AbstractBlock newBlock = new IBlock(0,0, this.grid);
                 currentPlayer.setNewBlock((ServerBlock) newBlock);
                 List<Integer> removedLines = this.grid.removeCompletedLines();
 
                 for(UpdateHandler c: getClients()){
-                    c.lockBlockUpdate(currentBlock, newBlock, this.ipToPlayer.get(RemoteServer.getClientHost()).getGameID());
+                    c.lockBlockUpdate(toBluePrint(newBlock), this.ipToPlayer.get(RemoteServer.getClientHost()).getGameID());
 
                     if(!removedLines.isEmpty()){
                         c.handleLineRemoval(removedLines);
@@ -122,6 +140,22 @@ public class BasicGame implements Game{
     @Override
     public void play() throws RemoteException {
         BasicGame game = this;
+
+        Map<String, BlockBluePrint> startingBlocks = new HashMap<>();
+
+        int gridOffset = 0;
+
+        for(RemotePlayer p: this.ipToPlayer.values()){
+            ServerBlock newServerBlock = new OBlock(0,0 + gridOffset, this.grid);
+            p.setCurrentBlock(newServerBlock);
+            startingBlocks.put(p.getGameID(), toBluePrint(newServerBlock));
+            gridOffset += 3;
+        }
+
+        for(UpdateHandler uh: this.getClients()){
+            uh.provideStartingBlocks(startingBlocks);
+        }
+
         Thread descentThread = new Thread(new Runnable() {
 
             @Override
@@ -139,6 +173,10 @@ public class BasicGame implements Game{
         });
 
         descentThread.start();
+    }
+
+    private BlockBluePrint toBluePrint(AbstractBlock block){
+        return new BlockBluePrint(block.getBlockType(), block.getRotation(), block.getPosition());
     }
 
 }

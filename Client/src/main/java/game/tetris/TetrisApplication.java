@@ -5,13 +5,14 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.input.UserAction;
-import game.tetris.datastructure.AbstractBlock;
-import game.tetris.datastructure.ClientTetrisGrid;
-import game.tetris.datastructure.Point;
+import game.tetris.block.*;
+import game.tetris.datastructure.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -22,14 +23,15 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 public class TetrisApplication extends GameApplication {
-    private final int ROWS = 15;
-    private final int COLLUMNS = 10;
+    private final int ROWS = 20;
+    private final int COLUMNS = 40;
     private String ip = "127.0.0.1";
-    private String username = "frr";
+    private String username = "Original And Unique ID !!!!!!";
     private String clientID = null;
-    private Map<String, AbstractBlock> playerBlocks = null;
+    private Map<String, ClientBlock> playerBlocks = null;
     private Game game = null;
     private ClientTetrisGrid tetrisGrid = null;
+    private UpdateHandler updateHandler = null;
 
     public static void main(String[] args) {
 
@@ -45,30 +47,44 @@ public class TetrisApplication extends GameApplication {
         this.tetrisGrid = tetrisGrid;
     }
 
-    public void setGame(Game game){
-        this.game = game;
+    public Game getGame(){
+        return this.game;
     }
 
-    public void addPlayerAndHisBlock(String playerKey, AbstractBlock playerBlock) {
+    public void setGame(String ip, int port) throws RemoteException {
+        Registry remoteRegistry = LocateRegistry.getRegistry(ip, port);
+        Game game = null;
+        try {
+            game = (Game) remoteRegistry.lookup("Game");
+        } catch (NotBoundException e) {
+            throw new RemoteException();
+        }
+
+        this.game = game;
+        System.out.println("GAME IS GAME: ");
+        System.out.println(this.game);
+    }
+
+    public void addPlayerAndHisBlock(String playerKey, ClientBlock playerBlock) {
         this.playerBlocks.put(playerKey, playerBlock);
     }
 
-    public void modifyPlayerBlock(String playerKey, AbstractBlock newBlock) {
+    public void modifyPlayerBlock(String playerKey, ClientBlock newBlock) {
         this.playerBlocks.replace(playerKey, newBlock);
     }
 
-    public Map<String, AbstractBlock> getPlayerBlocks() {
+    public Map<String, ClientBlock> getPlayerBlocks() {
         return playerBlocks;
     }
 
-    public void setPlayerBlocks(Map<String, AbstractBlock> playerBlocks) {
+    public void setPlayerBlocks(Map<String, ClientBlock> playerBlocks) {
         this.playerBlocks = playerBlocks;
     }
 
     @Override
     protected void initSettings(GameSettings settings) {
-        settings.setWidth(800);
-        settings.setHeight(600);
+        settings.setWidth(1600);
+        settings.setHeight(1500);
         settings.setTicksPerSecond(1);
     }
 
@@ -80,7 +96,7 @@ public class TetrisApplication extends GameApplication {
     @Override
     public void initGame() {
 
-        this.tetrisGrid = new ClientTetrisGrid(ROWS, COLLUMNS);
+        this.tetrisGrid = new ClientTetrisGrid(ROWS, COLUMNS);
         var background = FXGL.entityBuilder().
                 at(0,-1,0)
                 .view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
@@ -97,46 +113,9 @@ public class TetrisApplication extends GameApplication {
 
     @Override
     protected void initInput() {
-        Game game = this.game;
-        getInput().addAction(new UserAction("Move Left") {
-            @Override
-            protected void onActionBegin() {
-                try {
-                    AbstractBlock block = game.getBlock();
-                    Point position = block.getPosition();
-
-                    game.submitGameAction(block.translate(new Point(position.getX(), position.getY()-1)));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, KeyCode.LEFT);
-        getInput().addAction(new UserAction("Move Right") {
-            @Override
-            protected void onActionBegin() {
-                try {
-                    AbstractBlock block = game.getBlock();
-                    Point position = block.getPosition();
-
-                    game.submitGameAction(block.translate(new Point(position.getX(), position.getY()+1)));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, KeyCode.RIGHT);
-        getInput().addAction(new UserAction("Move UP") {
-            @Override
-            protected void onActionBegin() {
-                try {
-                    AbstractBlock block = game.getBlock();
-                    Point position = block.getPosition();
-
-                    game.submitGameAction(block.rotate(block.getRotation()));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }, KeyCode.UP);
+        getInput().addAction(new LeftKeyAction("Move Left", this), KeyCode.LEFT);
+        getInput().addAction(new RightKeyAction("Move Right", this), KeyCode.RIGHT);
+        getInput().addAction(new UpKeyAction("Move UP", this), KeyCode.UP);
     }
 
     private void connect() {
@@ -158,8 +137,43 @@ public class TetrisApplication extends GameApplication {
 
             updateHandler.setID(logs.get(1));
 
+            this.updateHandler = updateHandler;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ClientBlock createBlock(BlockBluePrint blockBluePrint){
+        int x = blockBluePrint.getCoordinates().getX();
+        int y = blockBluePrint.getCoordinates().getY();
+        TetrisGrid grid = this.getTetrisGrid();
+
+        switch (blockBluePrint.getType()){
+            case IBLOCK -> {
+                return new IBlock(x,y,grid);
+            }
+            case LBLOCK -> {
+                return new LBlock(x,y,grid);
+            }
+            case LRBLOCK -> {
+                return new LRBlock(x,y,grid);
+            }
+            case OBLOCK -> {
+                return new OBlock(x,y,grid);
+            }
+            case SBLOCK -> {
+                return new SBlock(x,y,grid);
+            }
+            case SRBLOCK -> {
+                return new SRBlock(x,y,grid);
+            }
+            case TBLOCK -> {
+                return new TBlock(x,y,grid);
+            }
+        }
+
+        //Should never happen
+        return null;
     }
 }

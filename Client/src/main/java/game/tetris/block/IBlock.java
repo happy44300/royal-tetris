@@ -1,9 +1,6 @@
 package game.tetris.block;
 
-import game.tetris.datastructure.Point;
-import game.tetris.datastructure.Rotation;
-import game.tetris.datastructure.TetrisColor;
-import game.tetris.datastructure.TetrisGrid;
+import game.tetris.datastructure.*;
 
 import java.rmi.RemoteException;
 
@@ -16,6 +13,7 @@ public class IBlock extends ClientBlock{
         points[2] = new Point(x,y-2);
         points[3] = new Point(x,y-3);
         COLOR = TetrisColor.TURQUOISE;
+        this.type = BlockType.IBLOCK;
         try {
             paint();
         } catch (RemoteException e) {

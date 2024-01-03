@@ -13,7 +13,7 @@ public class OBlock extends ServerBlock {
         points[2] = new Point(x,y+1);
         points[3] = new Point(x+1,y+1);
         COLOR = TetrisColor.YELLOW;
-
+        this.type = BlockType.OBLOCK;
     }
 
     @Override
