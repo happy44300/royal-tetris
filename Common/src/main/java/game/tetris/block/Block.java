@@ -1,8 +1,12 @@
-package game.tetris;
+package game.tetris.block;
+
+import game.tetris.BlockType;
+import game.tetris.Orientation;
+import game.tetris.Point;
 
 import java.io.Serializable;
 
-public class Block implements Serializable {
+public abstract class Block implements Serializable {
     Point origin;
     Orientation orientation;
     BlockType type;
