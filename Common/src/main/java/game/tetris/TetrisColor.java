@@ -1,6 +1,6 @@
 package game.tetris;
 
-public enum Color {
+public enum TetrisColor {
     NOTHING,
     BLUE,
     RED,

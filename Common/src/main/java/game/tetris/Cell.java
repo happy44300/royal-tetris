@@ -1,21 +1,21 @@
 package game.tetris;
 
 public class Cell {
-    Color color;
+    TetrisColor tetrisColor;
 
     public Cell() {
-        this.color = Color.NOTHING;
+        this.tetrisColor = TetrisColor.NOTHING;
     }
 
-    public Cell(Color color) {
-        this.color = color;
+    public Cell(TetrisColor tetrisColor) {
+        this.tetrisColor = tetrisColor;
     }
 
-    public Color getColor() {
-        return color;
+    public TetrisColor getColor() {
+        return tetrisColor;
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public void setColor(TetrisColor tetrisColor) {
+        this.tetrisColor = tetrisColor;
     }
 }
