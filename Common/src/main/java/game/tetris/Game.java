@@ -1,5 +1,7 @@
 package game.tetris;
 
+import game.tetris.action.PlayerAction;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
