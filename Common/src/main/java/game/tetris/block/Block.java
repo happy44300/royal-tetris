@@ -39,6 +39,10 @@ public abstract class Block implements Serializable {
         this.type = type;
     }
 
+    public void setPoints(Point[] points) {
+        this.points = points;
+    }
+
     public abstract Point[] getPoints();
 
     protected Orientation computeNewOrientation(Rotate rotate) {
