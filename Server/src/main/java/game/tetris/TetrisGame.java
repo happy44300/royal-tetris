@@ -5,6 +5,10 @@ import game.tetris.action.Rotate;
 import game.tetris.action.Translate;
 import game.tetris.block.Block;
 import game.tetris.block.OBlock;
+import game.tetris.grid.Cell;
+import game.tetris.grid.Grid;
+import game.tetris.grid.Point;
+import game.tetris.grid.TetrisColor;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -111,7 +115,7 @@ public class TetrisGame implements Game{
         for(Point p: postRotationPositions){
             if(p.getX() < 0 || p.getX() >= NUMBER_OF_ROWS) return false;
             if(p.getY() < 0 || p.getY() >= NUMBER_OF_COLUMNS) return false;
-            if (this.grid.getCell(p).tetrisColor != TetrisColor.NOTHING){
+            if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING){
                 return false;
             }
         }
@@ -151,7 +155,7 @@ public class TetrisGame implements Game{
 
         for(Point p: postTranslationPositions){
             if(p.getY() < 0 || p.getY() >= NUMBER_OF_COLUMNS) return false;
-            if (this.grid.getCell(p).tetrisColor != TetrisColor.NOTHING) return false;
+            if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING) return false;
         }
 
         return true;

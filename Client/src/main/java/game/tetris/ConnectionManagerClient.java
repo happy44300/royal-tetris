@@ -1,6 +1,7 @@
 package game.tetris;
 
 import game.tetris.block.Block;
+import game.tetris.grid.Grid;
 
 import java.rmi.RemoteException;
 

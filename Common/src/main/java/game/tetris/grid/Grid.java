@@ -1,4 +1,4 @@
-package game.tetris;
+package game.tetris.grid;
 
 import java.io.Serializable;
 

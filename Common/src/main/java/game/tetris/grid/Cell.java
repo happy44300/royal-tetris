@@ -1,4 +1,4 @@
-package game.tetris;
+package game.tetris.grid;
 
 public class Cell {
     TetrisColor tetrisColor;

@@ -1,7 +1,6 @@
 package game.tetris.block;
 
-import game.tetris.Orientation;
-import game.tetris.Point;
+import game.tetris.grid.Point;
 import game.tetris.action.Rotate;
 
 public class SBlock extends Block {

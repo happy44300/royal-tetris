@@ -1,6 +1,10 @@
 package game.tetris;
 
-public class BasicGrid implements Grid{
+import game.tetris.grid.Cell;
+import game.tetris.grid.Grid;
+import game.tetris.grid.Point;
+
+public class BasicGrid implements Grid {
     Cell[][] grid;
     int columns;
     int rows;

@@ -1,6 +1,6 @@
 package game.tetris.datastructure;
 
-import game.tetris.Cell;
+import game.tetris.grid.Cell;
 
 public class ClientTetrisGrid {
     public static final int CELL_SIZE = 30;

@@ -2,7 +2,7 @@ package game.tetris.tetrominos;
 
 import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
-import game.tetris.TetrisColor;
+import game.tetris.grid.TetrisColor;
 
 import game.tetris.datastructure.ClientTetrisGrid;
 import javafx.scene.image.Image;

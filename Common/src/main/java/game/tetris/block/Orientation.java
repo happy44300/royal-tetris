@@ -1,4 +1,4 @@
-package game.tetris;
+package game.tetris.block;
 
 public enum Orientation {
     UP,
