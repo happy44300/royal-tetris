@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public abstract class Block implements Serializable {
     Point origin;
-    Orientation orientation;
+    Orientation orientation = Orientation.UP;
     BlockType type;
 
     public Point getOrigin() {
@@ -34,4 +34,6 @@ public abstract class Block implements Serializable {
     public void setType(BlockType type) {
         this.type = type;
     }
+
+    public abstract Point[] getPoints();
 }
