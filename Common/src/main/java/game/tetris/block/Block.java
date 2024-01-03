@@ -1,26 +1,19 @@
 package game.tetris.block;
 
-import game.tetris.BlockType;
 import game.tetris.Orientation;
 import game.tetris.Point;
-import game.tetris.action.PlayerAction;
 import game.tetris.action.Rotate;
 import game.tetris.action.Translate;
 
 import java.io.Serializable;
 
 public abstract class Block implements Serializable {
-    Point origin;
     Point[] points;
     Orientation orientation = Orientation.LEFT;
     BlockType type;
 
     public Point getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(Point origin) {
-        this.origin = origin;
+        return points[0];
     }
 
     public Orientation getOrientation() {
@@ -85,9 +78,16 @@ public abstract class Block implements Serializable {
         return computedPoints;
     }
 
-    public Point[] doTranslation(Translate translate) {
-        this.origin.translate(0, translate.getTranslateValue());
+    public Point[] doTranslate(Translate translate) {
         this.points = computeTranslation(translate);
-        return points;
+        return this.points;
+    }
+
+    public Point[] doGoDown() {
+        for(Point point : this.points){
+            point.translate(1, 0);
+        }
+
+        return this.points;
     }
 }

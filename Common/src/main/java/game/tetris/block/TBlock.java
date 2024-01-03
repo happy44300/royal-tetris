@@ -1,6 +1,5 @@
 package game.tetris.block;
 
-import game.tetris.BlockType;
 import game.tetris.Orientation;
 import game.tetris.Point;
 import game.tetris.action.Rotate;
@@ -12,7 +11,6 @@ public class TBlock extends Block {
 
     public TBlock(int x, int y) {
         this.type = BlockType.TBLOCK;
-        this.origin = new Point(x, y);
 
         this.points[0] = new Point(x,y);
         this.points[1] = new Point(x+1,y);
@@ -28,8 +26,8 @@ public class TBlock extends Block {
     @Override
     public Point[] computeRotation(Rotate rotate) {
         Point[] computedPoints = new Point[4];
-        int x = this.origin.getX();
-        int y = this.origin.getY();
+        int x = this.points[0].getX();
+        int y = this.points[0].getY();
 
         Orientation newOrientation = computeNewOrientation(rotate);
 

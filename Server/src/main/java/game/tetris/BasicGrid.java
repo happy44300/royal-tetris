@@ -44,7 +44,4 @@ public class BasicGrid implements Grid{
     public int getNumberOfColumns() {
         return this.columns;
     }
-
-
-    //Intern methods
 }

@@ -1,7 +1,5 @@
 package game.tetris.block;
 
-import game.tetris.BlockType;
-import game.tetris.Orientation;
 import game.tetris.Point;
 import game.tetris.action.Rotate;
 
@@ -12,7 +10,6 @@ public class OBlock extends Block {
 
     public OBlock(int x, int y) {
         this.type = BlockType.OBLOCK;
-        this.origin = new Point(x, y);
 
         this.points[0] = new Point(x,y);
         this.points[1] = new Point(x+1,y);
