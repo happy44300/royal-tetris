@@ -2,9 +2,16 @@ package game.tetris;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.dsl.EntityBuilder;
+import com.almasb.fxgl.dsl.FXGL;
+import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.GameWorld;
 import game.tetris.block.Block;
 import game.tetris.grid.Cell;
 import game.tetris.grid.Grid;
+import game.tetris.grid.Point;
+import game.tetris.grid.TetrisColor;
+import game.tetris.tetrominos.TetrominosTexture;
 import javafx.scene.input.KeyCode;
 
 import java.rmi.RemoteException;
@@ -16,7 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
+import static game.tetris.datastructure.ClientTetrisGrid.CELL_SIZE;
 
 public class TetrisApplication extends GameApplication implements ConnectionManager {
 
@@ -70,9 +79,25 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     }
 
     void drawGrid(){
-        for(Cell[] rows : grid.getCells()){
-            for(Cell cell : rows){
+        GameWorld world = getGameWorld();
 
+        world.reset();
+
+        var background = FXGL.entityBuilder()
+                .view(TetrominosTexture.IMAGE_BACKGROUND.getTexture())
+                .scale(0xFFFFF,0xFFFFFFF)
+                .build();
+
+        world.addEntity(background);
+
+        for(int x=0; x< grid.getCells().length; x++){
+            for(int y = 0; y < grid.getCells()[x].length; y++){
+                Entity e = FXGL.entityBuilder().build();
+                e.getViewComponent().addChild(TetrominosTexture.RODBLOCK.getTexture());
+                e.setPosition(x * (CELL_SIZE +1d), y* ( CELL_SIZE +1d)); // Adjust the position based on cell size
+                e.setPosition(x,y);
+                e.setOpacity(1);
+                world.addEntity(e);
             }
         }
     }
@@ -87,8 +112,20 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     @Override
     public void updateBlock(String playerID, Block updatedBlock) throws RemoteException {
         this.isGameStarted = true;
-        this.playerToBlock.put(playerID,updatedBlock);
-        drawGrid();
+        var grid = this.grid;
+
+        if(playerToBlock.containsKey(playerID)){
+            for(Point point : playerToBlock.get(playerID).getPoints()){
+                grid.getCell(point).setColor(TetrisColor.NOTHING);
+            }
+        }
+
+
+       for(Point point : updatedBlock.getPoints()){
+           grid.getCell(point).setColor(TetrisColor.BLUE);
+       }
+
+
     }
 
     private void connect() {

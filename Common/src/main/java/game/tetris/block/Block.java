@@ -7,7 +7,7 @@ import game.tetris.action.Translate;
 import java.io.Serializable;
 
 public abstract class Block implements Serializable {
-    Point[] points;
+    Point[] points = new Point[4];
     Orientation orientation = Orientation.LEFT;
     BlockType type;
 

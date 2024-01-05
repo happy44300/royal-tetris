@@ -9,5 +9,4 @@ public enum TetrisColor {
     TURQUOISE,
     ORANGE,
     PURPLE,
-    GREY
 }

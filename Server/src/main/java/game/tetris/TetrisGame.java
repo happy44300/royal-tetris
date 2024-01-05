@@ -177,9 +177,9 @@ public class TetrisGame implements Game{
 
     private void start() {
         int gridOffset = 0;
-
         for(String playerID: this.playerToConnectionManager.keySet()){
             Block newBlock = new OBlock(2, gridOffset);
+
             this.playerToBlock.put(playerID, newBlock);
             gridOffset += 3;
         }
@@ -187,6 +187,7 @@ public class TetrisGame implements Game{
         for(ConnectionManager cm: this.playerToConnectionManager.values()){
             for(String playerID: this.playerToBlock.keySet()){
                 try {
+                    cm.updateGrid(this.grid);
                     cm.updateBlock(playerID, this.playerToBlock.get(playerID));
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -194,19 +195,15 @@ public class TetrisGame implements Game{
             }
         }
 
-        Thread descentThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while(true){
-                    try {
-                        TimeUnit.SECONDS.sleep(2);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    submitBlockDescent();
+        Thread descentThread = new Thread(() -> {
+            while(true){
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+                submitBlockDescent();
             }
         });
 
@@ -325,6 +322,7 @@ public class TetrisGame implements Game{
         }
 
         if(this.playerToConnectionManager.size() == NUMBER_OF_PLAYERS_MAX){
+            System.out.println("Starting...");
             this.start();
         }
 
