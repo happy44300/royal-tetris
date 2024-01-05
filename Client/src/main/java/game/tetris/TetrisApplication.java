@@ -10,6 +10,18 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 public class TetrisApplication extends GameApplication {
 
+    Game clientToServer;
+
+    String playerID;
+
+    public String getPlayerID() {
+        return playerID;
+    }
+
+    public Game getClientToServer() {
+        return clientToServer;
+    }
+
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(1600);
@@ -23,20 +35,7 @@ public class TetrisApplication extends GameApplication {
 
     @Override
     public void initGame() {
-        //TODO
-        /*this.tetrisGrid = new ClientTetrisGrid(ROWS, COLUMNS);
-        var background = FXGL.entityBuilder().
-                at(0,-1,0)
-                .view(new Rectangle(getAppWidth(),getAppHeight(), Color.BLACK))
-                .buildAndAttach();
 
-        for (Entity[] row : this.tetrisGrid.getGrid()) {
-            for (Entity cell : row) {
-                getGameWorld().addEntity(cell);
-            }
-        }
-
-        connect();*/
     }
     @Override
     protected void initInput() {

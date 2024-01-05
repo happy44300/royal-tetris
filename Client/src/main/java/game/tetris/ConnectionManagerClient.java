@@ -12,7 +12,7 @@ public class ConnectionManagerClient implements ConnectionManager{
     }
     //ça sert de passe plat pour le connect coté serveur
     public void connect(){
-
+        throw new IllegalStateException("Not implemented on client");
     }
 
     @Override

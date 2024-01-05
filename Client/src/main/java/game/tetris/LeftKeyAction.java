@@ -1,5 +1,6 @@
 package game.tetris;
 
+import game.tetris.action.Rotate;
 import org.jetbrains.annotations.NotNull;
 
 public class LeftKeyAction extends ClientAction{
@@ -10,7 +11,7 @@ public class LeftKeyAction extends ClientAction{
     @Override
     protected void onActionBegin() {
         try {
-            //TODO
+            tetrisApplication.getClientToServer().submitBlockUpdate(tetrisApplication.getPlayerID(),new Rotate(false));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
