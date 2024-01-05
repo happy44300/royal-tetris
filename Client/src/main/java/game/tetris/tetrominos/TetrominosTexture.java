@@ -2,9 +2,9 @@ package game.tetris.tetrominos;
 
 import com.almasb.fxgl.texture.ColoredTexture;
 import com.almasb.fxgl.texture.Texture;
+import game.tetris.TetrisApplication;
 import game.tetris.grid.TetrisColor;
 
-import game.tetris.datastructure.ClientTetrisGrid;
 import javafx.scene.image.Image;
 
 import javafx.scene.paint.Color;
@@ -16,7 +16,7 @@ import java.util.Objects;
 public enum TetrominosTexture {
 
 
-	IMAGE_BACKGROUND(new ColoredTexture(ClientTetrisGrid.CELL_SIZE, ClientTetrisGrid.CELL_SIZE, Color.WHITE)),
+	IMAGE_BACKGROUND(new ColoredTexture(TetrisApplication.CELL_SIZE, TetrisApplication.CELL_SIZE, Color.WHITE)),
 	SQUAREBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/O-block.jpg"))))),
 	TEEBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/T-block.jpg"))))),
 	LBLOCK(new Texture(new Image(Objects.requireNonNull(TetrominosTexture.class.getResourceAsStream("/sprite/L-block.jpg"))))),
@@ -43,8 +43,9 @@ public enum TetrominosTexture {
 
 	TetrominosTexture(@NotNull Texture texture) {
 			this.texture = texture;
-			this.texture.setFitHeight(ClientTetrisGrid.CELL_SIZE);
-			this.texture.setFitWidth(ClientTetrisGrid.CELL_SIZE);
+			this.texture.setPreserveRatio(true);
+			this.texture.setFitHeight(TetrisApplication.CELL_SIZE);
+
 	}
 
 	@NotNull

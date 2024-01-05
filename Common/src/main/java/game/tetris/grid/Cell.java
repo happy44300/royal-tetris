@@ -1,6 +1,8 @@
 package game.tetris.grid;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     TetrisColor tetrisColor;
 
     public Cell() {

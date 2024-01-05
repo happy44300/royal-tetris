@@ -5,10 +5,7 @@ import game.tetris.action.Rotate;
 import game.tetris.action.Translate;
 import game.tetris.block.Block;
 import game.tetris.block.OBlock;
-import game.tetris.grid.Cell;
-import game.tetris.grid.Grid;
-import game.tetris.grid.Point;
-import game.tetris.grid.TetrisColor;
+import game.tetris.grid.*;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -187,6 +184,7 @@ public class TetrisGame implements Game{
         for(ConnectionManager cm: this.playerToConnectionManager.values()){
             for(String playerID: this.playerToBlock.keySet()){
                 try {
+                    System.out.println("Sending grid to player:" + playerID);
                     cm.updateGrid(this.grid);
                     cm.updateBlock(playerID, this.playerToBlock.get(playerID));
                 } catch (RemoteException e) {
@@ -313,7 +311,7 @@ public class TetrisGame implements Game{
                 Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
                 ConnectionManager playerConnectionManager = (ConnectionManager) remoteRegistry.lookup("ConnectionManager");
 
-                playerID = "player" + String.valueOf(playerToConnectionManager.size());
+                playerID = "player" + playerToConnectionManager.size();
 
                 this.playerToConnectionManager.put(playerID, playerConnectionManager);
             } catch (NotBoundException | ServerNotActiveException e) {
@@ -322,7 +320,7 @@ public class TetrisGame implements Game{
         }
 
         if(this.playerToConnectionManager.size() == NUMBER_OF_PLAYERS_MAX){
-            System.out.println("Starting...");
+            System.out.println("Starting game");
             this.start();
         }
 
