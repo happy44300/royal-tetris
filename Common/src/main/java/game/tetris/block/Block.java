@@ -3,11 +3,13 @@ package game.tetris.block;
 import game.tetris.grid.Point;
 import game.tetris.action.Rotate;
 import game.tetris.action.Translate;
+import game.tetris.grid.TetrisColor;
 
 import java.io.Serializable;
 
 public abstract class Block implements Serializable {
     Point[] points;
+    TetrisColor color;
     Orientation orientation = Orientation.LEFT;
     BlockType type;
 
@@ -88,5 +90,9 @@ public abstract class Block implements Serializable {
         }
 
         return this.points;
+    }
+
+    public TetrisColor getColor() {
+        return color;
     }
 }

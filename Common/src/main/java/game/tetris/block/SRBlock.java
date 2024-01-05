@@ -2,6 +2,7 @@ package game.tetris.block;
 
 import game.tetris.grid.Point;
 import game.tetris.action.Rotate;
+import game.tetris.grid.TetrisColor;
 
 public class SRBlock extends Block {
     public SRBlock() {
@@ -10,7 +11,7 @@ public class SRBlock extends Block {
 
     public SRBlock(int x, int y) {
         this.type = BlockType.SRBLOCK;
-
+        this.color = TetrisColor.GREEN;
         this.points[0] = new Point(x,y);
         this.points[1] = new Point(x,y+1);
         this.points[2] = new Point(x+1,y+1);

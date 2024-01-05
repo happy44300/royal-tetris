@@ -2,6 +2,7 @@ package game.tetris.block;
 
 import game.tetris.grid.Point;
 import game.tetris.action.Rotate;
+import game.tetris.grid.TetrisColor;
 
 public class IBlock extends Block {
     public IBlock() {
@@ -10,7 +11,7 @@ public class IBlock extends Block {
 
     public IBlock(int x, int y) {
         this.type = BlockType.IBLOCK;
-
+        this.color = TetrisColor.TURQUOISE;
         this.points[0] = new Point(x,y);
         this.points[1] = new Point(x,y-1);
         this.points[2] = new Point(x,y-2);
