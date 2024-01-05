@@ -10,6 +10,7 @@ public class UpKeyAction extends ClientAction{
     @Override
     protected void onActionBegin() {
         try {
+            if(!tetrisApplication.isGameStarted){return;}
             //TODO
         } catch (Exception e) {
             throw new RuntimeException(e);

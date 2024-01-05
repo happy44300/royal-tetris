@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final int NUMBER_OF_PLAYERS_MAX = 4;
+    private final int NUMBER_OF_PLAYERS_MAX = 1;
     private final int NUMBER_OF_ROWS = 20;
     private final int NUMBER_OF_COLUMNS = 40;
     private final static String SERVER_HOST_IP = "127.0.0.1";
@@ -39,7 +39,7 @@ public class TetrisGame implements Game{
             System.setProperty("java.rmi.server.hostname",SERVER_HOST_IP);
             Registry registry = LocateRegistry.createRegistry(10000);
 
-            TetrisGame tetrisGame = (TetrisGame) UnicastRemoteObject.exportObject(new TetrisGame(), SERVER_HOST_PORT);
+            Game tetrisGame = (Game) UnicastRemoteObject.exportObject(new TetrisGame(), SERVER_HOST_PORT);
             registry.rebind("TetrisGame", tetrisGame);
         } catch (Exception e) {
             e.printStackTrace();
