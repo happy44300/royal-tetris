@@ -64,6 +64,9 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
 
     @Override
     public void initGame() {
+        //Set the background color to be black
+        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
+
         connect();
     }
     @Override
@@ -87,8 +90,6 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
         GameWorld world = getGameWorld();
 
         world.removeEntities(new ArrayList<>(world.getEntities()));
-
-
 
 
         for(int x=0; x< grid.getCells().length; x++){
