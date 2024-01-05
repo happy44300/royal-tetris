@@ -51,7 +51,6 @@ public class TetrisGame implements Game{
 
     @Override
     public void submitBlockUpdate(String playerID, PlayerAction action) throws RemoteException {
-        System.out.println("BLOCK UPDATE!!!!!!!!!!!");
         synchronized (this.grid){
             Block blockToUpdate = this.playerToBlock.get(playerID);
             if(this.handlePlayerAction(blockToUpdate, action)){
@@ -166,7 +165,6 @@ public class TetrisGame implements Game{
     //True if any consequence happened, false otherwise
     private boolean handleConsequences(String playerID, Block updatedBlock){
         if(this.isBlockDirectlyAboveLockedCell(updatedBlock)){
-            System.out.println("AH MERDE OUAAAAAAAAAAAAAIS");
             this.removeCompletedLines();
 
             //TODO: random block, hash function based on player to determine position
@@ -179,7 +177,7 @@ public class TetrisGame implements Game{
     }
 
     private void start() {
-        int gridOffset = 1;
+        int gridOffset = 5;
 
         int x,y;
 
@@ -238,6 +236,7 @@ public class TetrisGame implements Game{
         synchronized (this.grid){
             for (Block block: this.playerToBlock.values()) {
                 Point[] pointsToRemove = block.getPoints();
+
                 for(Point p: pointsToRemove){
                     this.grid.getCell(p).setColor(TetrisColor.NOTHING);
                 }
@@ -245,6 +244,7 @@ public class TetrisGame implements Game{
                 block.doGoDown();
 
                 Point[] pointsToDraw = block.getPoints();
+
                 for(Point p: pointsToDraw){
                     this.grid.getCell(p).setColor(block.getColor());
                 }
@@ -283,7 +283,6 @@ public class TetrisGame implements Game{
     }
 
     private boolean isBlockDirectlyAboveLockedCell(Block updatedBlock) {
-        System.out.println("AH BON??????");
         Point[] blockPoints = updatedBlock.getPoints();
         int currentX;
         int currentY;
@@ -295,8 +294,7 @@ public class TetrisGame implements Game{
 
             if(currentY == NUMBER_OF_ROWS - 1) return true;
 
-            Point pointBelow = new Point(currentX, currentY - 1);
-            System.out.println(this.grid.getCell(pointBelow).getColor());
+            Point pointBelow = new Point(currentX, currentY + 1);
 
             for(Point other: blockPoints){
                 if(other.equals(pointBelow)){

@@ -120,18 +120,12 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
 
     void drawBlockInRenderThread(Point[] pointsToRemove, Block updatedBlock){
         System.out.println("Drawing block");
-        System.out.println("Points to remove :" +
-                Arrays.toString(pointsToRemove));
 
         int x, y;
 
         for(Point p : pointsToRemove){
             x = p.getX();
             y = p.getY();
-            System.out.println("ERASING POINT : " +
-                    x
-                    + ";" +
-                    y);
 
             var text = TetrominosTexture.tetrisColorToTexture(TetrisColor.NOTHING).copy();
             render(text, x, y);
