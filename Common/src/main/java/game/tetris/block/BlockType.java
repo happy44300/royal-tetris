@@ -1,6 +1,8 @@
 package game.tetris.block;
 
-public enum BlockType {
+import java.io.Serializable;
+
+public enum BlockType implements Serializable {
     IBLOCK,
     LBLOCK,
     LRBLOCK,

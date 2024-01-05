@@ -1,6 +1,8 @@
 package game.tetris.grid;
 
-public enum TetrisColor {
+import java.io.Serializable;
+
+public enum TetrisColor implements Serializable {
     NOTHING,
     BLUE,
     RED,

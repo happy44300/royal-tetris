@@ -1,6 +1,8 @@
 package game.tetris.block;
 
-public enum Orientation {
+import java.io.Serializable;
+
+public enum Orientation implements Serializable {
     UP,
     RIGHT,
     DOWN,

@@ -73,7 +73,7 @@ public abstract class Block implements Serializable {
 
         for(int i = 0; i < 4; i++){
             Point currentPoint = this.points[i];
-            computedPoints[i] = new Point(currentPoint.getX(), currentPoint.getY() + translateValue);
+            computedPoints[i] = new Point(currentPoint.getX() + translateValue, currentPoint.getY());
         }
 
         return computedPoints;
@@ -85,8 +85,8 @@ public abstract class Block implements Serializable {
     }
 
     public Point[] doGoDown() {
-        for(Point point : this.points){
-            point.translate(1, 0);
+        for(Point p : this.points){
+            p.translate(0, 1);
         }
 
         return this.points;

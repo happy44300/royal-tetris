@@ -10,6 +10,7 @@ public class RightKeyAction extends ClientAction{
     @Override
     protected void onActionBegin() {
         try {
+            System.out.println("RIGHT!");
             if(!tetrisApplication.isGameStarted){return;}
             tetrisApplication.getClientToServer().submitBlockUpdate(tetrisApplication.getPlayerID(),new Rotate(true));
         } catch (Exception e) {

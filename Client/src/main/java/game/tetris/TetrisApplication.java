@@ -4,8 +4,9 @@ import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.GameWorld;
-import com.almasb.fxgl.texture.ColoredTexture;
+import com.almasb.fxgl.texture.Texture;
 import game.tetris.block.Block;
+import game.tetris.grid.Cell;
 import game.tetris.grid.Grid;
 import game.tetris.grid.Point;
 import game.tetris.grid.TetrisColor;
@@ -46,7 +47,7 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     }
 
     ConnectionManager connectionManager;
-    private String ip = "127.0.0.1";
+    private final String ip = "127.0.0.1";
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(800);
@@ -71,19 +72,25 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     }
     @Override
     protected void initInput() {
-
-
-
         getInput().addAction(new LeftKeyAction("Move Left", this), KeyCode.LEFT);
         getInput().addAction(new RightKeyAction("Move Right", this), KeyCode.RIGHT);
         getInput().addAction(new UpKeyAction("Move UP", this), KeyCode.UP);
     }
 
 
+
+    private static void render(Texture text, int x, int y) {
+        text.setFitHeight(TetrisApplication.CELL_SIZE);
+        text.setFitWidth(TetrisApplication.CELL_SIZE);
+        text.preserveRatioProperty().setValue(true);
+        FXGL.entityBuilder().at(x * (TetrisApplication.CELL_SIZE+1d),(y * TetrisApplication.CELL_SIZE +1d))
+                .view(text)
+                .buildAndAttach();
+    }
+
     /**
      * Expensive method
      */
-
     void drawGridInRenderThread(){
         System.out.println("Drawing grid");
 
@@ -91,18 +98,14 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
 
         world.removeEntities(new ArrayList<>(world.getEntities()));
 
+        Cell[][] cells = grid.getCells();
 
-        for(int x=0; x< grid.getCells().length; x++){
-            for(int y = 0; y < grid.getCells()[x].length; y++){
-                System.out.println("Drawing cell at " + x * (TetrisApplication.CELL_SIZE+1d) + " " +(y * TetrisApplication.CELL_SIZE+1d));
-
-                var text = TetrominosTexture.RODBLOCK.getTexture().copy();
-                text.setFitHeight(TetrisApplication.CELL_SIZE);
-                text.setFitWidth(TetrisApplication.CELL_SIZE);
-                text.preserveRatioProperty().setValue(true);
-                 FXGL.entityBuilder().at(x * (TetrisApplication.CELL_SIZE+1d),(y * TetrisApplication.CELL_SIZE +1d))
-                        .view(text)
-                        .buildAndAttach();
+        Cell[] row;
+        for(int y=0; y< cells.length; y++){
+            row = cells[y];
+            for(int x = 0; x < row.length; x++){
+                var text = TetrominosTexture.tetrisColorToTexture(cells[y][x].getColor()).copy();
+                render(text, x, y);
             }
         }
     }
@@ -110,30 +113,56 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     @Override
     public void updateGrid(Grid updatedGrid) throws RemoteException {
         System.out.println("Received grid update");
-        this.isGameStarted = true;
         this.grid = updatedGrid;
         Platform.runLater(this::drawGridInRenderThread);
+        this.isGameStarted = true;
+    }
+
+    void drawBlockInRenderThread(Point[] pointsToRemove, Block updatedBlock){
+        System.out.println("Drawing block");
+        System.out.println("Points to remove :" +
+                Arrays.toString(pointsToRemove));
+
+        int x, y;
+
+        for(Point p : pointsToRemove){
+            x = p.getX();
+            y = p.getY();
+            System.out.println("ERASING POINT : " +
+                    x
+                    + ";" +
+                    y);
+
+            var text = TetrominosTexture.tetrisColorToTexture(TetrisColor.NOTHING).copy();
+            render(text, x, y);
+        }
+
+        Point[] pointsToRender = updatedBlock.getPoints();
+
+        for(Point p : pointsToRender){
+            x = p.getX();
+            y = p.getY();
+            var text = TetrominosTexture.tetrisColorToTexture(updatedBlock.getColor()).copy();
+            render(text, x, y);
+        }
     }
 
     @Override
     public void updateBlock(String playerID, Block updatedBlock) throws RemoteException {
 
-        System.out.println("Updating block");
+        System.out.println("Received block update");
+        Point[] pointsToRemove;
+        if (playerToBlock.containsKey(playerID)) {
+            pointsToRemove = playerToBlock.get(playerID).getPoints();
+        } else {
+            pointsToRemove = new Point[0];
+        }
+
+        playerToBlock.put(playerID, updatedBlock);
+
+        Platform.runLater(() -> drawBlockInRenderThread(pointsToRemove, updatedBlock));
 
         this.isGameStarted = true;
-
-
-        if (playerToBlock.containsKey(playerID)) {
-            for (Point point : playerToBlock.get(playerID).getPoints()) {
-                grid.getCell(point).setColor(TetrisColor.NOTHING);
-            }
-
-
-            for (Point point : updatedBlock.getPoints()) {
-                grid.getCell(point).setColor(TetrisColor.BLUE);
-            }
-            playerToBlock.put(playerID, updatedBlock);
-        }
     }
 
     private void connect() {

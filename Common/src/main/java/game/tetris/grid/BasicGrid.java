@@ -8,10 +8,9 @@ import game.tetris.grid.Point;
 // but since rmi is deprecated serialization does not work because of the deprecated security manager
 public class BasicGrid implements Grid {
 
-    public static final int CELL_SIZE = 30;
     Cell[][] grid;
-    int columns;
     int rows;
+    int columns;
 
 
     //Constructor and Initialization methods
@@ -35,7 +34,7 @@ public class BasicGrid implements Grid {
     //Interface Methods
     @Override
     public Cell getCell(Point point) {
-        return this.grid[point.getX()][point.getY()];
+        return this.grid[point.getY()][point.getX()];
     }
 
     @Override

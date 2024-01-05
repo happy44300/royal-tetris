@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class TetrisGame implements Game{
     private final int NUMBER_OF_PLAYERS_MAX = 1;
     private final int NUMBER_OF_ROWS = 20;
-    private final int NUMBER_OF_COLUMNS = 40;
+    private final int NUMBER_OF_COLUMNS = 10;
     private final static String SERVER_HOST_IP = "127.0.0.1";
     private final static int SERVER_HOST_PORT = 10000;
 
@@ -51,13 +51,18 @@ public class TetrisGame implements Game{
 
     @Override
     public void submitBlockUpdate(String playerID, PlayerAction action) throws RemoteException {
+        System.out.println("BLOCK UPDATE!!!!!!!!!!!");
         synchronized (this.grid){
             Block blockToUpdate = this.playerToBlock.get(playerID);
             if(this.handlePlayerAction(blockToUpdate, action)){
                 Block updatedBlock = this.playerToBlock.get(playerID);
                 if(this.handleConsequences(playerID, updatedBlock)){
                     for(ConnectionManager cm: this.playerToConnectionManager.values()){
+                        cm.updateBlock(playerID, updatedBlock);
                         cm.updateGrid(this.grid);
+                    }
+                }else {
+                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
                         cm.updateBlock(playerID, updatedBlock);
                     }
                 }
@@ -110,8 +115,8 @@ public class TetrisGame implements Game{
         Point[] postRotationPositions = block.computeRotation(rotation);
 
         for(Point p: postRotationPositions){
-            if(p.getX() < 0 || p.getX() >= NUMBER_OF_ROWS) return false;
-            if(p.getY() < 0 || p.getY() >= NUMBER_OF_COLUMNS) return false;
+            if(p.getY() < 0 || p.getY() >= NUMBER_OF_ROWS) return false;
+            if(p.getX() < 0 || p.getX() >= NUMBER_OF_COLUMNS) return false;
             if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING){
                 return false;
             }
@@ -126,7 +131,7 @@ public class TetrisGame implements Game{
             Point[] points = block.getPoints();
 
             //Saves the block's color
-            TetrisColor blockColor = this.grid.getCell(points[0]).getColor();;
+            TetrisColor blockColor = this.grid.getCell(points[0]).getColor();
 
             //Removes color from old cells
             for(Point p: points){
@@ -151,7 +156,7 @@ public class TetrisGame implements Game{
         Point[] postTranslationPositions = block.computeTranslation(translation);
 
         for(Point p: postTranslationPositions){
-            if(p.getY() < 0 || p.getY() >= NUMBER_OF_COLUMNS) return false;
+            if(p.getX() < 0 || p.getX() >= NUMBER_OF_COLUMNS) return false;
             if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING) return false;
         }
 
@@ -161,10 +166,11 @@ public class TetrisGame implements Game{
     //True if any consequence happened, false otherwise
     private boolean handleConsequences(String playerID, Block updatedBlock){
         if(this.isBlockDirectlyAboveLockedCell(updatedBlock)){
+            System.out.println("AH MERDE OUAAAAAAAAAAAAAIS");
             this.removeCompletedLines();
 
             //TODO: random block, hash function based on player to determine position
-            this.playerToBlock.replace(playerID, new OBlock(2, this.NUMBER_OF_COLUMNS / 2));
+            this.playerToBlock.put(playerID, new OBlock(this.NUMBER_OF_COLUMNS/2, 3));
 
             return true;
         }
@@ -173,51 +179,90 @@ public class TetrisGame implements Game{
     }
 
     private void start() {
-        int gridOffset = 0;
-        for(String playerID: this.playerToConnectionManager.keySet()){
-            Block newBlock = new OBlock(2, gridOffset);
+        int gridOffset = 1;
 
+        int x,y;
+
+        for(String playerID: this.playerToConnectionManager.keySet()){
+
+            //TODO: randomize block
+            Block newBlock = new OBlock(gridOffset, 3);
             this.playerToBlock.put(playerID, newBlock);
+
+            for(Point p: newBlock.getPoints()){
+                this.grid.getCell(p).setColor(newBlock.getColor());
+            }
             gridOffset += 3;
         }
 
         for(ConnectionManager cm: this.playerToConnectionManager.values()){
             for(String playerID: this.playerToBlock.keySet()){
                 try {
-                    System.out.println("Sending grid to player:" + playerID);
-                    cm.updateGrid(this.grid);
                     cm.updateBlock(playerID, this.playerToBlock.get(playerID));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
+            try {
+                cm.updateGrid(this.grid);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        Thread descentThread = new Thread(() -> {
-            while(true){
-                try {
-                    TimeUnit.SECONDS.sleep(2);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        Thread descentThread = new Thread(new Runnable() {
 
-                submitBlockDescent();
+            @Override
+            public void run() {
+                while(true){
+                    try {
+                        TimeUnit.SECONDS.sleep(2);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    submitBlockDescent();
+                }
             }
         });
-
+        /*try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        submitBlockDescent();*/
         descentThread.start();
     }
 
     private void submitBlockDescent(){
         synchronized (this.grid){
             for (Block block: this.playerToBlock.values()) {
+                Point[] pointsToRemove = block.getPoints();
+                for(Point p: pointsToRemove){
+                    this.grid.getCell(p).setColor(TetrisColor.NOTHING);
+                }
+
                 block.doGoDown();
+
+                Point[] pointsToDraw = block.getPoints();
+                for(Point p: pointsToDraw){
+                    this.grid.getCell(p).setColor(block.getColor());
+                }
             }
 
             try {
                 if(this.handleBlockDescentConsequences()){
                     for(ConnectionManager cm: this.playerToConnectionManager.values()){
+                        for(String playerID: this.playerToConnectionManager.keySet()){
+                            cm.updateBlock(playerID, this.playerToBlock.get(playerID));
+                        }
                         cm.updateGrid(this.grid);
+                    }
+                }else {
+                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
+                        for(String playerID: this.playerToConnectionManager.keySet()){
+                            cm.updateBlock(playerID, this.playerToBlock.get(playerID));
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -226,6 +271,7 @@ public class TetrisGame implements Game{
         }
     }
 
+    //Returns if lowering every block had any game consequences
     private boolean handleBlockDescentConsequences() {
         for(String playerID: this.playerToBlock.keySet()){
             if(handleConsequences(playerID, this.playerToBlock.get(playerID))){
@@ -237,15 +283,31 @@ public class TetrisGame implements Game{
     }
 
     private boolean isBlockDirectlyAboveLockedCell(Block updatedBlock) {
+        System.out.println("AH BON??????");
         Point[] blockPoints = updatedBlock.getPoints();
         int currentX;
         int currentY;
+
+        outerloop:
         for(Point p: blockPoints){
             currentX = p.getX();
             currentY = p.getY();
 
-            if(currentX == NUMBER_OF_ROWS) return true;
-            if(this.grid.getCell(new Point(currentX - 1, currentY)).getColor() != TetrisColor.NOTHING) return true;
+            if(currentY == NUMBER_OF_ROWS - 1) return true;
+
+            Point pointBelow = new Point(currentX, currentY - 1);
+            System.out.println(this.grid.getCell(pointBelow).getColor());
+
+            for(Point other: blockPoints){
+                if(other.equals(pointBelow)){
+                    continue outerloop;
+                }
+            }
+
+            if(this.grid.getCell(pointBelow).getColor() != TetrisColor.NOTHING){
+                return true;
+            }
+
         }
 
         return false;
@@ -311,7 +373,7 @@ public class TetrisGame implements Game{
                 Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
                 ConnectionManager playerConnectionManager = (ConnectionManager) remoteRegistry.lookup("ConnectionManager");
 
-                playerID = "player" + playerToConnectionManager.size();
+                playerID = "player" + String.valueOf(playerToConnectionManager.size());
 
                 this.playerToConnectionManager.put(playerID, playerConnectionManager);
             } catch (NotBoundException | ServerNotActiveException e) {
@@ -320,7 +382,6 @@ public class TetrisGame implements Game{
         }
 
         if(this.playerToConnectionManager.size() == NUMBER_OF_PLAYERS_MAX){
-            System.out.println("Starting game");
             this.start();
         }
 

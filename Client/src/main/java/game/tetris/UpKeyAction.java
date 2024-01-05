@@ -9,6 +9,7 @@ public class UpKeyAction extends ClientAction{
 
     @Override
     protected void onActionBegin() {
+        System.out.println("AROUND!");
         try {
             if(!tetrisApplication.isGameStarted){return;}
             //TODO
