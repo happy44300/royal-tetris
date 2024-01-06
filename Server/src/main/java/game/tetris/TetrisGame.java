@@ -167,13 +167,22 @@ public class TetrisGame implements Game{
         if(this.isBlockDirectlyAboveLockedCell(updatedBlock)){
             this.removeCompletedLines();
 
-            //TODO: random block, hash function based on player to determine position
-            this.playerToBlock.put(playerID, getRandomBlock(this.NUMBER_OF_COLUMNS/2, 3));
+            Block newBlock = getRandomBlock(this.NUMBER_OF_COLUMNS/2, 3);
+
+            for(Point p: newBlock.getPoints()){
+                if(this.grid.getCell(new Point(p.getX(), p.getY())).getColor() != TetrisColor.NOTHING) this.lose();
+            }
+
+            this.playerToBlock.put(playerID, newBlock);
 
             return true;
         }
 
         return false;
+    }
+
+    private void lose() {
+        //TODO: implement endgame
     }
 
     private void start() {
@@ -235,33 +244,18 @@ public class TetrisGame implements Game{
         int numBlock = getRandomNumberInRange(1,7);
 
         switch (numBlock){
-            case 1:
-                return new IBlock(gridOffset, y);
-
-            case 2:
-                return new LBlock(gridOffset, y);
-
-            case 3:
-                return new LRBlock(gridOffset, y);
-
-            case 4:
-                return new OBlock(gridOffset, y);
-
-            case 5:
-                return new SBlock(gridOffset, y);
-
-            case 6:
-                return new SRBlock(gridOffset, y);
-
-            default:
-                return new TBlock(gridOffset, y); // 7 is the "default" case
+            case 1: return new IBlock(gridOffset, y);
+            case 2: return new LBlock(gridOffset, y);
+            case 3: return new LRBlock(gridOffset, y);
+            case 4: return new OBlock(gridOffset, y);
+            case 5: return new SBlock(gridOffset, y);
+            case 6: return new SRBlock(gridOffset, y);
+            default: return new TBlock(gridOffset, y); // 7 is the "default" case
         }
     }
 
     private int getRandomNumberInRange(int min, int max) {
-        if (min >= max) {
-            throw new IllegalArgumentException("max must be greater than min");
-        }
+        if (min >= max) throw new IllegalArgumentException("max must be greater than min");
 
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
@@ -271,6 +265,7 @@ public class TetrisGame implements Game{
     private void submitBlockDescent(){
         synchronized (this.grid){
             for (Block block: this.playerToBlock.values()) {
+
                 Point[] pointsToRemove = block.getPoints();
 
                 for(Point p: pointsToRemove){
