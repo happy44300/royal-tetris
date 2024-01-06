@@ -5,6 +5,10 @@ import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.GameWorld;
 import com.almasb.fxgl.texture.Texture;
+import game.tetris.Action.DownKeyAction;
+import game.tetris.Action.LeftKeyAction;
+import game.tetris.Action.RightKeyAction;
+import game.tetris.Action.UpKeyAction;
 import game.tetris.block.Block;
 import game.tetris.grid.Cell;
 import game.tetris.grid.Grid;
@@ -75,6 +79,7 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
         getInput().addAction(new LeftKeyAction("Move Left", this), KeyCode.LEFT);
         getInput().addAction(new RightKeyAction("Move Right", this), KeyCode.RIGHT);
         getInput().addAction(new UpKeyAction("Move UP", this), KeyCode.UP);
+        getInput().addAction(new DownKeyAction("Move Down", this), KeyCode.DOWN);
     }
 
 
@@ -179,5 +184,7 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
         }
     }
 
-
+    public boolean isGameStarted() {
+        return isGameStarted;
+    }
 }
