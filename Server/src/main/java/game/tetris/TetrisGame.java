@@ -250,7 +250,7 @@ public class TetrisGame implements Game{
         Thread descentThread = new Thread(() -> {
             while(true){
                 try {
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -363,6 +363,8 @@ public class TetrisGame implements Game{
     }
 
     public void removeCompletedLines() {
+        System.out.println("REMOVING LINES!!!");
+
         int numLine = 0;
         //List<Integer> numLinesDeleted = new ArrayList<>();
 
@@ -393,14 +395,14 @@ public class TetrisGame implements Game{
     private void stackEmptyLine() {
         Cell[] newLine = new Cell[NUMBER_OF_COLUMNS];
         for (int j = 0; j < NUMBER_OF_COLUMNS; j++) {
-            newLine[j] = new Cell();
+            newLine[j] = new Cell(TetrisColor.NOTHING);
         }
         this.grid.getCells()[0] = newLine;
     }
 
     private boolean isRowLocked(Cell[] row) {
         for (Cell cell : row){
-            if(cell.getColor() != TetrisColor.NOTHING) {
+            if(cell.getColor() == TetrisColor.NOTHING) {
                 return false;
             }
         }
