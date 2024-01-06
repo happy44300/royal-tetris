@@ -13,6 +13,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -111,11 +112,20 @@ public class TetrisGame implements Game{
     }
 
     private boolean isRotationValid(Block block, Rotate rotation) {
+        Point[] preRotationPositions = block.getPoints();
         Point[] postRotationPositions = block.computeRotation(rotation);
 
+        outerloop:
         for(Point p: postRotationPositions){
+            for(Point other: preRotationPositions){
+                if(other.equals(p)){
+                    continue outerloop;
+                }
+            }
+
             if(p.getY() < 0 || p.getY() >= NUMBER_OF_ROWS) return false;
             if(p.getX() < 0 || p.getX() >= NUMBER_OF_COLUMNS) return false;
+
             if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING){
                 return false;
             }
@@ -152,9 +162,18 @@ public class TetrisGame implements Game{
     }
 
     private boolean isTranslationValid(Block block, Translate translation) {
+
+        Point[] preTranslationPositions = block.getPoints();
         Point[] postTranslationPositions = block.computeTranslation(translation);
 
+        outerloop:
         for(Point p: postTranslationPositions){
+            for(Point other: preTranslationPositions){
+                if(other.equals(p)){
+                    continue outerloop;
+                }
+            }
+
             if(p.getX() < 0 || p.getX() >= NUMBER_OF_COLUMNS) return false;
             if (this.grid.getCell(p).getColor() != TetrisColor.NOTHING) return false;
         }
@@ -169,6 +188,8 @@ public class TetrisGame implements Game{
 
             Block newBlock = getRandomBlock(this.NUMBER_OF_COLUMNS/2, 3);
 
+
+            //Loss condition
             for(Point p: newBlock.getPoints()){
                 if(this.grid.getCell(new Point(p.getX(), p.getY())).getColor() != TetrisColor.NOTHING) this.lose();
             }

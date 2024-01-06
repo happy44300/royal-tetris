@@ -6,6 +6,6 @@ public abstract class PlayerAction implements Serializable {
     PlayerActionType playerActionType;
 
     public PlayerActionType getPlayerActionType() {
-        return playerActionType;
+        return this.playerActionType;
     }
 }
