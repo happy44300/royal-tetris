@@ -168,7 +168,7 @@ public class TetrisGame implements Game{
             this.removeCompletedLines();
 
             //TODO: random block, hash function based on player to determine position
-            this.playerToBlock.put(playerID, new OBlock(this.NUMBER_OF_COLUMNS/2, 3));
+            this.playerToBlock.put(playerID, getRandomBlock(this.NUMBER_OF_COLUMNS/2, 3));
 
             return true;
         }
