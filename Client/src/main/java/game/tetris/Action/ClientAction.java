@@ -1,6 +1,7 @@
-package game.tetris;
+package game.tetris.Action;
 
 import com.almasb.fxgl.input.UserAction;
+import game.tetris.TetrisApplication;
 import org.jetbrains.annotations.NotNull;
 
 public class ClientAction extends UserAction {
