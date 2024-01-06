@@ -19,11 +19,6 @@ public class OBlock extends Block {
     }
 
     @Override
-    public Point[] getPoints() {
-        return this.points;
-    }
-
-    @Override
     public Point[] computeRotation(Rotate rotate) {
         return this.points;
 

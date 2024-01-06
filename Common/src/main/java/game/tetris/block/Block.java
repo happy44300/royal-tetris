@@ -37,7 +37,9 @@ public abstract class Block implements Serializable {
         this.points = points;
     }
 
-    public abstract Point[] getPoints();
+    public Point[] getPoints() {
+        return this.points;
+    }
 
     protected Orientation computeNewOrientation(Rotate rotate) {
         switch (this.orientation){
@@ -50,11 +52,8 @@ public abstract class Block implements Serializable {
             case DOWN -> {
                 return rotate.isClockwise() ? Orientation.LEFT : Orientation.RIGHT;
             }
-            case LEFT -> {
-                return rotate.isClockwise() ? Orientation.UP : Orientation.DOWN;
-            }
             default -> {
-                return Orientation.UP;
+                return rotate.isClockwise() ? Orientation.UP : Orientation.DOWN;
             }
         }
     }
@@ -62,8 +61,8 @@ public abstract class Block implements Serializable {
     public abstract Point[] computeRotation(Rotate rotate);
 
     public Point[] doRotate(Rotate rotate) {
-        this.orientation = computeNewOrientation(rotate);
         this.points = computeRotation(rotate);
+        this.orientation = computeNewOrientation(rotate);
         return this.points;
     }
 

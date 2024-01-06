@@ -20,11 +20,6 @@ public class LBlock extends Block {
     }
 
     @Override
-    public Point[] getPoints() {
-        return this.points;
-    }
-
-    @Override
     public Point[] computeRotation(Rotate rotate) {
         Point[] computedPoints = new Point[4];
         int x = this.points[0].getX();
@@ -35,9 +30,9 @@ public class LBlock extends Block {
         switch(newOrientation){
             case DOWN:
                 computedPoints[0] = new Point(x,y);
-                computedPoints[1] = new Point(x-1,y);
-                computedPoints[2] = new Point(x-1,y-1);
-                computedPoints[3] = new Point(x-1,y-2);
+                computedPoints[1] = new Point(x+1,y);
+                computedPoints[2] = new Point(x+1,y+1);
+                computedPoints[3] = new Point(x+1,y+2);
                 break;
 
             case LEFT:
@@ -59,14 +54,8 @@ public class LBlock extends Block {
                 computedPoints[1] = new Point(x-1,y);
                 computedPoints[2] = new Point(x-1,y-1);
                 computedPoints[3] = new Point(x-1,y-2);
-                break;
         }
 
         return computedPoints;
-    }
-
-    @Override
-    public Point[] computeTranslation(Translate translate) {
-        return new Point[0];
     }
 }

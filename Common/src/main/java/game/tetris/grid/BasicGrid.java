@@ -21,10 +21,26 @@ public class BasicGrid implements Grid {
         this.initializeGrid();
     }
 
+    public BasicGrid(int rows, int columns, TetrisColor fillingColor) {
+        this.rows = rows;
+        this.columns = columns;
+        this.grid = new Cell[rows][columns];
+        this.initializeColoredGrid(fillingColor);
+    }
+
     private void initializeGrid() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 Cell cell = new Cell();
+                grid[i][j] = cell;
+            }
+        }
+    }
+
+    private void initializeColoredGrid(TetrisColor color) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                Cell cell = new Cell(color);
                 grid[i][j] = cell;
             }
         }

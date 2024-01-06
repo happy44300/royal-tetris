@@ -19,11 +19,6 @@ public class JBlock extends Block {
     }
 
     @Override
-    public Point[] getPoints() {
-        return this.points;
-    }
-
-    @Override
     public Point[] computeRotation(Rotate rotate) {
         Point[] computedPoints = new Point[4];
         int x = this.points[0].getX();
