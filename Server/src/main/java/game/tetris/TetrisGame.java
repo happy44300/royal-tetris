@@ -13,7 +13,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -267,10 +266,10 @@ public class TetrisGame implements Game{
         switch (numBlock){
             case 1: return new IBlock(gridOffset, y);
             case 2: return new LBlock(gridOffset, y);
-            case 3: return new LRBlock(gridOffset, y);
+            case 3: return new JBlock(gridOffset, y);
             case 4: return new OBlock(gridOffset, y);
             case 5: return new SBlock(gridOffset, y);
-            case 6: return new SRBlock(gridOffset, y);
+            case 6: return new ZBlock(gridOffset, y);
             default: return new TBlock(gridOffset, y); // 7 is the "default" case
         }
     }

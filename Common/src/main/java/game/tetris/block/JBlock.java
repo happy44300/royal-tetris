@@ -4,18 +4,18 @@ import game.tetris.grid.Point;
 import game.tetris.action.Rotate;
 import game.tetris.grid.TetrisColor;
 
-public class LRBlock extends Block {
-    public LRBlock() {
-        this.type = BlockType.LRBLOCK;
+public class JBlock extends Block {
+    public JBlock() {
+        this.type = BlockType.JBLOCK;
     }
 
-    public LRBlock(int x, int y) {
-        this.type = BlockType.LRBLOCK;
+    public JBlock(int x, int y) {
+        this.type = BlockType.JBLOCK;
         this.color = TetrisColor.BLUE;
         this.points[0] = new Point(x,y);
-        this.points[1] = new Point(x+1,y);
-        this.points[2] = new Point(x+1,y+1);
-        this.points[3] = new Point(x+1,y+2);
+        this.points[1] = new Point(x,y-1);
+        this.points[2] = new Point(x-1,y-1);
+        this.points[3] = new Point(x-2,y-1);
     }
 
     @Override
@@ -34,30 +34,30 @@ public class LRBlock extends Block {
         switch(newOrientation){
             case DOWN:
                 computedPoints[0] = new Point(x,y);
-                computedPoints[1] = new Point(x-1,y);
-                computedPoints[2] = new Point(x-1,y-1);
-                computedPoints[3] = new Point(x-1,y-2);
+                computedPoints[1] = new Point(x+1,y);
+                computedPoints[2] = new Point(x+1,y-1);
+                computedPoints[3] = new Point(x+1,y-2);
                 break;
 
             case LEFT:
                 computedPoints[0] = new Point(x,y);
-                computedPoints[1] = new Point(x,y+1);
-                computedPoints[2] = new Point(x-1,y+1);
-                computedPoints[3] = new Point(x-2,y+1);
+                computedPoints[1] = new Point(x,y-1);
+                computedPoints[2] = new Point(x-1,y-1);
+                computedPoints[3] = new Point(x-2,y-1);
                 break;
 
             case RIGHT:
                 computedPoints[0] = new Point(x,y);
-                computedPoints[1] = new Point(x,y-1);
-                computedPoints[2] = new Point(x+1,y-1);
-                computedPoints[3] = new Point(x+2,y-1);
+                computedPoints[1] = new Point(x,y+1);
+                computedPoints[2] = new Point(x+1,y+1);
+                computedPoints[3] = new Point(x+2,y+1);
                 break;
 
             default: // UP
                 computedPoints[0] = new Point(x,y);
-                computedPoints[1] = new Point(x+1,y);
-                computedPoints[2] = new Point(x+1,y+1);
-                computedPoints[3] = new Point(x+1,y+2);
+                computedPoints[1] = new Point(x-1,y);
+                computedPoints[2] = new Point(x-1,y+1);
+                computedPoints[3] = new Point(x-1,y+2);
                 break;
         }
 

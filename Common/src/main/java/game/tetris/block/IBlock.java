@@ -13,9 +13,9 @@ public class IBlock extends Block {
         this.type = BlockType.IBLOCK;
         this.color = TetrisColor.TURQUOISE;
         this.points[0] = new Point(x,y);
-        this.points[1] = new Point(x,y-1);
-        this.points[2] = new Point(x,y-2);
-        this.points[3] = new Point(x,y-3);
+        this.points[1] = new Point(x-1,y);
+        this.points[2] = new Point(x-2,y);
+        this.points[3] = new Point(x-3,y);
     }
 
     @Override

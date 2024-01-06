@@ -13,9 +13,9 @@ public class TBlock extends Block {
         this.type = BlockType.TBLOCK;
         this.color = TetrisColor.PURPLE;
         this.points[0] = new Point(x,y);
-        this.points[1] = new Point(x+1,y);
-        this.points[2] = new Point(x+1,y+1);
-        this.points[3] = new Point(x+1,y-1);
+        this.points[1] = new Point(x-1,y+1);
+        this.points[2] = new Point(x-1,y);
+        this.points[3] = new Point(x-1,y-1);
     }
 
     @Override
@@ -32,28 +32,28 @@ public class TBlock extends Block {
         Orientation newOrientation = computeNewOrientation(rotate);
 
         switch(newOrientation){
-            case DOWN:
+            case LEFT:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x-1,y+1);
                 computedPoints[2] = new Point(x-1,y);
                 computedPoints[3] = new Point(x-1,y-1);
                 break;
 
-            case LEFT:
+            case UP:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x-1,y-1);
                 computedPoints[2] = new Point(x,y-1);
                 computedPoints[3] = new Point(x+1,y-1);
                 break;
 
-            case RIGHT:
+            case DOWN:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x+1,y+1);
                 computedPoints[2] = new Point(x,y+1);
                 computedPoints[3] = new Point(x-1,y+1);
                 break;
 
-            default: // UP
+            default: // RIGHT
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x+1,y-1);
                 computedPoints[2] = new Point(x+1,y);

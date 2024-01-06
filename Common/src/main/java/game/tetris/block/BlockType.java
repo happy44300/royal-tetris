@@ -5,9 +5,9 @@ import java.io.Serializable;
 public enum BlockType implements Serializable {
     IBLOCK,
     LBLOCK,
-    LRBLOCK,
+    JBLOCK,
     OBLOCK,
     SBLOCK,
-    SRBLOCK,
+    ZBLOCK,
     TBLOCK
 }
