@@ -32,28 +32,28 @@ public class IBlock extends Block {
         Orientation newOrientation = computeNewOrientation(rotate);
 
         switch(newOrientation){
-            case RIGHT:
+            case DOWN:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x,y+1);
                 computedPoints[2] = new Point(x,y+2);
                 computedPoints[3] = new Point(x,y+3);
                 break;
 
-            case UP:
+            case LEFT:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x-1,y);
                 computedPoints[2] = new Point(x-2,y);
                 computedPoints[3] = new Point(x-3,y);
                 break;
 
-            case DOWN:
+            case RIGHT:
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x+1,y);
                 computedPoints[2] = new Point(x+2,y);
                 computedPoints[3] = new Point(x+3,y);
                 break;
 
-            default: // LEFT
+            default: // UP
                 computedPoints[0] = new Point(x,y);
                 computedPoints[1] = new Point(x,y-1);
                 computedPoints[2] = new Point(x,y-2);
