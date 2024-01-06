@@ -234,31 +234,28 @@ public class TetrisGame implements Game{
     private Block getRandomBlock(int gridOffset, int y) {
         int numBlock = getRandomNumberInRange(1,7);
 
-        if (numBlock == 1){
-            return new IBlock(gridOffset, y);
-        }
+        switch (numBlock){
+            case 1:
+                return new IBlock(gridOffset, y);
 
-        if (numBlock == 2){
-            return new LBlock(gridOffset, y);
-        }
+            case 2:
+                return new LBlock(gridOffset, y);
 
-        if (numBlock == 3){
-            return new LRBlock(gridOffset, y);
-        }
+            case 3:
+                return new LRBlock(gridOffset, y);
 
-        if (numBlock == 4){
-            return new OBlock(gridOffset, y);
-        }
+            case 4:
+                return new OBlock(gridOffset, y);
 
-        if (numBlock == 5){
-            return new SBlock(gridOffset, y);
-        }
+            case 5:
+                return new SBlock(gridOffset, y);
 
-        if (numBlock == 6){
-            return new SRBlock(gridOffset, y);
-        }
+            case 6:
+                return new SRBlock(gridOffset, y);
 
-        return new TBlock(gridOffset, y); // 7 is the "default" case
+            default:
+                return new TBlock(gridOffset, y); // 7 is the "default" case
+        }
     }
 
     private int getRandomNumberInRange(int min, int max) {
