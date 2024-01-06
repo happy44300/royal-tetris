@@ -1,8 +1,6 @@
-package game.tetris.Action;
+package game.tetris.action;
 
 import game.tetris.TetrisApplication;
-import game.tetris.action.Rotate;
-import game.tetris.action.Translate;
 import org.jetbrains.annotations.NotNull;
 
 public class LeftKeyAction extends ClientAction {

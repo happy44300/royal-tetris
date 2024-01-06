@@ -1,4 +1,4 @@
-package game.tetris.Action;
+package game.tetris.action;
 
 import com.almasb.fxgl.input.UserAction;
 import game.tetris.TetrisApplication;

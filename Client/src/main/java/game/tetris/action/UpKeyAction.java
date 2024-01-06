@@ -1,7 +1,6 @@
-package game.tetris.Action;
+package game.tetris.action;
 
 import game.tetris.TetrisApplication;
-import game.tetris.action.Rotate;
 import org.jetbrains.annotations.NotNull;
 
 public class UpKeyAction extends ClientAction {
