@@ -3,8 +3,7 @@ package game.tetris;
 import game.tetris.action.PlayerAction;
 import game.tetris.action.Rotate;
 import game.tetris.action.Translate;
-import game.tetris.block.Block;
-import game.tetris.block.OBlock;
+import game.tetris.block.*;
 import game.tetris.grid.*;
 
 import java.rmi.NotBoundException;
@@ -16,6 +15,7 @@ import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
@@ -183,12 +183,11 @@ public class TetrisGame implements Game{
 
         for(String playerID: this.playerToConnectionManager.keySet()){
 
-            //TODO: randomize block
-            Block newBlock = new OBlock(gridOffset, 3);
-            this.playerToBlock.put(playerID, newBlock);
+            Block randomBlock = getRandomBlock(gridOffset, 3);
+            this.playerToBlock.put(playerID, randomBlock);
 
-            for(Point p: newBlock.getPoints()){
-                this.grid.getCell(p).setColor(newBlock.getColor());
+            for(Point p: randomBlock.getPoints()){
+                this.grid.getCell(p).setColor(randomBlock.getColor());
             }
             gridOffset += 3;
         }
@@ -231,6 +230,46 @@ public class TetrisGame implements Game{
         submitBlockDescent();*/
         descentThread.start();
     }
+
+    private Block getRandomBlock(int gridOffset, int y) {
+        int numBlock = getRandomNumberInRange(1,7);
+
+        if (numBlock == 1){
+            return new IBlock(gridOffset, y);
+        }
+
+        if (numBlock == 2){
+            return new LBlock(gridOffset, y);
+        }
+
+        if (numBlock == 3){
+            return new LRBlock(gridOffset, y);
+        }
+
+        if (numBlock == 4){
+            return new OBlock(gridOffset, y);
+        }
+
+        if (numBlock == 5){
+            return new SBlock(gridOffset, y);
+        }
+
+        if (numBlock == 6){
+            return new SRBlock(gridOffset, y);
+        }
+
+        return new TBlock(gridOffset, y); // 7 is the "default" case
+    }
+
+    private int getRandomNumberInRange(int min, int max) {
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
 
     private void submitBlockDescent(){
         synchronized (this.grid){
