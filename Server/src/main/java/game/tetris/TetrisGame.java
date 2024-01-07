@@ -184,16 +184,37 @@ public class TetrisGame implements Game{
         if(this.isBlockDirectlyAboveLockedCell(updatedBlock)){
             this.removeCompletedLines();
 
-            Block newBlock = getRandomBlock(this.NUMBER_OF_COLUMNS/2, 3);
+            int yForNewBlock = getYForNewBlock();
+            // TODO: manage the gridOffset
+            Block newBlock = getRandomBlock(this.NUMBER_OF_COLUMNS/2, yForNewBlock);
 
-            //Loss condition
-            for(Point p: newBlock.getPoints()){
-                if(this.grid.getCell(new Point(p.getX(), p.getY())).getColor() != TetrisColor.NOTHING) this.lose();
+            if(isGameLose(newBlock)){
+                lose();
             }
 
             this.playerToBlock.put(playerID, newBlock);
 
             return true;
+        }
+
+        return false;
+    }
+
+    // We check on 2 lines because a new block will be only on 2 lines maximum at the beginning
+    private int getYForNewBlock() {
+        int y = 2; // third line of the grid
+        if(blockedCellInLine(y) || blockedCellInLine(y + 1)){
+            y = y - 2;
+        }
+        return y;
+    }
+
+    // To verify if the game is loss, we check if the new block can spawn or not
+    private boolean isGameLose(Block newBlock) {
+        for(Point p: newBlock.getPoints()){
+            if(this.grid.getCell(p).getColor() != TetrisColor.NOTHING){
+                return true;
+            }
         }
 
         return false;
@@ -212,9 +233,7 @@ public class TetrisGame implements Game{
                 }
             }
 
-            while(true){
-
-            }
+            while(true){}
         }
     }
 
@@ -442,5 +461,15 @@ public class TetrisGame implements Game{
 
 
         return playerID;
+    }
+
+    private boolean blockedCellInLine(int numLine){
+
+        for (Cell c : this.grid.getCells()[numLine]){
+            if(c.getColor() != TetrisColor.NOTHING) {
+                return true;
+            }
+        }
+        return false;
     }
 }
