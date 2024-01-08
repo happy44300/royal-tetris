@@ -13,9 +13,9 @@ public class SBlock extends Block {
         this.type = BlockType.SBLOCK;
         this.color = TetrisColor.RED;
         this.points[0] = new Point(x,y);
-        this.points[1] = new Point(x,y-1);
-        this.points[2] = new Point(x+1,y-1);
-        this.points[3] = new Point(x+1,y-2);
+        this.points[1] = new Point(x-1,y);
+        this.points[2] = new Point(x-1,y-1);
+        this.points[3] = new Point(x-2,y-1);
     }
 
     @Override
