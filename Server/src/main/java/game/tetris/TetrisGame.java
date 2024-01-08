@@ -20,10 +20,10 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final int NUMBER_OF_PLAYERS_MAX = 1;
+    private final static int NUMBER_OF_PLAYERS_MAX = 2;
     private final int NUMBER_OF_ROWS = 20;
-    private final int NUMBER_OF_COLUMNS = 10;
-    private final static String SERVER_HOST_IP = "127.0.0.1";
+    private final int NUMBER_OF_COLUMNS = 10 * NUMBER_OF_PLAYERS_MAX;
+    private final static String SERVER_HOST_IP = "192.168.48.1";
     private final static int SERVER_HOST_PORT = 10000;
 
 
@@ -35,7 +35,7 @@ public class TetrisGame implements Game{
     public static void main(String[] argv) {
         try {
             System.setProperty("java.rmi.server.hostname",SERVER_HOST_IP);
-            Registry registry = LocateRegistry.createRegistry(10000);
+            Registry registry = LocateRegistry.createRegistry(SERVER_HOST_PORT);
 
             Game tetrisGame = (Game) UnicastRemoteObject.exportObject(new TetrisGame(), SERVER_HOST_PORT);
             registry.rebind("TetrisGame", tetrisGame);
