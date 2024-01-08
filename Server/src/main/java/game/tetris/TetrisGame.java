@@ -204,7 +204,7 @@ public class TetrisGame implements Game{
     private int getYForNewBlock() {
         int y = 2; // third line of the grid
         if(blockedCellInLine(y) || blockedCellInLine(y + 1)){
-            y = y - 2;
+            y = y - 1;
         }
         return y;
     }
