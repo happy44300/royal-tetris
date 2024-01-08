@@ -10,7 +10,6 @@ public class DownKeyAction extends ClientAction {
     @Override
     protected void onActionBegin() {
         try {
-            System.out.println("DOWN!");
             if(!tetrisApplication.isGameStarted()){return;}
             tetrisApplication.getClientToServer().submitBlockUpdate(tetrisApplication.getPlayerID(),new Rotate(false));
         } catch (Exception e) {

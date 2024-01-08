@@ -13,17 +13,14 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final static int NUMBER_OF_PLAYERS_MAX = 2;
-    private final int NUMBER_OF_ROWS = 20;
+    private final static int NUMBER_OF_PLAYERS_MAX = 1;
+    private final int NUMBER_OF_ROWS = 10;
     private final int NUMBER_OF_COLUMNS = 10 * NUMBER_OF_PLAYERS_MAX;
-    private final static String SERVER_HOST_IP = "192.168.48.1";
+    private final static String SERVER_HOST_IP = "127.0.0.1";
     private final static int SERVER_HOST_PORT = 10000;
 
 
@@ -55,17 +52,13 @@ public class TetrisGame implements Game{
         synchronized (this.grid){
             Block blockToUpdate = this.playerToBlock.get(playerID);
             if(this.handlePlayerAction(blockToUpdate, action)){
-                Block updatedBlock = this.playerToBlock.get(playerID);
-                if(this.handleConsequences(playerID, updatedBlock)){
-                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
-                        cm.updateBlock(playerID, updatedBlock);
-                        cm.updateGrid(this.grid);
-                    }
-                }else {
-                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
-                        cm.updateBlock(playerID, updatedBlock);
-                    }
+
+                for(ConnectionManager cm: this.playerToConnectionManager.values()){
+                    boolean wasBlockLocked = this.handleConsequences(playerID, this.playerToBlock.get(playerID));
+                    cm.updateBlock(playerID, this.playerToBlock.get(playerID), wasBlockLocked);
+                    if(wasBlockLocked) cm.updateGrid(this.grid);
                 }
+
             }
         }
     }
@@ -228,7 +221,6 @@ public class TetrisGame implements Game{
                 try {
                     cm.updateGrid(endgameGrid);
                 } catch (RemoteException e) {
-                    System.out.println("COULDN'T SEND GAME OVER SCREEN TO PLAYER");
                     throw new RuntimeException(e);
                 }
             }
@@ -254,7 +246,7 @@ public class TetrisGame implements Game{
         for(ConnectionManager cm: this.playerToConnectionManager.values()){
             for(String playerID: this.playerToBlock.keySet()){
                 try {
-                    cm.updateBlock(playerID, this.playerToBlock.get(playerID));
+                    cm.updateBlock(playerID, this.playerToBlock.get(playerID), true);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -302,10 +294,11 @@ public class TetrisGame implements Game{
         return r.nextInt((max - min) + 1) + min;
     }
 
-
     private void submitBlockDescent(){
         synchronized (this.grid){
-            for (Block block: this.playerToBlock.values()) {
+            for (String playerID: this.playerToBlock.keySet()) {
+
+                Block block = this.playerToBlock.get(playerID);
 
                 Point[] pointsToRemove = block.getPoints();
 
@@ -321,19 +314,14 @@ public class TetrisGame implements Game{
             }
 
             try {
-                if(this.handleBlockDescentConsequences()){
-                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
-                        for(String playerID: this.playerToConnectionManager.keySet()){
-                            cm.updateBlock(playerID, this.playerToBlock.get(playerID));
-                        }
-                        cm.updateGrid(this.grid);
+                List<String> playersWhoLockedTheirBlock = this.handleBlockDescentConsequences();
+
+                for(ConnectionManager cm: this.playerToConnectionManager.values()){
+                    for(String playerID: this.playerToConnectionManager.keySet()){
+                        cm.updateBlock(playerID, this.playerToBlock.get(playerID), playersWhoLockedTheirBlock.contains(playerID));
                     }
-                }else {
-                    for(ConnectionManager cm: this.playerToConnectionManager.values()){
-                        for(String playerID: this.playerToConnectionManager.keySet()){
-                            cm.updateBlock(playerID, this.playerToBlock.get(playerID));
-                        }
-                    }
+
+                    if(!playersWhoLockedTheirBlock.isEmpty()) cm.updateGrid(this.grid);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -342,14 +330,15 @@ public class TetrisGame implements Game{
     }
 
     //Returns if lowering every block had any game consequences
-    private boolean handleBlockDescentConsequences() {
+    private List<String> handleBlockDescentConsequences() {
+        List<String> affectedBlocks = new ArrayList<>();
         for(String playerID: this.playerToBlock.keySet()){
             if(handleConsequences(playerID, this.playerToBlock.get(playerID))){
-                return true;
+                affectedBlocks.add(playerID);
             }
         }
 
-        return false;
+        return affectedBlocks;
     }
 
     private boolean isBlockDirectlyAboveLockedCell(Block updatedBlock) {
@@ -382,8 +371,6 @@ public class TetrisGame implements Game{
     }
 
     public void removeCompletedLines() {
-        System.out.println("REMOVING LINES!!!");
-
         int numLine = 0;
         //List<Integer> numLinesDeleted = new ArrayList<>();
 
