@@ -29,7 +29,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 public class TetrisApplication extends GameApplication implements ConnectionManager {
-
+    int portClient = 10002;
     Game clientToServer;
 
     String playerID;
@@ -51,7 +51,7 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
     }
 
     ConnectionManager connectionManager;
-    private final String ip = "127.0.0.1";
+    private final String ip = "192.168.48.2";
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(800);
@@ -170,9 +170,9 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
             Game game = (Game) remoteRegistry.lookup("TetrisGame");
             this.clientToServer = game;
 
-            Registry localRegistry = LocateRegistry.createRegistry(10001);
+            Registry localRegistry = LocateRegistry.createRegistry(portClient);
 
-            connectionManager = (ConnectionManager) UnicastRemoteObject.exportObject(this, 10001);
+            connectionManager = (ConnectionManager) UnicastRemoteObject.exportObject(this, portClient);
 
             localRegistry.rebind("ConnectionManager", connectionManager);
 
