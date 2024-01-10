@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Cell implements Serializable {
     TetrisColor tetrisColor;
+    boolean belongToPlayer = false;
 
     public Cell() {
         this.tetrisColor = TetrisColor.NOTHING;
@@ -20,4 +21,8 @@ public class Cell implements Serializable {
     public void setColor(TetrisColor tetrisColor) {
         this.tetrisColor = tetrisColor;
     }
+
+    public void setBelongToPlayer(boolean b){this.belongToPlayer = b;}
+
+    public boolean getBelongToPlayer(){return belongToPlayer;}
 }
