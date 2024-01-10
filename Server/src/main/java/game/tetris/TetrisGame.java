@@ -178,19 +178,29 @@ public class TetrisGame implements Game{
             this.removeCompletedLines();
 
             int yForNewBlock = getYForNewBlock();
-            // TODO: manage the gridOffset
-            Block newBlock = getRandomBlock(this.NUMBER_OF_COLUMNS/2, yForNewBlock);
+            Block newBlock = getRandomBlock(getGridOffset(playerID), yForNewBlock);
 
             if(isGameLose(newBlock)){
                 lose();
             }
 
             this.playerToBlock.put(playerID, newBlock);
-
             return true;
         }
 
         return false;
+    }
+
+    private int getGridOffset(String playerID) {
+        int baseOffset = 0;
+        for(String id : this.playerToConnectionManager.keySet()){
+            if(Objects.equals(id, playerID)){
+                return baseOffset + this.NUMBER_OF_COLUMNS / NUMBER_OF_PLAYERS_MAX / 2;
+            }else{
+                baseOffset = baseOffset + this.NUMBER_OF_COLUMNS / NUMBER_OF_PLAYERS_MAX;
+            }
+        }
+        return this.NUMBER_OF_COLUMNS / 2; // default case with 1 player
     }
 
     // We check on 2 lines because a new block will be only on 2 lines maximum at the beginning
@@ -230,17 +240,14 @@ public class TetrisGame implements Game{
     }
 
     private void start() {
-        int gridOffset = 5;
-
         for(String playerID: this.playerToConnectionManager.keySet()){
 
-            Block randomBlock = getRandomBlock(gridOffset, 3);
+            Block randomBlock = getRandomBlock(getGridOffset(playerID), 2);
             this.playerToBlock.put(playerID, randomBlock);
 
             for(Point p: randomBlock.getPoints()){
                 this.grid.getCell(p).setColor(randomBlock.getColor());
             }
-            gridOffset += 3;
         }
 
         for(ConnectionManager cm: this.playerToConnectionManager.values()){
