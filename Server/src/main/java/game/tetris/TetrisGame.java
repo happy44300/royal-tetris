@@ -17,8 +17,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final static int NUMBER_OF_PLAYERS_MAX = 1;
-    private final int NUMBER_OF_ROWS = 10;
+    private final static int NUMBER_OF_PLAYERS_MAX = 2;
+    private final int NUMBER_OF_ROWS = 20;
     private final int NUMBER_OF_COLUMNS = 10 * NUMBER_OF_PLAYERS_MAX;
     private final static String SERVER_HOST_IP = "127.0.0.1";
     private final static int SERVER_HOST_PORT = 10000;
@@ -427,7 +427,12 @@ public class TetrisGame implements Game{
                 playerIP = RemoteServer.getClientHost();
                 System.out.println(playerIP);
 
-                Registry remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
+                Registry remoteRegistry;
+                if (this.playerToConnectionManager.size() ==0){
+                    remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
+                }else{
+                    remoteRegistry = LocateRegistry.getRegistry(playerIP, 10002);
+                }
                 ConnectionManager playerConnectionManager = (ConnectionManager) remoteRegistry.lookup("ConnectionManager");
 
                 playerID = "player" + playerToConnectionManager.size();
