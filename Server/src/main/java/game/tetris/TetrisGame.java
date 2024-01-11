@@ -52,7 +52,6 @@ public class TetrisGame implements Game{
         synchronized (this.grid){
             Block blockToUpdate = this.playerToBlock.get(playerID);
             if(this.handlePlayerAction(blockToUpdate, action)){
-
                 for(ConnectionManager cm: this.playerToConnectionManager.values()){
                     boolean wasBlockLocked = this.handleConsequences(playerID, this.playerToBlock.get(playerID));
                     cm.updateBlock(playerID, this.playerToBlock.get(playerID), wasBlockLocked);
@@ -91,11 +90,13 @@ public class TetrisGame implements Game{
             //Removes color from old cells
             for(Point pointToRemove: preRotationPositions){
                 this.grid.getCell(pointToRemove).setColor(TetrisColor.NOTHING);
+                this.grid.getCell(pointToRemove).setBelongToPlayer(false);
             }
 
             //Paints new cells with old color
             for(Point pointToDraw: postRotationPositions){
                 this.grid.getCell(pointToDraw).setColor(blockColor);
+                this.grid.getCell(pointToDraw).setBelongToPlayer(true);
             }
             return true;
         }
@@ -177,6 +178,10 @@ public class TetrisGame implements Game{
         if(this.isBlockDirectlyAboveLockedCell(updatedBlock)){
             this.removeCompletedLines();
 
+            for(Point p: this.playerToBlock.get(playerID).getPoints()){
+                this.grid.getCell(p).setBelongToPlayer(false);
+            }
+
             int yForNewBlock = getYForNewBlock();
             Block newBlock = getRandomBlock(getGridOffset(playerID), yForNewBlock);
 
@@ -245,8 +250,11 @@ public class TetrisGame implements Game{
             Block randomBlock = getRandomBlock(getGridOffset(playerID), 2);
             this.playerToBlock.put(playerID, randomBlock);
 
+            Cell c;
             for(Point p: randomBlock.getPoints()){
-                this.grid.getCell(p).setColor(randomBlock.getColor());
+                c = this.grid.getCell(p);
+                c.setColor(randomBlock.getColor());
+                c.setBelongToPlayer(true);
             }
         }
 
@@ -311,12 +319,14 @@ public class TetrisGame implements Game{
 
                 for(Point pointToRemove: pointsToRemove){
                     this.grid.getCell(pointToRemove).setColor(TetrisColor.NOTHING);
+                    this.grid.getCell(pointToRemove).setBelongToPlayer(false);
                 }
 
                 Point[] pointsToDraw = block.doGoDown();
 
                 for(Point pointToDraw: pointsToDraw){
                     this.grid.getCell(pointToDraw).setColor(block.getColor());
+                    this.grid.getCell(pointToDraw).setBelongToPlayer(true);
                 }
             }
 
@@ -368,7 +378,7 @@ public class TetrisGame implements Game{
                 }
             }
 
-            if(this.grid.getCell(pointBelow).getColor() != TetrisColor.NOTHING){
+            if(this.grid.getCell(pointBelow).getColor() != TetrisColor.NOTHING && !this.grid.getCell(pointBelow).getBelongToPlayer()){
                 return true;
             }
 
