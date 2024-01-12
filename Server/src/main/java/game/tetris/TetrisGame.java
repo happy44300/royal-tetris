@@ -13,11 +13,12 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
+import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final static int NUMBER_OF_PLAYERS_MAX = 2;
+    private int NUMBER_OF_PLAYERS_MAX = 4;
     private final int NUMBER_OF_ROWS = 20;
     private final int NUMBER_OF_COLUMNS = 10 * NUMBER_OF_PLAYERS_MAX;
     private final static String SERVER_HOST_IP = "127.0.0.1";
@@ -30,21 +31,32 @@ public class TetrisGame implements Game{
     private final Map<String, ConnectionManager> playerToConnectionManager;
 
     public static void main(String[] argv) {
+
+        Game game;
+
+        if(argv.length == 0){
+            System.out.println("You must specify the number of players in the game!!!");
+            throw new InvalidParameterException("Number of players not specified");
+        } else {
+            game = new TetrisGame(Integer.parseInt(argv[0]));
+        }
+
         try {
             System.setProperty("java.rmi.server.hostname",SERVER_HOST_IP);
             Registry registry = LocateRegistry.createRegistry(SERVER_HOST_PORT);
 
-            Game tetrisGame = (Game) UnicastRemoteObject.exportObject(new TetrisGame(), SERVER_HOST_PORT);
+            Game tetrisGame = (Game) UnicastRemoteObject.exportObject(game, SERVER_HOST_PORT);
             registry.rebind("TetrisGame", tetrisGame);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public TetrisGame(){
+    public TetrisGame(int numberOfPlayers){
         this.grid = new BasicGrid(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS);
         this.playerToBlock = new HashMap<>();
         this.playerToConnectionManager = new HashMap<>();
+        this.NUMBER_OF_PLAYERS_MAX = numberOfPlayers;
     }
 
     @Override

@@ -29,7 +29,7 @@ import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
 public abstract class TetrisApplication extends GameApplication implements ConnectionManager {
-    int portClient = 10001;
+    int portClient;
     Game clientToServer;
     String playerID;
     boolean isGameStarted = false;
