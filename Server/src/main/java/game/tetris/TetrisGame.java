@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class TetrisGame implements Game{
-    private final int NUMBER_OF_PLAYERS_MAX = 4;
+    private int NUMBER_OF_PLAYERS_MAX = 4;
     private final int NUMBER_OF_ROWS = 20;
     private final int NUMBER_OF_COLUMNS = 10 * NUMBER_OF_PLAYERS_MAX;
     private final static String SERVER_HOST_IP = "127.0.0.1";
@@ -56,6 +56,7 @@ public class TetrisGame implements Game{
         this.grid = new BasicGrid(NUMBER_OF_ROWS, NUMBER_OF_COLUMNS);
         this.playerToBlock = new HashMap<>();
         this.playerToConnectionManager = new HashMap<>();
+        this.NUMBER_OF_PLAYERS_MAX = numberOfPlayers;
     }
 
     @Override
