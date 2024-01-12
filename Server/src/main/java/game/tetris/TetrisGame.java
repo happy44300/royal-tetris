@@ -82,7 +82,7 @@ public class TetrisGame implements Game{
             Point[] preRotationPositions = block.getPoints();
 
             //Saves the block's color
-            TetrisColor blockColor = this.grid.getCell(preRotationPositions[0]).getColor();
+            TetrisColor blockColor = block.getColor();
 
             //Actually executes the rotation
             Point[] postRotationPositions = block.doRotate(rotation);
@@ -119,9 +119,8 @@ public class TetrisGame implements Game{
             if(pointToCheck.getY() < 0 || pointToCheck.getY() >= NUMBER_OF_ROWS) return false;
             if(pointToCheck.getX() < 0 || pointToCheck.getX() >= NUMBER_OF_COLUMNS) return false;
 
-            if (this.grid.getCell(pointToCheck).getColor() != TetrisColor.NOTHING){
-                return false;
-            }
+            if (this.grid.getCell(pointToCheck).getColor() != TetrisColor.NOTHING) return false;
+            if (this.grid.getCell(pointToCheck).getBelongToPlayer()) return false;
         }
 
         return true;
@@ -140,11 +139,13 @@ public class TetrisGame implements Game{
             //Removes color from old cells
             for(Point pointToRemove: preTranslationPositions){
                 this.grid.getCell(pointToRemove).setColor(TetrisColor.NOTHING);
+                this.grid.getCell(pointToRemove).setBelongToPlayer(false);
             }
 
             //Paints new cells with old color
             for(Point pointToDraw: postTranslationPositions){
                 this.grid.getCell(pointToDraw).setColor(blockColor);
+                this.grid.getCell(pointToDraw).setBelongToPlayer(true);
             }
 
             return true;
@@ -168,6 +169,7 @@ public class TetrisGame implements Game{
 
             if(pointToCheck.getX() < 0 || pointToCheck.getX() >= NUMBER_OF_COLUMNS) return false;
             if (this.grid.getCell(pointToCheck).getColor() != TetrisColor.NOTHING) return false;
+            if (this.grid.getCell(pointToCheck).getBelongToPlayer()) return false;
         }
 
         return true;
@@ -312,21 +314,22 @@ public class TetrisGame implements Game{
     private void submitBlockDescent(){
         synchronized (this.grid){
             for (String playerID: this.playerToBlock.keySet()) {
-
                 Block block = this.playerToBlock.get(playerID);
+                if(!isBlockDirectlyAboveBlock(block)) {
 
-                Point[] pointsToRemove = block.getPoints();
+                    Point[] pointsToRemove = block.getPoints();
 
-                for(Point pointToRemove: pointsToRemove){
-                    this.grid.getCell(pointToRemove).setColor(TetrisColor.NOTHING);
-                    this.grid.getCell(pointToRemove).setBelongToPlayer(false);
-                }
+                    for (Point pointToRemove : pointsToRemove) {
+                        this.grid.getCell(pointToRemove).setColor(TetrisColor.NOTHING);
+                        this.grid.getCell(pointToRemove).setBelongToPlayer(false);
+                    }
 
-                Point[] pointsToDraw = block.doGoDown();
+                    Point[] pointsToDraw = block.doGoDown();
 
-                for(Point pointToDraw: pointsToDraw){
-                    this.grid.getCell(pointToDraw).setColor(block.getColor());
-                    this.grid.getCell(pointToDraw).setBelongToPlayer(true);
+                    for (Point pointToDraw : pointsToDraw) {
+                        this.grid.getCell(pointToDraw).setColor(block.getColor());
+                        this.grid.getCell(pointToDraw).setBelongToPlayer(true);
+                    }
                 }
             }
 
@@ -345,7 +348,34 @@ public class TetrisGame implements Game{
             }
         }
     }
+    private boolean isBlockDirectlyAboveBlock(Block updatedBlock) {
+        Point[] blockPoints = updatedBlock.getPoints();
+        int currentX;
+        int currentY;
 
+        outerloop:
+        for(Point p: blockPoints){
+            currentX = p.getX();
+            currentY = p.getY();
+
+            if(currentY == NUMBER_OF_ROWS - 1) return true;
+
+            Point pointBelow = new Point(currentX, currentY + 1);
+
+            for(Point other: blockPoints){
+                if(other.equals(pointBelow)){
+                    continue outerloop;
+                }
+            }
+
+            if(this.grid.getCell(pointBelow).getBelongToPlayer()){
+                return true;
+            }
+
+        }
+
+        return false;
+    }
     //Returns if lowering every block had any game consequences
     private List<String> handleBlockDescentConsequences() {
         List<String> affectedBlocks = new ArrayList<>();
@@ -447,8 +477,12 @@ public class TetrisGame implements Game{
                 Registry remoteRegistry;
                 if (this.playerToConnectionManager.size() ==0){
                     remoteRegistry = LocateRegistry.getRegistry(playerIP, 10001);
-                }else{
+                }else if (this.playerToConnectionManager.size() ==1){
                     remoteRegistry = LocateRegistry.getRegistry(playerIP, 10002);
+                }else if (this.playerToConnectionManager.size() ==2){
+                    remoteRegistry = LocateRegistry.getRegistry(playerIP, 10003);
+                }else{
+                    remoteRegistry = LocateRegistry.getRegistry(playerIP, 10004);
                 }
                 ConnectionManager playerConnectionManager = (ConnectionManager) remoteRegistry.lookup("ConnectionManager");
 
