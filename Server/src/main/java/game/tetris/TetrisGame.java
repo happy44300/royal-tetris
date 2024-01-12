@@ -489,6 +489,8 @@ public class TetrisGame implements Game{
                 playerID = "player" + playerToConnectionManager.size();
 
                 this.playerToConnectionManager.put(playerID, playerConnectionManager);
+                System.out.println(this.playerToConnectionManager.keySet());
+                System.out.println(this.playerToConnectionManager.values());
             } catch (NotBoundException | ServerNotActiveException e) {
                 throw new RemoteException();
             }

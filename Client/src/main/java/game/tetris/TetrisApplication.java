@@ -28,8 +28,8 @@ import java.util.*;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getGameWorld;
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
-public class TetrisApplication extends GameApplication implements ConnectionManager {
-    int portClient = 10002;
+public abstract class TetrisApplication extends GameApplication implements ConnectionManager {
+    int portClient = 10001;
     Game clientToServer;
     String playerID;
     boolean isGameStarted = false;
@@ -58,14 +58,13 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
         settings.setHeight(800);
         settings.setTicksPerSecond(1);
     }
+
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         super.initGameVars(vars);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+
 
     @Override
     public void initGame() {
@@ -74,13 +73,7 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
 
         connect();
     }
-    @Override
-    protected void initInput() {
-        getInput().addAction(new LeftKeyAction("Move Left", this), KeyCode.LEFT);
-        getInput().addAction(new RightKeyAction("Move Right", this), KeyCode.RIGHT);
-        getInput().addAction(new UpKeyAction("Move UP", this), KeyCode.UP);
-        getInput().addAction(new DownKeyAction("Move Down", this), KeyCode.DOWN);
-    }
+
 
 
 
@@ -194,7 +187,9 @@ public class TetrisApplication extends GameApplication implements ConnectionMana
             e.printStackTrace();
         }
     }
-
+    public void setClientPort(int port){
+        this.portClient = port;
+    }
     public boolean isGameStarted() {
         return isGameStarted;
     }
