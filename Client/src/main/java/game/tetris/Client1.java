@@ -19,9 +19,9 @@ public class Client1 extends TetrisApplication{
 
     @Override
     protected void initInput() {
-        getInput().addAction(new LeftKeyAction("Move Left", this), KeyCode.LEFT);
-        getInput().addAction(new RightKeyAction("Move Right", this), KeyCode.RIGHT);
-        getInput().addAction(new UpKeyAction("Move UP", this), KeyCode.UP);
-        getInput().addAction(new DownKeyAction("Move Down", this), KeyCode.DOWN);
+        getInput().addAction(new LeftKeyAction("LEFT", this), KeyCode.LEFT);
+        getInput().addAction(new RightKeyAction("RIGHT", this), KeyCode.RIGHT);
+        getInput().addAction(new UpKeyAction("UP", this), KeyCode.UP);
+        getInput().addAction(new DownKeyAction("DOWN", this), KeyCode.DOWN);
     }
 }

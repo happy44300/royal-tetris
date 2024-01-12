@@ -8,13 +8,13 @@ import javafx.scene.input.KeyCode;
 
 import static com.almasb.fxgl.dsl.FXGLForKtKt.getInput;
 
-public class Client2 extends TetrisApplication{
+public class Client4 extends TetrisApplication{
 
-    public Client2(){
-        this.setClientPort(10002);
+    public Client4(){
+        this.setClientPort(10004);
     }
     public static void main(String[] args) {
-        launch(Client2.class, args);
+        launch(Client4.class, args);
     }
 
     @Override
