@@ -4,3 +4,4 @@ We created an online tetris in order to play in multiplayer. The aim of the game
 Ce projet utilise Gradle et Java 17.
 Afin de cloner ce projet, il faut utiliser le lien suivant : https://github.com/happy44300/royal-tetris.git
 
+Afin de voir le jeu en fonctionnement avec 4 joueurs, voici le lien d'une vidéo :
